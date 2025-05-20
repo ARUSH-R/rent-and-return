@@ -1,6 +1,6 @@
-package com.ecommerce.backend.service;
+package com.rentreturn.backend.service;
 
-import com.ecommerce.backend.model.User;
+import com.rentreturn.backend.model.User;
 
 import java.util.List;
 

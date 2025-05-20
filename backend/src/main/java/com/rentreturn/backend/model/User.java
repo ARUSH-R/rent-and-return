@@ -1,4 +1,4 @@
-package com.ecommerce.backend.model;
+package com.rentreturn.backend.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,6 +23,10 @@ public class User {
     private String email;
 
     private String password;
+
+    private String phone;
+
+    private String address;
 
     private LocalDateTime createdAt;
 }
