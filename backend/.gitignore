@@ -9,6 +9,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+
+*.class
+
+*.log
+
+
+
 # Maven wrapper
 !.mvn/wrapper/maven-wrapper.jar
 

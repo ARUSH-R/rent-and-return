@@ -1,16 +1,18 @@
 package com.rentreturn.backend.service;
 
+import com.rentreturn.backend.dto.UserCreateRequest;
+import com.rentreturn.backend.dto.UserDTO;
 import com.rentreturn.backend.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserDTO createUser(UserCreateRequest userRequest);
 
-    User getUserById(int id);
+    UserDTO getUserById(int id);
 
-    List<User> getAllUsers();
+    List<UserDTO> getAllUsers();
 
     void deleteUser(int id);
 }

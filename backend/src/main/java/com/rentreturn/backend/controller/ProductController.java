@@ -1,6 +1,8 @@
 package com.rentreturn.backend.controller;
 
 
+import com.rentreturn.backend.dto.ProductCreateRequest;
+import com.rentreturn.backend.dto.ProductDTO;
 import com.rentreturn.backend.model.Product;
 import com.rentreturn.backend.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +18,23 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {
-        return productService.addProduct(product);
-    }
-
-    @GetMapping("/{id}")
-    public Product getProductById(@PathVariable int id) {
-        return productService.getProductById(id);
+    public ProductDTO addProduct(@RequestBody ProductCreateRequest productRequest) {
+        return productService.addProduct(productRequest);
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         return productService.getAllProducts();
     }
 
+    @GetMapping("/{id}")
+    public ProductDTO getProductById(@PathVariable int id) {
+        return productService.getProductById(id);
+    }
+
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    public ProductDTO updateProduct(@PathVariable int id, @RequestBody ProductCreateRequest updateRequest) {
+        return productService.updateProduct(id, updateRequest);
     }
 
     @DeleteMapping("/{id}")
@@ -40,6 +42,4 @@ public class ProductController {
         productService.deleteProduct(id);
         return "Product deleted successfully!";
     }
-
-
 }

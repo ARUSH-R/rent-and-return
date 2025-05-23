@@ -1,5 +1,9 @@
 package com.rentreturn.backend.service;
 
+import com.rentreturn.backend.dto.ProductCreateRequest;
+import com.rentreturn.backend.dto.ProductDTO;
+import com.rentreturn.backend.exception.ProductNotFoundException;
+import com.rentreturn.backend.mapper.ProductMapper;
 import com.rentreturn.backend.model.Product;
 import com.rentreturn.backend.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,34 +17,42 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     @Override
-    public Product addProduct(Product product) {
-        product.setAvailable(true);
-        return productRepository.save(product);
+    public ProductDTO addProduct(ProductCreateRequest productRequest) {
+        Product product = productMapper.toProduct(productRequest);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toProductDTO(savedProduct);
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        List<Product> products = productRepository.findAll();
+        return products.stream()
+                .map(productMapper::toProductDTO)
+                .toList();
     }
 
     @Override
-    public Product getProductById(int id) {
-        return productRepository.findById(id).orElse(null);
+    public ProductDTO getProductById(int id) {
+        Product product = productRepository.findById(id).orElse(null);
+        return product == null ? null : productMapper.toProductDTO(product);
     }
 
     @Override
-    public Product updateProduct(int id, Product updateProduct) {
+    public ProductDTO updateProduct(int id, ProductCreateRequest updateRequest) {
         Product existingProduct = productRepository.findById(id).orElse(null);
-
         if (existingProduct == null) return null;
 
-        existingProduct.setName(updateProduct.getName());
-        existingProduct.setDescription(updateProduct.getDescription());
-        existingProduct.setPrice(updateProduct.getPrice());
-        existingProduct.setAvailable(updateProduct.isAvailable());
-        return productRepository.save(existingProduct);
+        existingProduct.setName(updateRequest.getName());
+        existingProduct.setDescription(updateRequest.getDescription());
+        existingProduct.setPrice(updateRequest.getPrice());
+        existingProduct.setAvailable(updateRequest.isAvailable()); // if your request has availability
 
+        Product savedProduct = productRepository.save(existingProduct);
+        return productMapper.toProductDTO(savedProduct);
     }
 
     @Override

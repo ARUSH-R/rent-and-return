@@ -1,6 +1,7 @@
 package com.rentreturn.backend.controller;
 
-import com.rentreturn.backend.model.User;
+import com.rentreturn.backend.dto.UserCreateRequest;
+import com.rentreturn.backend.dto.UserDTO;
 import com.rentreturn.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,17 +16,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public UserDTO createUser(@RequestBody UserCreateRequest userRequest) {
+        return userService.createUser(userRequest);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable int id) {
+    public UserDTO getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
@@ -34,4 +35,5 @@ public class UserController {
         userService.deleteUser(id);
         return "User deleted successfully!";
     }
+
 }

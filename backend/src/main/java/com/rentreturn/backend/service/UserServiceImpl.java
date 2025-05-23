@@ -1,5 +1,9 @@
 package com.rentreturn.backend.service;
 
+import com.rentreturn.backend.dto.UserCreateRequest;
+import com.rentreturn.backend.dto.UserDTO;
+import com.rentreturn.backend.exception.UserNotFoundException;
+import com.rentreturn.backend.mapper.UserMapper;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +19,29 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User createUser(User user) {
-        user.setCreatedAt(LocalDateTime.now());
-        return userRepository.save(user);
+    public UserDTO createUser(UserCreateRequest userRequest) {
+        User user = UserMapper.toUser(userRequest);
+        User savedUser = userRepository.save(user);
+        return UserMapper.toUserDTO(savedUser);
     }
 
     @Override
-    public User getUserById(int id) {
-        return userRepository.findById(id).orElse(null); // basic version
+    public UserDTO getUserById(int id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+        return UserMapper.toUserDTO(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toUserDTO)
+                .toList();
     }
 
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
-
-
 }
