@@ -38,7 +38,7 @@ public class RentalMapper {
         Rental rental = new Rental();
         rental.setId(rentalDTO.getId());
 
-        User user = userRepository.findById(rentalDTO.getUserId())
+        User user = userRepository.findById((long) rentalDTO.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + rentalDTO.getUserId()));
 
         Product product = productRepository.findById(rentalDTO.getProductId())

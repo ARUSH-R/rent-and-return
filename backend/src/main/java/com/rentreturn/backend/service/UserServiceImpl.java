@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(int id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findById((long) id)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
         return UserMapper.toUserDTO(user);
     }
@@ -42,6 +42,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(int id) {
-        userRepository.deleteById(id);
+        userRepository.deleteById((long) id);
+    }
+
+    public Object loadUserByEmail(String userEmail) {
+
+
+        return null;
     }
 }
