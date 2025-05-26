@@ -2,17 +2,17 @@ package com.rentreturn.backend.controller;
 
 import com.rentreturn.backend.dto.UserCreateRequest;
 import com.rentreturn.backend.dto.UserDTO;
+import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.service.JwtTokenService;
 import com.rentreturn.backend.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.ResponseEntity;
 import io.jsonwebtoken.Claims;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -45,7 +45,14 @@ public class UserController {
         return "User deleted successfully!";
     }
 
-    // Endpoint to check if a JWT token is valid/expired
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
+        String email = authentication.getName();
+        User user = userService.getUserByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return ResponseEntity.ok(new UserDTO(user));
+    }
+
     @GetMapping("/token/validate")
     public ResponseEntity<?> validateToken(@RequestParam String token) {
         try {
@@ -60,5 +67,4 @@ public class UserController {
             return ResponseEntity.badRequest().body("Invalid token: " + e.getMessage());
         }
     }
-
 }

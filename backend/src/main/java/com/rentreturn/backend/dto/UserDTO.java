@@ -1,5 +1,6 @@
 package com.rentreturn.backend.dto;
 
+import com.rentreturn.backend.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UserDTO {
 
-    int id;
+    long id;
 
     String name;
 
@@ -21,6 +22,15 @@ public class UserDTO {
     String address;
 
     LocalDateTime createdAt;
+
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.phone = user.getPhone();
+        this.address = user.getAddress();
+        this.createdAt = user.getCreatedAt();
+    }
 
 
 }

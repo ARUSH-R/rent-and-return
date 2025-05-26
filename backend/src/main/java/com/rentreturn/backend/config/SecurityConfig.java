@@ -30,15 +30,20 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // Permit all auth-related endpoints
                         .requestMatchers("/api/auth/**").permitAll()
+                        // Allow users with ROLE_USER or ROLE_ADMIN to access "/api/users/me"
+                        .requestMatchers("/api/users/me").hasAnyRole("USER", "ADMIN")
+                        // Only ADMIN role for other user endpoints
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
+                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
-
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
@@ -57,7 +62,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
 }
-
