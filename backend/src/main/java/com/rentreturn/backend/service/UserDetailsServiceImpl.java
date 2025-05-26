@@ -3,8 +3,11 @@ package com.rentreturn.backend.service;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getAuthorities() // returns a List of GrantedAuthority (like ROLE_USER)
+                user.getAuthorities()  // Make sure this returns something like [ROLE_USER]
         );
     }
 }
+

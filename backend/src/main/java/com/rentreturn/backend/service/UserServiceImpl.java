@@ -7,9 +7,10 @@ import com.rentreturn.backend.mapper.UserMapper;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -45,9 +46,10 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById((long) id);
     }
 
-    public Object loadUserByEmail(String userEmail) {
-
-
-        return null;
+    // Removed @Override here
+    public UserDetails loadUserByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return user; // Assumes User implements UserDetails
     }
 }

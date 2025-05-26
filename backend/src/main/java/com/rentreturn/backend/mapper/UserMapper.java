@@ -21,7 +21,7 @@ public class UserMapper {
 
     public static UserDTO toUserDTO(User user) {
         UserDTO dto = new UserDTO();
-        dto.setId(user.getId());
+        dto.setId(Math.toIntExact(user.getId()));
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setPhone(user.getPhone());

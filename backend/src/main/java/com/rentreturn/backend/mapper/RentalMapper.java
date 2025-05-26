@@ -22,7 +22,7 @@ public class RentalMapper {
     public RentalDTO toDTO(Rental rental) {
         RentalDTO rentalDTO = new RentalDTO();
         rentalDTO.setId(rental.getId());
-        rentalDTO.setUserId(rental.getUser().getId());
+        rentalDTO.setUserId(rental.getUser().getId().intValue());
         rentalDTO.setProductId(rental.getProduct().getId());
         rentalDTO.setStartDate(rental.getStartDate().toString());
         rentalDTO.setEndDate(rental.getEndDate().toString());
@@ -38,7 +38,7 @@ public class RentalMapper {
         Rental rental = new Rental();
         rental.setId(rentalDTO.getId());
 
-        User user = userRepository.findById((long) rentalDTO.getUserId())
+        User user = userRepository.findById(Long.valueOf(rentalDTO.getUserId()))
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + rentalDTO.getUserId()));
 
         Product product = productRepository.findById(rentalDTO.getProductId())
