@@ -5,6 +5,7 @@ import com.rentreturn.backend.dto.UserDTO;
 import com.rentreturn.backend.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
@@ -16,7 +17,9 @@ public interface UserService {
 
     void deleteUser(int id);
 
-    User findByEmail(String email);
+    Optional<User> findByEmail(String email);
+
+
 
 
 }

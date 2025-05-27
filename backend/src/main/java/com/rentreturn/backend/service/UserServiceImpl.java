@@ -6,13 +6,16 @@ import com.rentreturn.backend.exception.UserNotFoundException;
 import com.rentreturn.backend.mapper.UserMapper;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -46,10 +49,9 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById((long) id);
     }
 
-    // Removed @Override here
-    public UserDetails loadUserByEmail(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-        return user; // Assumes User implements UserDetails
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
+
 }

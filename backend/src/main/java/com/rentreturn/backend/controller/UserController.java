@@ -47,11 +47,12 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        String email = authentication.getName();
-        User user = userService.getUserByEmail(email)
+        String email = authentication.getName(); // gets the logged-in user's email
+        User user = userService.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return ResponseEntity.ok(new UserDTO(user));
     }
+
 
     @GetMapping("/token/validate")
     public ResponseEntity<?> validateToken(@RequestParam String token) {
