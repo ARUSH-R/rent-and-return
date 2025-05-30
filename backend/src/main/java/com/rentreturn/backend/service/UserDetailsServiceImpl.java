@@ -3,17 +3,17 @@ package com.rentreturn.backend.service;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -23,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                user.getAuthorities() // List of GrantedAuthority, e.g. ROLE_USER, ROLE_ADMIN
+                user.getAuthorities() // List of GrantedAuthority, e.g., ROLE_USER, ROLE_ADMIN
         );
     }
 

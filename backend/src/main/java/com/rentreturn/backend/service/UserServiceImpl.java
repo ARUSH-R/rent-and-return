@@ -1,7 +1,9 @@
 package com.rentreturn.backend.service;
 
+import com.rentreturn.backend.dto.PasswordChangeRequest;
 import com.rentreturn.backend.dto.UserCreateRequest;
 import com.rentreturn.backend.dto.UserDTO;
+import com.rentreturn.backend.dto.UserUpdateRequest;
 import com.rentreturn.backend.exception.UserNotFoundException;
 import com.rentreturn.backend.mapper.UserMapper;
 import com.rentreturn.backend.model.User;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO createUser(UserCreateRequest userRequest) {
@@ -53,5 +58,29 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    @Override
+    public UserDTO updateUser(String email, UserUpdateRequest updateRequest) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setName(updateRequest.getName());
+        user.setPhone(updateRequest.getPhone());
+        user.setAddress(updateRequest.getAddress());
+        userRepository.save(user);
+        return new UserDTO(user);
+    }
+
+    @Override
+    public void changePassword(String email, PasswordChangeRequest passwordChangeRequest) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (!passwordEncoder.matches(passwordChangeRequest.getOldPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("Old password is incorrect");
+        }
+        user.setPassword(passwordEncoder.encode(passwordChangeRequest.getNewPassword()));
+        userRepository.save(user);
+    }
+
+
 
 }

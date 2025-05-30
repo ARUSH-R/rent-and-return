@@ -1,13 +1,13 @@
 package com.rentreturn.backend.controller;
 
-import com.rentreturn.backend.dto.UserCreateRequest;
-import com.rentreturn.backend.dto.UserDTO;
+import com.rentreturn.backend.dto.*;
 import com.rentreturn.backend.model.User;
 import com.rentreturn.backend.service.JwtTokenService;
 import com.rentreturn.backend.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -39,10 +39,11 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public ResponseEntity<?> deleteUser(@PathVariable int id) {
         userService.deleteUser(id);
-        return "User deleted successfully!";
+        return ResponseEntity.ok("User deleted successfully");
     }
 
     @GetMapping("/me")
@@ -52,7 +53,6 @@ public class UserController {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return ResponseEntity.ok(new UserDTO(user));
     }
-
 
     @GetMapping("/token/validate")
     public ResponseEntity<?> validateToken(@RequestParam String token) {
@@ -67,5 +67,26 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Invalid token: " + e.getMessage());
         }
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody UserUpdateRequest updateRequest, Authentication authentication) {
+        String email = authentication.getName();
+        UserDTO updatedUser = userService.updateUser(email, updateRequest);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PutMapping("/me/password")
+    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest, Authentication authentication) {
+        String email = authentication.getName();
+        userService.changePassword(email, passwordChangeRequest);
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
+    @PostMapping("/token/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
+        String refreshToken = request.getRefreshToken();
+        String refreshedToken = jwtTokenService.refreshToken(refreshToken);
+        return ResponseEntity.ok(new TokenRefreshResponse(refreshedToken, refreshToken));
     }
 }
