@@ -4,4 +4,4 @@ target/
 .idea/
 out/
 *.class
-.git/
+*.git/
