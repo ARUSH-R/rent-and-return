@@ -1,6 +1,6 @@
 package com.rentreturn.backend.mapper;
 
-import com.rentreturn.backend.dto.RentalDTO;
+import com.rentreturn.backend.dto.rental.RentalDTO;
 import com.rentreturn.backend.model.Product;
 import com.rentreturn.backend.model.Rental;
 import com.rentreturn.backend.model.User;

@@ -1,18 +1,35 @@
 package com.rentreturn.backend.service;
 
-import com.rentreturn.backend.dto.ProductCreateRequest;
-import com.rentreturn.backend.dto.ProductDTO;
+import com.rentreturn.backend.model.Product;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface ProductService {
 
-    ProductDTO addProduct(ProductCreateRequest productRequest);
+    Product create(Product product);
 
-    List<ProductDTO> getAllProducts();
+    Optional<Product> findById(Long id);
 
-    ProductDTO getProductById(int id);
+    List<Product> findAll();
 
-    ProductDTO updateProduct(int id, ProductCreateRequest updateRequest);
+    List<Product> findAvailable();
 
-    void deleteProduct(int id);
+    Product updateProduct(Long id, Product updatedProduct);
+
+    void softDeleteProduct(Long id);
+
+    List<Product> findByCategory(String category);
+
+    List<Product> searchByName(String keyword);
+
+    List<Product> findByOwner(Long ownerId);
+
+    List<Product> findAllByDeleted(boolean deleted);
+
+    long countAll();
+
+    long countAvailable();
+
+    Product updateAvailability(Long id, boolean available);
 }

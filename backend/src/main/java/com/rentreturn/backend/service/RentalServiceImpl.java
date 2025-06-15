@@ -1,68 +1,114 @@
 package com.rentreturn.backend.service;
 
-import com.rentreturn.backend.dto.RentalDTO;
-import com.rentreturn.backend.mapper.RentalMapper;
+import com.rentreturn.backend.enums.RentalStatus;
 import com.rentreturn.backend.model.Rental;
 import com.rentreturn.backend.repository.RentalRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class RentalServiceImpl implements RentalService {
 
     private final RentalRepository rentalRepository;
-    private final RentalMapper rentalMapper;
 
     @Override
-    public RentalDTO createRental(RentalDTO rentalDTO) {
-        Rental rental = rentalMapper.toEntity(rentalDTO);
-
-        // set created and updated time
-        rental.setCreatedAt(LocalDateTime.now());
-        rental.setUpdatedAt(LocalDateTime.now());
-
-        Rental saved = rentalRepository.save(rental);
-        return rentalMapper.toDTO(saved);
+    public Rental create(Rental rental) {
+        return rentalRepository.save(rental);
     }
 
     @Override
-    public RentalDTO getRentalById(int id) {
-        Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
-        return rentalMapper.toDTO(rental);
+    public Optional<Rental> findById(Long id) {
+        return rentalRepository.findById(id).filter(r -> !r.isDeleted());
     }
 
     @Override
-    public List<RentalDTO> getAllRentals() {
-        return rentalRepository.findAll().stream()
-                .map(rentalMapper::toDTO)
-                .collect(Collectors.toList());
+    public List<Rental> findAll() {
+        return rentalRepository.findAllByDeletedFalse();
     }
 
     @Override
-    public RentalDTO updateRental(int id, RentalDTO rentalDTO) {
-        Rental existing = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rental not found with id: " + id));
-
-        existing.setStartDate(LocalDate.parse(rentalDTO.getStartDate()));
-        existing.setEndDate(LocalDate.parse(rentalDTO.getEndDate()));
-        existing.setReturnedDate(rentalDTO.getReturnedDate() != null ? LocalDate.parse(rentalDTO.getReturnedDate()) : null);
-        existing.setStatus(Rental.RentalStatus.valueOf(rentalDTO.getStatus()));
-        existing.setRentalFee(rentalDTO.getRentalFee());
-        existing.setUpdatedAt(LocalDateTime.now());
-
-        Rental saved = rentalRepository.save(existing);
-        return rentalMapper.toDTO(saved);
+    public List<Rental> findActive() {
+        return rentalRepository.findByStatus(RentalStatus.ACTIVE)
+                .stream()
+                .filter(r -> !r.isDeleted())
+                .toList();
     }
 
     @Override
-    public void deleteRental(int id) {
-        rentalRepository.deleteById(id);
+    public List<Rental> findByUserId(Long userId) {
+        return rentalRepository.findAllByUserIdAndDeletedFalse(userId);
+    }
+
+    @Override
+    public List<Rental> findByProductId(Long productId) {
+        return rentalRepository.findAllByProductIdAndDeletedFalse(productId);
+    }
+
+    @Override
+    public Rental markReturned(Long rentalId) {
+        return rentalRepository.findById(rentalId).map(rental -> {
+            rental.setStatus(RentalStatus.RETURNED);
+            return rentalRepository.save(rental);
+        }).orElseThrow(() -> new RuntimeException("Rental not found"));
+    }
+
+    @Override
+    public Rental extendRental(Long rentalId, int extraDays) {
+        return rentalRepository.findById(rentalId).map(rental -> {
+            if (rental.getRentalEnd() == null) {
+                throw new RuntimeException("Rental end date is not set");
+            }
+            rental.setRentalEnd(rental.getRentalEnd().plusDays(extraDays));
+            return rentalRepository.save(rental);
+        }).orElseThrow(() -> new RuntimeException("Rental not found"));
+    }
+
+    @Override
+    public void cancelRental(Long rentalId) {
+        rentalRepository.findById(rentalId).ifPresent(rental -> {
+            rental.softDelete();
+            rentalRepository.save(rental);
+        });
+    }
+
+    @Override
+    public long countActive() {
+        return rentalRepository.findByStatus(RentalStatus.ACTIVE)
+                .stream()
+                .filter(r -> !r.isDeleted())
+                .count();
+    }
+
+    @Override
+    public long countAll() {
+        return rentalRepository.countByDeletedFalse();
+    }
+
+    @Override
+    public List<Rental> findOverdueRentals(LocalDateTime now) {
+        return rentalRepository.findAllByRentalEndBeforeAndStatusNotAndDeletedFalse(now, RentalStatus.RETURNED);
+    }
+
+    @Override
+    public List<Rental> findByStatus(RentalStatus status) {
+        return rentalRepository.findByStatus(status)
+                .stream()
+                .filter(r -> !r.isDeleted())
+                .toList();
+    }
+
+    @Override
+    public List<Rental> findByRentalStartBetween(LocalDateTime start, LocalDateTime end) {
+        return rentalRepository.findByRentalStartBetween(start, end)
+                .stream()
+                .filter(r -> !r.isDeleted())
+                .toList();
     }
 }

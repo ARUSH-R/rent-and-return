@@ -1,7 +1,5 @@
 package com.rentreturn.backend.mapper;
 
-import com.rentreturn.backend.dto.UserCreateRequest;
-import com.rentreturn.backend.dto.UserDTO;
 import com.rentreturn.backend.model.User;
 
 import java.time.LocalDateTime;

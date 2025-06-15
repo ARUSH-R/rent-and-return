@@ -1,8 +1,5 @@
 package com.rentreturn.backend.mapper;
 
-import com.rentreturn.backend.dto.ProductCreateRequest;
-import com.rentreturn.backend.dto.ProductDTO;
-import com.rentreturn.backend.model.Product;
 import org.springframework.stereotype.Component;
 
 @Component

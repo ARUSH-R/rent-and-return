@@ -1,51 +1,153 @@
 package com.rentreturn.backend.model;
 
+import com.rentreturn.backend.enums.RentalStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.*;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.time.LocalDate;
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Table(name = "rentals")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rental {
+@Builder
+public class Rental implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    private LocalDate startDate;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime rentalStart;
 
-    private LocalDate endDate;
+    @NotNull
+    @Column(nullable = false)
+    private LocalDateTime rentalEnd;
 
-    private LocalDate returnedDate;
+    @NotNull
+    @DecimalMin(value = "0.0", inclusive = true)
+    @Digits(integer = 12, fraction = 2)
+    @Column(nullable = false, precision = 14, scale = 2)
+    private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private RentalStatus status;
+
     @Column(nullable = false)
-    private RentalStatus status = RentalStatus.ACTIVE;
+    private boolean deleted;
 
-    public enum RentalStatus {
-        ACTIVE,
-        RETURNED,
-        OVERDUE,
-        CANCELLED
-    }
-
-    private double rentalFee;
-
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Version
+    private Long version;
+
+    @Size(max = 50)
+    @Column(length = 50)
+    private String createdBy;
+
+    @Size(max = 50)
+    @Column(length = 50)
+    private String updatedBy;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.status == null) {
+            this.status = RentalStatus.ACTIVE;
+        }
+        this.deleted = false;
+    }
+
+    public boolean isRentalPeriodValid() {
+        return rentalEnd != null && rentalStart != null && rentalEnd.isAfter(rentalStart);
+    }
+
+    public boolean isCurrentlyOverdue() {
+        return !deleted && status != RentalStatus.RETURNED && rentalEnd.isBefore(LocalDateTime.now());
+    }
+
+    public void markReturned() {
+        if (this.status != RentalStatus.RETURNED) {
+            this.status = RentalStatus.RETURNED;
+        }
+    }
+
+    public void markOverdue() {
+        if (this.status != RentalStatus.OVERDUE) {
+            this.status = RentalStatus.OVERDUE;
+        }
+    }
+
+    public void markActive() {
+        if (this.status != RentalStatus.ACTIVE) {
+            this.status = RentalStatus.ACTIVE;
+        }
+    }
+
+    public boolean isActive() {
+        return this.status == RentalStatus.ACTIVE;
+    }
+
+    public void softDelete() {
+        this.deleted = true;
+    }
+
+    public void updateAudit(String updater) {
+        if (updater != null) {
+            this.updatedBy = updater;
+        }
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "id=" + id +
+                ", user=" + (user != null ? user.getId() : null) +
+                ", product=" + (product != null ? product.getId() : null) +
+                ", rentalStart=" + rentalStart +
+                ", rentalEnd=" + rentalEnd +
+                ", totalAmount=" + totalAmount +
+                ", status=" + status +
+                ", deleted=" + deleted +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rental rental)) return false;
+        return id != null && id.equals(rental.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }

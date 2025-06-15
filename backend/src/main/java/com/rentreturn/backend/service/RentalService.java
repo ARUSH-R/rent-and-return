@@ -1,18 +1,39 @@
 package com.rentreturn.backend.service;
 
-import com.rentreturn.backend.dto.RentalDTO;
+import com.rentreturn.backend.model.Rental;
+import com.rentreturn.backend.enums.RentalStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface RentalService {
 
-    RentalDTO createRental(RentalDTO rentalDTO);
+    Rental create(Rental rental);
 
-    RentalDTO getRentalById(int id);
+    Optional<Rental> findById(Long id);
 
-    List<RentalDTO> getAllRentals();
+    List<Rental> findAll();
 
-    RentalDTO updateRental(int id, RentalDTO rentalDTO);
+    List<Rental> findActive();
 
-    void deleteRental(int id);
+    List<Rental> findByUserId(Long userId);
+
+    List<Rental> findByProductId(Long productId);
+
+    Rental markReturned(Long rentalId);
+
+    Rental extendRental(Long rentalId, int extraDays);
+
+    void cancelRental(Long rentalId);
+
+    long countActive();
+
+    long countAll();
+
+    List<Rental> findOverdueRentals(LocalDateTime currentTime);
+
+    List<Rental> findByStatus(RentalStatus status);
+
+    List<Rental> findByRentalStartBetween(LocalDateTime start, LocalDateTime end);
 }

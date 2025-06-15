@@ -1,33 +1,55 @@
 package com.rentreturn.backend.service;
 
-import com.rentreturn.backend.dto.PasswordChangeRequest;
-import com.rentreturn.backend.dto.UserCreateRequest;
-import com.rentreturn.backend.dto.UserDTO;
-import com.rentreturn.backend.dto.UserUpdateRequest;
 import com.rentreturn.backend.model.User;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    UserDTO createUser(UserCreateRequest userRequest);
+    User register(User user);
 
-    UserDTO getUserById(int id);
-
-    List<UserDTO> getAllUsers();
-
-    void deleteUser(int id);
+    Optional<User> findById(Long id);
 
     Optional<User> findByEmail(String email);
 
-    public UserDTO updateUser(String email, UserUpdateRequest updateRequest);
+    List<User> findAll();
 
-    public void changePassword(String email, PasswordChangeRequest passwordChangeRequest);
+    List<User> findAllActiveUsers();
+
+    User updateUser(Long id, User updatedUser);
+
+    void softDeleteUser(Long id);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByUsername(String username);
+
+    Optional<User> findByPhone(String phone);
+
+    Optional<User> findByUsername(String username);
+
+    List<User> findAllByRole(String role);
+
+    List<User> findAllByEmailVerified(boolean emailVerified);
+
+    List<User> findAllByEnabled(boolean enabled);
+
+    List<User> findAllByDeleted(boolean deleted);
+
+    List<User> searchByNameOrEmail(String query);
+
+    List<User> findAllCreatedAfter(java.time.LocalDateTime date);
+
+    long countByRole(String role);
+
+    List<User> findAllByRoleIn(List<String> roles);
+
+    long countByEnabled(boolean enabled);
 
 
-
-
+    UserDetails loadUserByUsername(String username);
 
 
 }

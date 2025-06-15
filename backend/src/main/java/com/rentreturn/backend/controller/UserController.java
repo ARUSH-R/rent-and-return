@@ -1,92 +1,116 @@
 package com.rentreturn.backend.controller;
 
-import com.rentreturn.backend.dto.*;
 import com.rentreturn.backend.model.User;
-import com.rentreturn.backend.service.JwtTokenService;
 import com.rentreturn.backend.service.UserService;
-import io.jsonwebtoken.Claims;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @Autowired
-    private JwtTokenService jwtTokenService;
-
-    @PostMapping
-    public UserDTO createUser(@RequestBody UserCreateRequest userRequest) {
-        return userService.createUser(userRequest);
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.register(user));
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable int id) {
-        return userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> getAllUsers() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/active")
+    public ResponseEntity<List<User>> getActiveUsers() {
+        return ResponseEntity.ok(userService.findAllActiveUsers());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        return ResponseEntity.ok(userService.updateUser(id, updatedUser));
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable int id) {
-        userService.deleteUser(id);
-        return ResponseEntity.ok("User deleted successfully");
+    public ResponseEntity<Void> softDeleteUser(@PathVariable Long id) {
+        userService.softDeleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        String email = authentication.getName(); // gets the logged-in user's email
-        User user = userService.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return ResponseEntity.ok(new UserDTO(user));
+    @GetMapping("/email")
+    public ResponseEntity<User> findByEmail(@RequestParam String email) {
+        return userService.findByEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/token/validate")
-    public ResponseEntity<?> validateToken(@RequestParam String token) {
-        try {
-            String username = jwtTokenService.extractUsername(token);
-            boolean expired = jwtTokenService.extractClaim(token, Claims::getExpiration).before(new Date());
-            Map<String, Object> result = new HashMap<>();
-            result.put("username", username);
-            result.put("expired", expired);
-            result.put("expiration", jwtTokenService.extractClaim(token, Claims::getExpiration));
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Invalid token: " + e.getMessage());
-        }
+    @GetMapping("/username")
+    public ResponseEntity<User> findByUsername(@RequestParam String username) {
+        return userService.findByUsername(username)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/me")
-    public ResponseEntity<UserDTO> updateCurrentUser(@RequestBody UserUpdateRequest updateRequest, Authentication authentication) {
-        String email = authentication.getName();
-        UserDTO updatedUser = userService.updateUser(email, updateRequest);
-        return ResponseEntity.ok(updatedUser);
+    @GetMapping("/phone")
+    public ResponseEntity<User> findByPhone(@RequestParam String phone) {
+        return userService.findByPhone(phone)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/me/password")
-    public ResponseEntity<?> changePassword(@RequestBody PasswordChangeRequest passwordChangeRequest, Authentication authentication) {
-        String email = authentication.getName();
-        userService.changePassword(email, passwordChangeRequest);
-        return ResponseEntity.ok("Password changed successfully");
+    @GetMapping("/role")
+    public ResponseEntity<List<User>> findByRole(@RequestParam String role) {
+        return ResponseEntity.ok(userService.findAllByRole(role));
     }
 
-    @PostMapping("/token/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
-        String refreshToken = request.getRefreshToken();
-        String refreshedToken = jwtTokenService.refreshToken(refreshToken);
-        return ResponseEntity.ok(new TokenRefreshResponse(refreshedToken, refreshToken));
+    @GetMapping("/verified")
+    public ResponseEntity<List<User>> findByEmailVerified(@RequestParam boolean verified) {
+        return ResponseEntity.ok(userService.findAllByEmailVerified(verified));
+    }
+
+    @GetMapping("/enabled")
+    public ResponseEntity<List<User>> findByEnabled(@RequestParam boolean enabled) {
+        return ResponseEntity.ok(userService.findAllByEnabled(enabled));
+    }
+
+    @GetMapping("/deleted")
+    public ResponseEntity<List<User>> findByDeleted(@RequestParam boolean deleted) {
+        return ResponseEntity.ok(userService.findAllByDeleted(deleted));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> searchByNameOrEmail(@RequestParam String query) {
+        return ResponseEntity.ok(userService.searchByNameOrEmail(query));
+    }
+
+    @GetMapping("/created-after")
+    public ResponseEntity<List<User>> findCreatedAfter(@RequestParam String dateTime) {
+        return ResponseEntity.ok(userService.findAllCreatedAfter(java.time.LocalDateTime.parse(dateTime)));
+    }
+
+    @GetMapping("/count/role")
+    public ResponseEntity<Long> countByRole(@RequestParam String role) {
+        return ResponseEntity.ok(userService.countByRole(role));
+    }
+
+    @GetMapping("/role-in")
+    public ResponseEntity<List<User>> findByRoles(@RequestParam List<String> roles) {
+        return ResponseEntity.ok(userService.findAllByRoleIn(roles));
+    }
+
+    @GetMapping("/count/enabled")
+    public ResponseEntity<Long> countByEnabled(@RequestParam boolean enabled) {
+        return ResponseEntity.ok(userService.countByEnabled(enabled));
     }
 }
