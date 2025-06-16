@@ -29,21 +29,24 @@ public class JwtService {
 
     @PostConstruct
     public void init() {
+        if (secret.length() < 32) {
+            throw new IllegalArgumentException("4ada66507739000da7f9f2b0e5e96cde2ed9de6697b8d6dc36ea5b8bf7306597");
+        }
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(User user) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", user.getRole());
-        return buildToken(extraClaims, user);
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", user.getRole().name());
+        return buildToken(claims, user.getUsername());
     }
 
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    private String buildToken(Map<String, Object> extraClaims, String subject) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtExpiration);
         return Jwts.builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(subject)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -54,9 +57,8 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = parseToken(token);
-        return claimsResolver.apply(claims);
+    public <T> T extractClaim(String token, Function<Claims, T> resolver) {
+        return resolver.apply(parseToken(token));
     }
 
     private Claims parseToken(String token) {
@@ -68,7 +70,7 @@ public class JwtService {
                     .getBody();
         } catch (JwtException e) {
             log.warn("Invalid JWT: {}", e.getMessage());
-            throw new RuntimeException("Invalid or expired JWT token");
+            throw new RuntimeException("Invalid or expired JWT token", e);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.rentreturn.backend.model;
 
+import com.rentreturn.backend.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,9 +50,6 @@ public class User implements UserDetails, Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String role; // e.g. "USER" or "ADMIN"
-
     @Size(min = 10, max = 15)
     @Column(unique = true)
     private String phone;
@@ -59,6 +57,10 @@ public class User implements UserDetails, Serializable {
     private String address;
 
     private String profileImageUrl; // Optional: URL to user's profile image
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
     /**
      * -- GETTER --
@@ -95,8 +97,8 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Prefix role with "ROLE_" if not already present
-        String roleName = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+        // Use the Enum Role for authorities
+        String roleName = role != null ? "ROLE_" + role.name() : "ROLE_USER";
         return List.of(new SimpleGrantedAuthority(roleName));
     }
 
@@ -158,7 +160,7 @@ public class User implements UserDetails, Serializable {
      * Returns true if the user has admin role.
      */
     public boolean isAdmin() {
-        return role != null && (role.equalsIgnoreCase("ADMIN") || role.equalsIgnoreCase("ROLE_ADMIN"));
+        return role != null && role == Role.ADMIN;
     }
 
     /**
