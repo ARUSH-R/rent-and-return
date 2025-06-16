@@ -1,7 +1,0 @@
-target/
-*.log
-*.iml
-.idea/
-out/
-*.class
-.git/
