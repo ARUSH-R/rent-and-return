@@ -9,6 +9,7 @@ import com.arushr.rentreturn.service.RentalService;
 import com.arushr.rentreturn.service.ProductService;
 import com.arushr.rentreturn.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class RentalController {
     private final RentalService rentalService;
     private final UserService userService;
     private final ProductService productService;
+
 
     @PostMapping
     public ResponseEntity<Rental> createRental(

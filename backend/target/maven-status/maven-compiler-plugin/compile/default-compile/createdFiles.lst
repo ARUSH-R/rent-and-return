@@ -10,8 +10,10 @@ com/rentreturn/backend/dto/user/UserDTO.class
 com/arushr/rentreturn/model/Token.class
 com/arushr/rentreturn/service/UserService.class
 com/arushr/rentreturn/model/User.class
+com/arushr/rentreturn/service/AdminStatsService.class
 com/arushr/rentreturn/enums/RentalStatus.class
 com/arushr/rentreturn/model/Feedback$FeedbackBuilder.class
+com/arushr/rentreturn/controller/admin/AdminStatsController.class
 com/arushr/rentreturn/repository/RentalRepository.class
 com/arushr/rentreturn/exception/ResourceNotFoundException.class
 com/arushr/rentreturn/service/PaymentServiceImpl.class

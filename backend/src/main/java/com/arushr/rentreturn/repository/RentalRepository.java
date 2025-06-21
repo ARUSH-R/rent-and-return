@@ -5,6 +5,7 @@ import com.arushr.rentreturn.model.Rental;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -40,4 +41,11 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
     List<Rental> findTop5ByUserOrderByCreatedAtDesc(User user);
 
     boolean existsByUserAndProductAndStatus(User user, Product product, RentalStatus status);
+
+    @Query("SELECT SUM(r.product.pricePerDay) FROM Rental r WHERE r.rentalStatus = 'ACTIVE'")
+    Double sumTotalRevenue();
+
+
+    Long countByRentalStatus(RentalStatus status);
+
 }

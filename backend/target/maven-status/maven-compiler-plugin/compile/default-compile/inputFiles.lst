@@ -13,6 +13,7 @@
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/controller/ProductController.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/controller/RentalController.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/controller/UserController.java
+/Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/controller/admin/AdminStatsController.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/dto/product/ProductDTO.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/dto/product/ProductResponseDTO.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/dto/rental/RentalDTO.java
@@ -40,6 +41,7 @@
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/repository/TokenRepository.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/repository/UserRepository.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/security/JwtAuthFilter.java
+/Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/service/AdminStatsService.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/service/CartItemService.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/service/CartItemServiceImpl.java
 /Users/arushr/Documents/PROJECTS/RENTRETURN/backend/src/main/java/com/arushr/rentreturn/service/FeedbackService.java

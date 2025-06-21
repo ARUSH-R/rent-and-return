@@ -1,28 +1,28 @@
-// src/App.jsx
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext";
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { AuthProvider } from './auth/AuthContext';
+import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import AppRoutes from './routes/AppRoutes';
 
-function Dashboard() {
-  return <h2 className="text-center mt-20 text-2xl">Dashboard (Protected)</h2>;
-}
-
-function App() {
+const App = () => {
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/admin" element={<ProtectedRoute adminOnly><h1>Admin Panel</h1></ProtectedRoute>} />
-          <Route path="/" element={<h1 className="text-center mt-20 text-2xl">Welcome to RENTRETURN</h1>} />
-        </Routes>
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+
+          <div className="flex flex-1">
+            <Sidebar />
+
+            <main className="flex-1 p-4 bg-gray-100">
+              <AppRoutes />
+            </main>
+          </div>
+        </div>
       </Router>
     </AuthProvider>
   );
-}
+};
 
 export default App;
