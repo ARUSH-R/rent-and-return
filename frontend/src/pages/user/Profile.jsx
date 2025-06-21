@@ -1,46 +1,64 @@
-import React, { useEffect, useState } from 'react';
-import UserService from '../../services/UserService';
-import Loader from '../../components/Loader';
+import React, { useEffect, useState } from "react";
+import Loader from "../../components/Loader";
 
+/**
+ * Profile Page
+ * - Displays the logged-in user's profile information.
+ * - Optionally provides editing or password change functionality.
+ */
 const Profile = () => {
-  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    UserService.getProfile()
-      .then((res) => setUser(res.data))
-      .catch(() => setError('Failed to load user profile.'))
+    setLoading(true);
+    setError("");
+    // Replace '/api/user/profile' with your actual user profile API endpoint
+    fetch("/api/user/profile")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load profile");
+        return res.json();
+      })
+      .then((data) => setProfile(data))
+      .catch((err) => setError(err.message || "Failed to fetch profile"))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <div className="text-red-500 text-center mt-4">{error}</div>;
-  if (!user) return null;
-
   return (
-    <div className="max-w-xl mx-auto mt-6 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4">My Profile</h2>
-
-      <div className="space-y-4 text-gray-800">
-        <div>
-          <span className="font-semibold">Name:</span> {user.name}
+    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+      <h2 className="text-2xl font-bold mb-6 text-blue-700">My Profile</h2>
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <Loader size="lg" />
         </div>
-        <div>
-          <span className="font-semibold">Email:</span> {user.email}
+      ) : error ? (
+        <div className="text-red-600 py-8 text-center">{error}</div>
+      ) : !profile ? (
+        <div className="text-gray-500 py-12 text-center">
+          Unable to load profile information.
         </div>
-        <div>
-          <span className="font-semibold">Role:</span> {user.role}
+      ) : (
+        <div className="space-y-4">
+          <div className="flex items-center gap-4">
+            <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700">
+              {profile.name?.[0]?.toUpperCase() || "U"}
+            </div>
+            <div>
+              <div className="font-semibold text-xl text-blue-700">{profile.name}</div>
+              <div className="text-gray-600">{profile.email}</div>
+            </div>
+          </div>
+          <div>
+            <span className="font-semibold text-blue-700">Joined:</span>{" "}
+            {profile.createdAt ? new Date(profile.createdAt).toLocaleDateString() : "N/A"}
+          </div>
+          {/* Optional: Add edit profile or change password functionality here */}
+          {/* <button className="mt-4 bg-blue-700 text-white px-6 py-2 rounded font-semibold hover:bg-blue-800 transition">
+            Edit Profile
+          </button> */}
         </div>
-        <div>
-          <span className="font-semibold">Joined:</span>{' '}
-          {new Date(user.createdAt).toLocaleDateString()}
-        </div>
-        <div>
-          <span className="font-semibold">Last Updated:</span>{' '}
-          {new Date(user.updatedAt).toLocaleDateString()}
-        </div>
-      </div>
+      )}
     </div>
   );
 };

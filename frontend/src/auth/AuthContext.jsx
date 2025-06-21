@@ -1,29 +1,64 @@
-import React, { createContext, useEffect, useState } from 'react';
-import { getToken, removeToken } from '../utils/tokenUtils';
-import AuthService from '../services/AuthService';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { getToken, removeToken, setToken, decodeToken } from "../utils/tokenUtils";
+import { login as apiLogin, register as apiRegister } from "../services/authService";
 
-export const AuthContext = createContext();
+const AuthContext = createContext();
+
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    const token = getToken();
+    return token ? decodeToken(token) : null;
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  // Auto-load user on mount if token exists
+  // Keeps user state in sync with token changes
   useEffect(() => {
-    const loadUser = async () => {
-      const token = getToken();
-      if (token) {
-        try {
-          const userData = await AuthService.getCurrentUser();
-          setUser(userData);
-        } catch {
-          removeToken();
-          setUser(null);
-        }
-      }
-    };
-
-    loadUser();
+    const token = getToken();
+    setUser(token ? decodeToken(token) : null);
   }, []);
+
+  const login = async (email, password) => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await apiLogin(email, password);
+      setToken(data.token);
+      setUser(decodeToken(data.token));
+      setLoading(false);
+      return true;
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+        err?.message ||
+        "Login failed"
+      );
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const register = async (form) => {
+    setLoading(true);
+    setError("");
+    try {
+      const data = await apiRegister(form);
+      setToken(data.token);
+      setUser(decodeToken(data.token));
+      setLoading(false);
+      return true;
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+        err?.message ||
+        "Registration failed"
+      );
+      setLoading(false);
+      return false;
+    }
+  };
 
   const logout = () => {
     removeToken();
@@ -31,7 +66,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        error,
+        login,
+        register,
+        logout,
+        isAuthenticated: !!user,
+        isAdmin: user?.role?.toLowerCase() === "admin"
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

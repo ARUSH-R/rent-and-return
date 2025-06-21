@@ -1,72 +1,74 @@
-import React, { useState } from 'react';
-import FeedbackService from '../../services/FeedbackService';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
+/**
+ * FeedbackForm Page
+ * - Allows users to submit feedback or suggestions.
+ * - Shows loading and success/error messages.
+ */
 const FeedbackForm = () => {
-  const { productId } = useParams();
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState('');
+  const [feedback, setFeedback] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!rating || rating < 1 || rating > 5) {
-      return setError('Please provide a valid rating (1–5 stars).');
-    }
+    setSubmitting(true);
+    setErrorMsg("");
+    setSuccessMsg("");
 
     try {
-      await FeedbackService.submitFeedback(productId, { rating, comment });
-      setSuccess('Thank you for your feedback!');
-      setTimeout(() => navigate('/my-rentals'), 1500);
-    } catch {
-      setError('Failed to submit feedback.');
+      // Replace with your API endpoint or context action
+      const response = await fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedback }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit feedback");
+      }
+
+      setSuccessMsg("Thank you for your feedback!");
+      setFeedback("");
+      setTimeout(() => navigate("/dashboard"), 1800);
+    } catch (error) {
+      setErrorMsg(error.message || "Something went wrong");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4">Leave Feedback</h2>
-
-      {error && <p className="text-red-500 mb-3">{error}</p>}
-      {success && <p className="text-green-600 mb-3">{success}</p>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-medium mb-1">Rating</label>
-          <div className="flex gap-2">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <button
-                type="button"
-                key={star}
-                onClick={() => setRating(star)}
-                className={`text-2xl ${
-                  star <= rating ? 'text-yellow-400' : 'text-gray-300'
-                }`}
-              >
-                ★
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Comment (optional)</label>
-          <textarea
-            rows="4"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded"
-            placeholder="Share your thoughts..."
-          />
-        </div>
-
+    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+      <h2 className="text-2xl font-bold mb-4 text-blue-700">Feedback</h2>
+      <p className="mb-6 text-gray-600">
+        We appreciate your feedback and suggestions to improve our service!
+      </p>
+      <form onSubmit={handleSubmit}>
+        <textarea
+          className="w-full min-h-[120px] p-3 border border-gray-300 rounded focus:outline-blue-400 resize-y"
+          placeholder="Enter your feedback or suggestions..."
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          required
+          disabled={submitting}
+        />
+        {errorMsg && (
+          <div className="text-red-600 text-sm mt-2">{errorMsg}</div>
+        )}
+        {successMsg && (
+          <div className="text-green-700 text-sm mt-2">{successMsg}</div>
+        )}
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded"
+          className="mt-4 bg-blue-700 text-white px-6 py-2 rounded font-semibold hover:bg-blue-800 transition flex items-center gap-2 disabled:opacity-60"
+          disabled={submitting || !feedback.trim()}
         >
+          {submitting && <Loader size="sm" />}
           Submit Feedback
         </button>
       </form>

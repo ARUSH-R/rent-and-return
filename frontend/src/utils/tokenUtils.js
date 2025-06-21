@@ -1,13 +1,34 @@
-const TOKEN_KEY = 'jwt_token';
+/**
+ * Utility functions for handling authentication tokens.
+ */
 
-export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
-};
+/**
+ * Save token to localStorage.
+ * @param {string} token
+ */
+export function setToken(token) {
+  localStorage.setItem("auth_token", token);
+}
 
-export const setToken = (token) => {
-  localStorage.setItem(TOKEN_KEY, token);
-};
+/**
+ * Retrieve token from localStorage.
+ * @returns {string|null}
+ */
+export function getToken() {
+  return localStorage.getItem("auth_token");
+}
 
-export const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
-};
+/**
+ * Remove token from localStorage.
+ */
+export function removeToken() {
+  localStorage.removeItem("auth_token");
+}
+
+/**
+ * Check if a token exists (user is authenticated).
+ * @returns {boolean}
+ */
+export function isAuthenticated() {
+  return !!getToken();
+}

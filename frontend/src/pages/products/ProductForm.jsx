@@ -1,140 +1,203 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import ProductService from '../../services/ProductService';
-import { useAuth } from '../../auth/useAuth';
-import { isAdmin } from '../../utils/roleUtils';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
+/**
+ * ProductForm Page
+ * - Used for adding or editing a product (admin only)
+ * - If editing, loads existing product data
+ */
 const ProductForm = () => {
-  const { id } = useParams(); // undefined for create, defined for edit
+  const { productId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const isEdit = !!productId;
 
-  const isEdit = Boolean(id);
-
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    price: '',
-    imageUrl: '',
-    available: true,
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+    price: "",
+    image: "",
+    stock: "",
   });
-
   const [loading, setLoading] = useState(isEdit);
-  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [imgPreview, setImgPreview] = useState("");
 
   useEffect(() => {
     if (isEdit) {
-      ProductService.getProductById(id)
-        .then((res) => setFormData(res.data))
-        .catch(() => setError('Failed to load product.'))
+      // Fetch product data
+      setLoading(true);
+      fetch(`/api/products/${productId}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Failed to fetch product");
+          return res.json();
+        })
+        .then((data) => {
+          setForm({
+            name: data.name || "",
+            description: data.description || "",
+            price: data.price || "",
+            image: data.image || "",
+            stock: data.stock || "",
+          });
+          setImgPreview(data.image || "");
+        })
+        .catch((err) => setError(err.message || "Could not load product"))
         .finally(() => setLoading(false));
     }
-  }, [id, isEdit]);
+  }, [isEdit, productId]);
 
-  if (!isAdmin(user)) {
-    return <div className="text-red-500 text-center mt-6">Access Denied</div>;
-  }
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
+  const handleInput = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === "file") {
+      const file = files[0];
+      setForm((f) => ({ ...f, image: file }));
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (ev) => setImgPreview(ev.target.result);
+        reader.readAsDataURL(file);
+      } else {
+        setImgPreview("");
+      }
+    } else {
+      setForm((f) => ({ ...f, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+    setError("");
 
     try {
-      if (isEdit) {
-        await ProductService.updateProduct(id, formData);
-        alert('Product updated successfully');
-      } else {
-        await ProductService.createProduct(formData);
-        alert('Product created successfully');
+      let imageUrl = form.image;
+
+      // If uploading a new image file
+      if (form.image && form.image instanceof File) {
+        const imgData = new FormData();
+        imgData.append("file", form.image);
+        // Example: replace with your image upload endpoint
+        const imgRes = await fetch("/api/upload", {
+          method: "POST",
+          body: imgData,
+        });
+        if (!imgRes.ok) throw new Error("Image upload failed");
+        const imgResult = await imgRes.json();
+        imageUrl = imgResult.url || imgResult.image || "";
       }
-      navigate('/products');
+
+      const payload = {
+        name: form.name,
+        description: form.description,
+        price: Number(form.price),
+        image: imageUrl,
+        stock: Number(form.stock),
+      };
+
+      const res = await fetch(isEdit ? `/api/products/${productId}` : "/api/products", {
+        method: isEdit ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error(`Failed to ${isEdit ? "update" : "create"} product`);
+      navigate("/products");
     } catch (err) {
-      setError('Submission failed. Please check your input or try again.');
+      setError(err.message || "Something went wrong");
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  if (loading) return <div className="text-center mt-4">Loading...</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader size="lg" />
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-xl mx-auto p-4 bg-white shadow rounded mt-6">
-      <h2 className="text-xl font-bold mb-4">
-        {isEdit ? 'Edit Product' : 'Add New Product'}
+    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+      <h2 className="text-2xl font-bold mb-6 text-blue-700">
+        {isEdit ? "Edit Product" : "Add Product"}
       </h2>
-
-      {error && <div className="text-red-500 mb-3">{error}</div>}
-
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
           <label className="block font-medium mb-1">Name</label>
           <input
             type="text"
             name="name"
+            className="w-full border rounded px-3 py-2"
+            value={form.name}
+            onChange={handleInput}
             required
-            value={formData.name}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            disabled={submitting}
           />
         </div>
-
         <div>
           <label className="block font-medium mb-1">Description</label>
           <textarea
             name="description"
+            className="w-full border rounded px-3 py-2 min-h-[70px]"
+            value={form.description}
+            onChange={handleInput}
             required
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            disabled={submitting}
           />
         </div>
-
         <div>
-          <label className="block font-medium mb-1">Price (₹)</label>
+          <label className="block font-medium mb-1">Price (in ₹)</label>
           <input
             type="number"
             name="price"
-            required
+            className="w-full border rounded px-3 py-2"
             min="0"
-            step="0.01"
-            value={formData.price}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
-          />
-        </div>
-
-        <div>
-          <label className="block font-medium mb-1">Image URL</label>
-          <input
-            type="url"
-            name="imageUrl"
+            value={form.price}
+            onChange={handleInput}
             required
-            value={formData.imageUrl}
-            onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-3 py-2"
+            disabled={submitting}
           />
         </div>
-
-        <div className="flex items-center gap-2">
+        <div>
+          <label className="block font-medium mb-1">Stock</label>
           <input
-            type="checkbox"
-            name="available"
-            checked={formData.available}
-            onChange={handleChange}
+            type="number"
+            name="stock"
+            className="w-full border rounded px-3 py-2"
+            min="0"
+            value={form.stock}
+            onChange={handleInput}
+            required
+            disabled={submitting}
           />
-          <label>Available</label>
         </div>
-
+        <div>
+          <label className="block font-medium mb-1">Product Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            className="w-full"
+            onChange={handleInput}
+            disabled={submitting}
+          />
+          {imgPreview && (
+            <img
+              src={imgPreview}
+              alt="Product Preview"
+              className="mt-2 mb-1 h-28 object-contain border rounded"
+            />
+          )}
+        </div>
+        {error && <div className="text-red-600">{error}</div>}
         <button
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full"
+          className="w-full py-2 bg-blue-700 text-white font-semibold rounded hover:bg-blue-800 transition disabled:opacity-60"
+          disabled={submitting}
         >
-          {isEdit ? 'Update Product' : 'Create Product'}
+          {submitting ? <Loader size="sm" /> : isEdit ? "Update Product" : "Add Product"}
         </button>
       </form>
     </div>

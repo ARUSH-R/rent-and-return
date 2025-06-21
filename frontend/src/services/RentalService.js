@@ -1,23 +1,63 @@
-import api from '../api/api';
+import api from "../api/api";
 
+/**
+ * RentalService provides methods for rental-related API calls.
+ */
 const RentalService = {
-  // Get all rentals for admin
-  getAllRentals: () => api.get('/rentals'),
+  // Get all rentals (optionally with filters or pagination)
+  getAllRentals: async (params = {}) => {
+    try {
+      const response = await api.get("/rentals", { params });
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch rentals:", error);
+      throw error;
+    }
+  },
 
-  // Get rentals for logged-in user
-  getMyRentals: () => api.get('/rentals/my'),
+  // Get a single rental by ID
+  getRentalById: async (rentalId) => {
+    try {
+      const response = await api.get(`/rentals/${rentalId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to fetch rental ${rentalId}:`, error);
+      throw error;
+    }
+  },
 
-  // Get rental by ID
-  getRentalById: (id) => api.get(`/rentals/${id}`),
+  // Create a new rental
+  createRental: async (rentalData) => {
+    try {
+      const response = await api.post("/rentals", rentalData);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to create rental:", error);
+      throw error;
+    }
+  },
 
-  // Create a new rental (user)
-  createRental: (rentalData) => api.post('/rentals', rentalData),
+  // Update an existing rental
+  updateRental: async (rentalId, updateData) => {
+    try {
+      const response = await api.put(`/rentals/${rentalId}`, updateData);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update rental ${rentalId}:`, error);
+      throw error;
+    }
+  },
 
-  // Update a rental (admin only)
-  updateRental: (id, rentalData) => api.put(`/rentals/${id}`, rentalData),
-
-  // Delete rental (admin only)
-  deleteRental: (id) => api.delete(`/rentals/${id}`),
+  // Delete a rental
+  deleteRental: async (rentalId) => {
+    try {
+      const response = await api.delete(`/rentals/${rentalId}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to delete rental ${rentalId}:`, error);
+      throw error;
+    }
+  }
 };
 
 export default RentalService;

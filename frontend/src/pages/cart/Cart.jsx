@@ -1,87 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import CartService from '../../services/CartService';
-import Loader from '../../components/Loader';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import Loader from "../../components/Loader";
 
+/**
+ * Cart Page
+ * - Displays cart items, total, and checkout action.
+ * - Uses CartContext for state.
+ */
 const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { cart, removeFromCart, clearCart, isLoading, error } = useCart();
 
-  useEffect(() => {
-    fetchCart();
-  }, []);
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[200px]">
+        <Loader size="lg" />
+      </div>
+    );
+  }
 
-  const fetchCart = async () => {
-    try {
-      const res = await CartService.getCartItems();
-      setCartItems(res.data);
-    } catch {
-      setError('Failed to load cart.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (error) {
+    return (
+      <div className="text-red-600 text-center py-12">
+        {error}
+      </div>
+    );
+  }
 
-  const handleRemove = async (productId) => {
-    try {
-      await CartService.removeFromCart(productId);
-      setCartItems((prev) => prev.filter((item) => item.id !== productId));
-    } catch {
-      alert('Failed to remove item from cart.');
-    }
-  };
+  if (!cart || cart.items.length === 0) {
+    return (
+      <div className="py-20 text-center text-gray-500">
+        <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
+        <Link
+          to="/products"
+          className="inline-block mt-4 px-6 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 transition"
+        >
+          Browse Products
+        </Link>
+      </div>
+    );
+  }
 
-  if (loading) return <Loader />;
-  if (error) return <div className="text-red-500 text-center mt-4">{error}</div>;
+  const total = cart.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">My Cart</h2>
-
-      {cartItems.length === 0 ? (
-        <p className="text-center text-gray-500">Your cart is empty.</p>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {cartItems.map((product) => (
-              <div
-                key={product.id}
-                className="bg-white shadow rounded-lg p-4 flex flex-col justify-between"
-              >
-                <div>
-                  <img
-                    src={product.imageUrl}
-                    alt={product.name}
-                    className="w-full h-40 object-cover rounded mb-3"
-                  />
-                  <h3 className="text-lg font-bold">{product.name}</h3>
-                  <p className="text-sm text-gray-600">{product.description}</p>
-                  <p className="mt-2 font-semibold">₹{product.price}</p>
-                </div>
-
-                <div className="mt-4 flex justify-between items-center">
-                  <button
-                    onClick={() => handleRemove(product.id)}
-                    className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
-                  >
-                    Remove
-                  </button>
+    <div className="max-w-3xl mx-auto py-10 px-4">
+      <h2 className="text-3xl font-bold mb-6 text-blue-700">Your Cart</h2>
+      <div className="bg-white rounded-lg shadow p-6">
+        <ul className="divide-y divide-gray-200">
+          {cart.items.map((item) => (
+            <li key={item.id} className="py-4 flex items-center gap-4">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="h-16 w-16 object-cover rounded border"
+              />
+              <div className="flex-1">
+                <div className="font-semibold">{item.name}</div>
+                <div className="text-gray-500 text-sm">
+                  Qty: {item.quantity}
                 </div>
               </div>
-            ))}
+              <div className="text-right min-w-[90px]">
+                <div className="font-bold text-blue-700">
+                  ₹{item.price * item.quantity}
+                </div>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-xs text-red-600 hover:underline mt-1"
+                >
+                  Remove
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div className="flex justify-between items-center mt-6">
+          <button
+            onClick={clearCart}
+            className="text-sm text-red-700 hover:underline"
+          >
+            Clear Cart
+          </button>
+          <div className="text-xl font-bold text-blue-700">
+            Total: ₹{total}
           </div>
-
-          <div className="mt-6 text-right">
-            <Link
-              to="/cart/checkout"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-            >
-              Proceed to Checkout ({cartItems.length})
-            </Link>
-          </div>
-        </>
-      )}
+        </div>
+        <Link
+          to="/checkout"
+          className="block w-full mt-8 py-3 bg-blue-700 text-white text-lg font-semibold rounded hover:bg-blue-800 transition text-center"
+        >
+          Proceed to Checkout
+        </Link>
+      </div>
     </div>
   );
 };

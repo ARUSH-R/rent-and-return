@@ -1,109 +1,178 @@
-import React, { useEffect, useState } from 'react';
-import UserService from '../../services/UserService';
-import Loader from '../../components/Loader';
+import React, { useEffect, useState } from "react";
+import Loader from "../../components/Loader";
 
+/**
+ * Settings Page
+ * - Allows user to update their profile settings
+ * - Supports updating name, email, password, and (optionally) profile image
+ */
 const Settings = () => {
-  const [profile, setProfile] = useState(null);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
   const [loading, setLoading] = useState(true);
-  const [formError, setFormError] = useState(null);
-  const [successMsg, setSuccessMsg] = useState('');
-
-  const [name, setName] = useState('');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    UserService.getProfile()
+    setLoading(true);
+    setError("");
+    // Fetch current user data
+    fetch("/api/user/profile")
       .then((res) => {
-        setProfile(res.data);
-        setName(res.data.name);
+        if (!res.ok) throw new Error("Failed to load profile");
+        return res.json();
       })
-      .catch(() => setFormError('Failed to load profile'))
+      .then((data) => {
+        setForm((f) => ({
+          ...f,
+          name: data.name || "",
+          email: data.email || "",
+        }));
+      })
+      .catch((err) => setError(err.message || "Failed to load profile"))
       .finally(() => setLoading(false));
   }, []);
 
-  const handleProfileUpdate = async (e) => {
-    e.preventDefault();
-    try {
-      await UserService.updateProfile({ name });
-      setSuccessMsg('Name updated successfully!');
-    } catch {
-      setFormError('Failed to update name.');
-    }
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
-  const handlePasswordChange = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!currentPassword || !newPassword) {
-      return setFormError('Both current and new passwords are required.');
+    setSubmitting(true);
+    setSuccessMsg("");
+    setError("");
+
+    if (
+      (form.newPassword || form.confirmPassword) &&
+      form.newPassword !== form.confirmPassword
+    ) {
+      setError("New password and confirm password do not match");
+      setSubmitting(false);
+      return;
     }
+
     try {
-      await UserService.changePassword({ currentPassword, newPassword });
-      setSuccessMsg('Password changed successfully!');
-      setCurrentPassword('');
-      setNewPassword('');
-    } catch {
-      setFormError('Failed to change password. Please check your current password.');
+      const payload = {
+        name: form.name,
+        email: form.email,
+        ...(form.currentPassword && form.newPassword
+          ? {
+              currentPassword: form.currentPassword,
+              newPassword: form.newPassword,
+            }
+          : {}),
+      };
+
+      const res = await fetch("/api/user/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Failed to update settings");
+      }
+      setSuccessMsg("Profile updated successfully!");
+      setForm((f) => ({ ...f, currentPassword: "", newPassword: "", confirmPassword: "" }));
+    } catch (err) {
+      setError(err.message || "Failed to update settings");
+    } finally {
+      setSubmitting(false);
     }
   };
-
-  if (loading) return <Loader />;
-  if (!profile) return null;
 
   return (
-    <div className="max-w-xl mx-auto mt-6 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-4">Settings</h2>
-
-      {formError && <p className="text-red-500 mb-3">{formError}</p>}
-      {successMsg && <p className="text-green-600 mb-3">{successMsg}</p>}
-
-      <form onSubmit={handleProfileUpdate} className="mb-6 space-y-4">
-        <div>
-          <label className="block font-medium mb-1">Update Name</label>
-          <input
-            type="text"
-            value={name}
-            required
-            onChange={(e) => setName(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded"
-          />
+    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+      <h2 className="text-2xl font-bold mb-6 text-blue-700">Settings</h2>
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <Loader size="lg" />
         </div>
-        <button
-          type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
-        >
-          Update Name
-        </button>
-      </form>
-
-      <form onSubmit={handlePasswordChange} className="space-y-4">
-        <div>
-          <label className="block font-medium mb-1">Current Password</label>
-          <input
-            type="password"
-            value={currentPassword}
-            required
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded"
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">New Password</label>
-          <input
-            type="password"
-            value={newPassword}
-            required
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="w-full border border-gray-300 px-3 py-2 rounded"
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-        >
-          Change Password
-        </button>
-      </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block font-medium mb-1">Name</label>
+            <input
+              type="text"
+              name="name"
+              className="w-full border rounded px-3 py-2"
+              value={form.name}
+              onChange={handleInput}
+              required
+              disabled={submitting}
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-1">Email</label>
+            <input
+              type="email"
+              name="email"
+              className="w-full border rounded px-3 py-2"
+              value={form.email}
+              onChange={handleInput}
+              required
+              disabled={submitting}
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-1">Current Password</label>
+            <input
+              type="password"
+              name="currentPassword"
+              className="w-full border rounded px-3 py-2"
+              value={form.currentPassword}
+              onChange={handleInput}
+              placeholder="Enter current password to change password"
+              disabled={submitting}
+              autoComplete="current-password"
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-1">New Password</label>
+            <input
+              type="password"
+              name="newPassword"
+              className="w-full border rounded px-3 py-2"
+              value={form.newPassword}
+              onChange={handleInput}
+              placeholder="Leave blank if not changing"
+              disabled={submitting}
+              autoComplete="new-password"
+            />
+          </div>
+          <div>
+            <label className="block font-medium mb-1">Confirm New Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              className="w-full border rounded px-3 py-2"
+              value={form.confirmPassword}
+              onChange={handleInput}
+              placeholder="Repeat new password"
+              disabled={submitting}
+              autoComplete="new-password"
+            />
+          </div>
+          {error && <div className="text-red-600">{error}</div>}
+          {successMsg && <div className="text-green-700">{successMsg}</div>}
+          <button
+            type="submit"
+            className="w-full py-2 bg-blue-700 text-white font-semibold rounded hover:bg-blue-800 transition disabled:opacity-60"
+            disabled={submitting}
+          >
+            {submitting ? "Saving..." : "Save Changes"}
+          </button>
+        </form>
+      )}
     </div>
   );
 };

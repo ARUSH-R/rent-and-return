@@ -1,38 +1,43 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect, useRef } from "react";
 
-const useFetch = (fetchFunction, dependencies = []) => {
+/**
+ * Generic data fetching hook for GET requests.
+ * Usage: const { data, loading, error } = useFetch("/api/items");
+ * @param {string} url - The endpoint to fetch.
+ * @param {object} options - Fetch options (optional).
+ * @param {array} deps - Dependency array to control refetch (optional).
+ */
+const useFetch = (url, options = {}, deps = []) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const abortRef = useRef(null);
 
   useEffect(() => {
-    let isMounted = true;
+    setLoading(true);
+    setError(null);
 
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await fetchFunction();
-        if (isMounted) {
-          setData(result);
-        }
-      } catch (err) {
-        if (isMounted) {
-          setError(err);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
+    abortRef.current?.abort();
+    const abortController = new AbortController();
+    abortRef.current = abortController;
 
-    fetchData();
+    fetch(url, { ...options, signal: abortController.signal })
+      .then(async (res) => {
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(errText || res.statusText);
+        }
+        return res.json();
+      })
+      .then(setData)
+      .catch((err) => {
+        if (err.name !== "AbortError") setError(err.message || "Fetch error");
+      })
+      .finally(() => setLoading(false));
 
-    return () => {
-      isMounted = false;
-    };
-  }, dependencies);
+    return () => abortController.abort();
+    // eslint-disable-next-line
+  }, [url, ...deps]);
 
   return { data, loading, error };
 };

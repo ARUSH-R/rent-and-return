@@ -1,18 +1,13 @@
-import axios from 'axios';
-import { getToken, removeToken } from '../utils/tokenUtils';
+import axios from "axios";
+import { getToken } from "../utils/tokenUtils";
 
-// Use HTTPS and correct port for production, fallback to dev
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://localhost:8443/api';
-
+// Create Axios instance with base config
 const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: false, // JWT is sent in header, not cookie
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api/v1",
+  timeout: 10000,
 });
 
-// Attach JWT token to every request if it exists
+// Attach the token to every request if available
 api.interceptors.request.use(
   (config) => {
     const token = getToken();
@@ -24,20 +19,11 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Global error handler for token expiry, forbidden, etc.
+// Optional: Global error handler
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response) {
-      if (error.response.status === 401) {
-        // Token expired or invalid, remove and optionally redirect
-        removeToken();
-        window.location.href = '/login';
-      } else if (error.response.status === 403) {
-        // Forbidden, show message or redirect
-        window.location.href = '/forbidden';
-      }
-    }
+    // Optionally, handle 401/403 globally (e.g., logout, redirect)
     return Promise.reject(error);
   }
 );

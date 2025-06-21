@@ -2,6 +2,149 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Basic CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set base font and background */
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+  background: #f7f7f9;
+  color: #232323;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  color: #1976d2;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
+
+/* Buttons */
+button,
+input[type="submit"],
+input[type="button"] {
+  font-family: inherit;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 0.6em 1.2em;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  background: #0d47a1;
+}
+
+/* Forms */
+input,
+select,
+textarea {
+  font-family: inherit;
+  padding: 0.5em;
+  border: 1px solid #d1d5db;
+  border-radius: 3px;
+  margin-bottom: 1em;
+  width: 100%;
+  font-size: 1em;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #1976d2;
+}
+
+/* Utility classes */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2em 1em;
+}
+
+.flex {
+  display: flex;
+  gap: 1em;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 1.5em;
+  margin-bottom: 1.5em;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.10);
+}
+
+/* Navbar */
+.navbar {
+  background: #1976d2;
+  color: #fff;
+  padding: 1em 0.5em;
+}
+
+.navbar .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar a {
+  color: #fff;
+  margin-left: 1em;
+}
+
+.navbar a:hover {
+  color: #f0f0f0;
+  text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+  background: #232323;
+  color: #fff;
+  text-align: center;
+  padding: 1.5em 0 1em 0;
+  margin-top: 3em;
+  font-size: 0.95em;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5em 0.5em;
+  }
+  .flex {
+    flex-direction: column;
+    gap: 0.5em;
+  }
 }

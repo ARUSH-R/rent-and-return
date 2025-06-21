@@ -1,27 +1,27 @@
-// src/hooks/useAdminStats.js
 import { useState, useEffect } from 'react';
-import { getAdminStats } from '../services/AdminService';
+import adminStatsService from '../services/adminStatService';
 
 const useAdminStats = () => {
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+    const [adminStats, setAdminStats] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const data = await getAdminStats();
-        setStats(data);
-      } catch (error) {
-        console.error('Error fetching admin stats:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    useEffect(() => {
+        const fetchAdminStats = async () => {
+            try {
+                const adminStatsData = await adminStatsService.getAdminStats();
+                setAdminStats(adminStatsData);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    fetchStats();
-  }, []);
+        fetchAdminStats();
+    }, []);
 
-  return { stats, loading };
+    return { adminStats, loading, error };
 };
 
 export default useAdminStats;

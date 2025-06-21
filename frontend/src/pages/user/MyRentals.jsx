@@ -1,74 +1,86 @@
-import React, { useEffect, useState } from 'react';
-import RentalService from '../../services/RentalService';
-import Loader from '../../components/Loader';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Loader from "../../components/Loader";
 
+/**
+ * MyRentals Page
+ * - Displays a list of rentals currently associated with the logged-in user.
+ * - User can see status and navigate to rental details.
+ */
 const MyRentals = () => {
-  const [rentals, setRentals] = useState([]);
+  const [myRentals, setMyRentals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    RentalService.getMyRentals()
-      .then((res) => setRentals(res.data))
-      .catch(() => setError('Failed to load your rentals.'))
+    setLoading(true);
+    setError("");
+    // You might need to replace the endpoint with your actual user rentals API route
+    fetch("/api/rentals/my")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load your rentals");
+        return res.json();
+      })
+      .then((data) => {
+        setMyRentals(Array.isArray(data) ? data : data.rentals || []);
+      })
+      .catch((err) => setError(err.message || "Failed to fetch your rentals"))
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <div className="text-red-500 text-center mt-4">{error}</div>;
-
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">My Rentals</h2>
-
-      {rentals.length === 0 ? (
-        <p className="text-gray-500 text-center">You haven't rented anything yet.</p>
+    <div className="max-w-4xl mx-auto p-6">
+      <h2 className="text-3xl font-bold text-blue-700 mb-8">My Rentals</h2>
+      {loading ? (
+        <div className="flex justify-center py-20">
+          <Loader size="lg" />
+        </div>
+      ) : error ? (
+        <div className="text-red-600 py-12 text-center">{error}</div>
+      ) : myRentals.length === 0 ? (
+        <div className="text-gray-500 py-12 text-center">
+          You have not rented any items yet.
+        </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border rounded shadow">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left px-4 py-2">Rental ID</th>
-                <th className="text-left px-4 py-2">Product</th>
-                <th className="text-left px-4 py-2">Start</th>
-                <th className="text-left px-4 py-2">End</th>
-                <th className="text-left px-4 py-2">Status</th>
-                <th className="text-left px-4 py-2">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rentals.map((rental) => (
-                <tr key={rental.id} className="border-t">
-                  <td className="px-4 py-2">{rental.id}</td>
-                  <td className="px-4 py-2">{rental.product?.name || 'N/A'}</td>
-                  <td className="px-4 py-2">{rental.startDate}</td>
-                  <td className="px-4 py-2">{rental.endDate}</td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`text-sm font-medium ${
-                        rental.status === 'ACTIVE'
-                          ? 'text-green-600'
-                          : rental.status === 'COMPLETED'
-                          ? 'text-blue-600'
-                          : 'text-red-500'
-                      }`}
-                    >
-                      {rental.status}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2">
-                    <Link
-                      to={`/rentals/${rental.id}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      View
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          {myRentals.map((rental) => (
+            <Link
+              to={`/rentals/${rental.id}`}
+              key={rental.id}
+              className="bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col"
+            >
+              <img
+                src={rental.image}
+                alt={rental.name}
+                className="h-40 w-full object-contain border-b rounded-t"
+              />
+              <div className="flex-1 flex flex-col p-4">
+                <div className="font-semibold text-lg text-blue-700 mb-1">
+                  {rental.name}
+                </div>
+                <div className="text-gray-600 flex-1">{rental.description}</div>
+                <div className="mt-3 font-bold text-xl text-blue-700">
+                  ₹{rental.price}
+                </div>
+                <div className="mt-2 text-sm">
+                  Status:{" "}
+                  <span className={rental.isRented ? "text-red-600" : "text-green-600"}>
+                    {rental.isRented ? "Currently Rented" : "Returned"}
+                  </span>
+                </div>
+                {rental.rentedAt && (
+                  <div className="mt-1 text-xs text-gray-500">
+                    Rented At: {new Date(rental.rentedAt).toLocaleString()}
+                  </div>
+                )}
+                {rental.returnedAt && (
+                  <div className="mt-1 text-xs text-gray-500">
+                    Returned At: {new Date(rental.returnedAt).toLocaleString()}
+                  </div>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </div>

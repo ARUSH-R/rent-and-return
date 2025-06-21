@@ -1,91 +1,138 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import AuthService from '../services/AuthService';
+import React, { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import Loader from "../components/Loader";
 
 const Register = () => {
+  const { register, loading, error, isAuthenticated } = useAuth();
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [formError, setFormError] = useState("");
   const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  if (isAuthenticated) {
+    // Already logged in
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e) => {
+    setFormError("");
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
-
-    if (!form.name || !form.email || !form.password) {
-      return setError('All fields are required.');
+    setFormError("");
+    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
+      setFormError("All fields are required.");
+      return;
     }
-
-    try {
-      await AuthService.register(form.name, form.email, form.password);
-      setSuccess('Registered successfully! Redirecting to login...');
-      setTimeout(() => navigate('/login'), 1500);
-    } catch {
-      setError('Registration failed. Try another email.');
+    if (form.password.length < 6) {
+      setFormError("Password must be at least 6 characters.");
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      setFormError("Passwords do not match.");
+      return;
+    }
+    const { confirmPassword, ...submitForm } = form;
+    const success = await register(submitForm);
+    if (success) {
+      navigate("/dashboard");
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow rounded">
-      <h2 className="text-2xl font-bold mb-6 text-center">Register</h2>
-
-      {error && <p className="text-red-500 text-sm mb-4 text-center">{error}</p>}
-      {success && <p className="text-green-600 text-sm mb-4 text-center">{success}</p>}
-
-      <form onSubmit={handleRegister} className="space-y-4">
-        <div>
-          <label className="block mb-1 font-medium">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-          />
+    <div className="flex items-center justify-center min-h-[80vh] bg-gray-50">
+      <div className="bg-white rounded shadow-md p-8 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Create Account</h2>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="name">
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              autoComplete="name"
+              required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+              value={form.name}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+              value={form.email}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="password">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="new-password"
+              required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+              value={form.password}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="confirmPassword">
+              Confirm Password
+            </label>
+            <input
+              id="confirmPassword"
+              name="confirmPassword"
+              type="password"
+              autoComplete="new-password"
+              required
+              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              disabled={loading}
+            />
+          </div>
+          {(formError || error) && (
+            <div className="text-red-600 text-sm">{formError || error}</div>
+          )}
+          <button
+            type="submit"
+            className="w-full bg-blue-700 text-white py-2 rounded hover:bg-blue-800 transition font-semibold flex justify-center items-center"
+            disabled={loading}
+          >
+            {loading ? <Loader size="sm" /> : "Register"}
+          </button>
+        </form>
+        <div className="text-center mt-4 text-sm">
+          Already have an account?{" "}
+          <a className="text-blue-700 hover:underline" href="/login">
+            Login
+          </a>
         </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Email</label>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-        >
-          Register
-        </button>
-      </form>
+      </div>
     </div>
   );
 };

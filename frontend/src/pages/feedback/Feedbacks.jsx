@@ -1,55 +1,71 @@
-import React, { useEffect, useState } from 'react';
-import FeedbackService from '../../services/FeedbackService';
-import Loader from '../../components/Loader';
+import React, { useEffect, useState } from "react";
+import Loader from "../../components/Loader";
 
+/**
+ * Feedbacks Page
+ * - Displays a list of submitted feedback entries.
+ * - Intended for admin/moderator review.
+ */
 const Feedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    FeedbackService.getAllFeedbacks()
-      .then((res) => setFeedbacks(res.data))
-      .catch(() => setError('Failed to load feedbacks.'))
-      .finally(() => setLoading(false));
+    const fetchFeedbacks = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        // Replace '/api/feedback' with your actual feedback fetch endpoint
+        const res = await fetch("/api/feedback");
+        if (!res.ok) throw new Error("Failed to load feedbacks");
+        const data = await res.json();
+        setFeedbacks(Array.isArray(data) ? data : data.feedbacks || []);
+      } catch (err) {
+        setError(err.message || "Failed to fetch feedbacks");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFeedbacks();
   }, []);
 
-  if (loading) return <Loader />;
-  if (error) return <div className="text-red-500 text-center mt-4">{error}</div>;
-
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-semibold mb-4">All Feedbacks</h2>
-
-      {feedbacks.length === 0 ? (
-        <p className="text-gray-500 text-center">No feedbacks available.</p>
-      ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border rounded shadow">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="text-left px-4 py-2">Product</th>
-                <th className="text-left px-4 py-2">User</th>
-                <th className="text-left px-4 py-2">Rating</th>
-                <th className="text-left px-4 py-2">Comment</th>
-                <th className="text-left px-4 py-2">Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {feedbacks.map((fb) => (
-                <tr key={fb.id} className="border-t">
-                  <td className="px-4 py-2">{fb.product?.name || 'N/A'}</td>
-                  <td className="px-4 py-2">{fb.user?.email || 'N/A'}</td>
-                  <td className="px-4 py-2">{'⭐'.repeat(fb.rating)}</td>
-                  <td className="px-4 py-2">{fb.comment}</td>
-                  <td className="px-4 py-2">
-                    {new Date(fb.createdAt).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
+      <h2 className="text-2xl font-bold mb-4 text-blue-700">All Feedbacks</h2>
+      {loading ? (
+        <div className="flex justify-center py-12">
+          <Loader size="lg" />
         </div>
+      ) : error ? (
+        <div className="text-red-600 py-8 text-center">{error}</div>
+      ) : feedbacks.length === 0 ? (
+        <div className="text-gray-500 py-12 text-center">
+          No feedbacks have been submitted yet.
+        </div>
+      ) : (
+        <ul className="divide-y divide-gray-200">
+          {feedbacks.map((fb, idx) => (
+            <li key={fb.id || idx} className="py-5">
+              <div className="flex items-start gap-3">
+                <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-700">
+                  {fb.user?.name?.[0]?.toUpperCase() || "U"}
+                </div>
+                <div>
+                  <div className="font-semibold text-blue-700">
+                    {fb.user?.name || fb.user?.email || "Anonymous"}
+                  </div>
+                  <div className="text-gray-600 text-sm mb-1">
+                    {fb.createdAt
+                      ? new Date(fb.createdAt).toLocaleString()
+                      : ""}
+                  </div>
+                  <div className="text-gray-800">{fb.feedback || fb.text}</div>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
