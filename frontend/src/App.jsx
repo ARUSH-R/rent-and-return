@@ -1,29 +1,33 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AuthProvider from "./auth/AuthContext";
-import PrivateRoute from "./routes/PrivateRoute";
-import AdminRoute from "./routes/AdminRoute";
+import { AuthProvider } from "./auth/AuthContext";
+import { CartProvider } from "./context/CartContext";
+import RequireAuth from "./auth/ReuireAuth";
+
+const PrivateRoute = RequireAuth;
+const AdminRoute = (props) => <RequireAuth {...props} admin={true} />;
 
 // Pages
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./auth/Login";
+import Register from "./auth/Register";
 import NotFound from "./pages/NotFound";
-import Profile from "./pages/Profile";
+import Profile from "./pages/user/Profile";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import Products from "./pages/Products";
+import Products from "./pages/products/Products";
 import ProductDetails from "./pages/ProductDetails";
-import Cart from "./pages/Cart";
-import Rentals from "./pages/Rentals";
-import Feedback from "./pages/Feedback";
+import Cart from "./pages/cart/Cart";
+import Rentals from "./pages/rentals/Rentals";
+import Feedback from "./pages/feedback/Feedbacks";
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
+      <CartProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
 
           {/* Auth */}
           <Route path="/login" element={<Login />} />
@@ -89,6 +93,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
+    </CartProvider>
     </AuthProvider>
   );
 }

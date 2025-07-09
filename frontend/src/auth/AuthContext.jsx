@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getToken, removeToken, setToken, decodeToken } from "../utils/tokenUtils";
-import { login as apiLogin, register as apiRegister } from "../services/authService";
+import AuthService from "../services/AuthService";
+const { login: apiLogin, register: apiRegister } = AuthService;
 
 const AuthContext = createContext();
 

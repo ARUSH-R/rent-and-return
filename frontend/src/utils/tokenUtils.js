@@ -1,9 +1,4 @@
 /**
- * Utility functions for handling authentication tokens.
- */
-
-/**
- * Save token to localStorage.
  * @param {string} token
  */
 export function setToken(token) {
@@ -11,7 +6,6 @@ export function setToken(token) {
 }
 
 /**
- * Retrieve token from localStorage.
  * @returns {string|null}
  */
 export function getToken() {
@@ -32,3 +26,8 @@ export function removeToken() {
 export function isAuthenticated() {
   return !!getToken();
 }
+
+
+export const decodeToken = (token) => {
+  // logic here
+};

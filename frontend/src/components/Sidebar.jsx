@@ -5,7 +5,7 @@ import {
   HomeIcon,
   CubeIcon,
   ShoppingCartIcon,
-  ClipboardListIcon,
+  ClipboardDocumentListIcon,
   ChatBubbleLeftEllipsisIcon,
   UserGroupIcon,
   Cog6ToothIcon,
@@ -35,7 +35,7 @@ const navItems = [
   {
     label: "Rentals",
     to: "/rentals",
-    icon: <ClipboardListIcon className="h-6 w-6" />,
+    icon: <ClipboardDocumentListIcon className="h-6 w-6" />,
     admin: false,
   },
   {

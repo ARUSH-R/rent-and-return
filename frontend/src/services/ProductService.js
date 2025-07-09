@@ -26,6 +26,11 @@ const ProductService = {
     }
   },
 
+  // Alias for consistency with ProductDetails component
+  getById: async (productId) => {
+    return ProductService.getProductById(productId);
+  },
+
   // Create a new product
   createProduct: async (productData) => {
     try {

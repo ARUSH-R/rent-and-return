@@ -1,4 +1,5 @@
 import api from "../api/api";
+import { setToken } from "../utils/tokenUtils";
 
 /**
  * AuthService provides methods for authentication-related API calls.
@@ -48,5 +49,14 @@ const AuthService = {
     }
   }
 };
+
+
+// Function to initialize auth system - checks for existing token
+export function setupAuthToken() {
+  // This function initializes the auth system
+  // The token is automatically retrieved by the API interceptor
+  // You can add additional initialization logic here if needed
+  console.log('Auth system initialized');
+}
 
 export default AuthService;

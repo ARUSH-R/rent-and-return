@@ -16,9 +16,9 @@ const CartService = {
   },
 
   // Add an item to the cart
-  addToCart: async (item) => {
+  addToCart: async (productId, quantity = 1) => {
     try {
-      const response = await api.post("/cart", item);
+      const response = await api.post("/cart", { productId, quantity });
       return response.data;
     } catch (error) {
       console.error("Failed to add item to cart:", error);
@@ -33,6 +33,17 @@ const CartService = {
       return response.data;
     } catch (error) {
       console.error(`Failed to update cart item ${itemId}:`, error);
+      throw error;
+    }
+  },
+
+  // Update quantity of a cart item
+  updateQuantity: async (itemId, quantity) => {
+    try {
+      const response = await api.put(`/cart/${itemId}`, { quantity });
+      return response.data;
+    } catch (error) {
+      console.error(`Failed to update cart item quantity ${itemId}:`, error);
       throw error;
     }
   },

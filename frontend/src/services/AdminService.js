@@ -16,6 +16,22 @@ const AdminService = {
     }
   },
 
+  // Alias for consistency with AdminDashboard component
+  getStats: async () => {
+    return AdminService.getDashboardStats();
+  },
+
+  // Get recent rentals for admin dashboard
+  getRecentRentals: async (limit = 10) => {
+    try {
+      const response = await api.get(`/admin/rentals/recent?limit=${limit}`);
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch recent rentals:", error);
+      throw error;
+    }
+  },
+
   // Get all users
   getAllUsers: async () => {
     try {
