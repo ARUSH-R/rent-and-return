@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError("");
     try {
-      const data = await apiLogin(email, password);
+      const data = await apiLogin({ email, password });
       setToken(data.token);
       setUser(decodeToken(data.token));
       setLoading(false);
