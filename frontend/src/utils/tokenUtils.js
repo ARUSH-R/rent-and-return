@@ -29,5 +29,45 @@ export function isAuthenticated() {
 
 
 export const decodeToken = (token) => {
-  // logic here
+  if (!token) return null;
+  
+  try {
+    // JWT tokens have three parts separated by dots: header.payload.signature
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      console.error('Invalid JWT token format');
+      return null;
+    }
+    
+    // Decode the payload (second part)
+    const payload = parts[1];
+    
+    // Add padding if needed for base64 decoding
+    const paddedPayload = payload + '='.repeat((4 - payload.length % 4) % 4);
+    
+    // Decode base64
+    const decodedPayload = atob(paddedPayload);
+    
+    // Parse JSON
+    const parsedPayload = JSON.parse(decodedPayload);
+    
+    // Check if token is expired
+    if (parsedPayload.exp && parsedPayload.exp * 1000 < Date.now()) {
+      console.warn('Token has expired');
+      return null;
+    }
+    
+    // Return user object with relevant fields
+    return {
+      id: parsedPayload.sub, // subject is typically the user identifier
+      username: parsedPayload.sub,
+      email: parsedPayload.sub, // In our case, sub is the email
+      role: parsedPayload.role,
+      exp: parsedPayload.exp,
+      iat: parsedPayload.iat
+    };
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    return null;
+  }
 };

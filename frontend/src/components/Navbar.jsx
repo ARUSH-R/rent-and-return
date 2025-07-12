@@ -64,7 +64,7 @@ const Navbar = () => {
         ) : (
           <div className="flex items-center gap-4">
             <span className="hidden md:inline text-gray-700 font-medium">
-              Hi, {user?.name || user?.email}
+              Hi, {user?.username || user?.email}
               {user?.role ? (
                 <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold uppercase">
                   {user.role}

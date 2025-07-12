@@ -1,53 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import Loader from "../components/Loader";
+import { useAuth } from "../auth/AuthContext";
 
 /**
  * Dashboard Page
- * - Shows a summary of user information, orders, rentals, and quick links.
+ * - Shows a summary of user information and quick links.
  * - Admins see product/rental management shortcuts.
  */
 const Dashboard = () => {
-  const [user, setUser] = useState(null);
-  const [summary, setSummary] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const { user, isAuthenticated, isAdmin } = useAuth();
 
-  // TODO: Replace with actual admin logic
-  const isAdmin = window.localStorage.getItem("isAdmin") === "true";
-
-  useEffect(() => {
-    setLoading(true);
-    setError("");
-    Promise.all([
-      fetch("/api/user/profile").then((res) => {
-        if (!res.ok) throw new Error("Failed to load user");
-        return res.json();
-      }),
-      fetch("/api/dashboard/summary").then((res) => {
-        if (!res.ok) throw new Error("Failed to load summary");
-        return res.json();
-      })
-    ])
-      .then(([userData, summaryData]) => {
-        setUser(userData);
-        setSummary(summaryData);
-      })
-      .catch((err) => setError(err.message || "Failed to load dashboard"))
-      .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
+  if (!isAuthenticated) {
     return (
-      <div className="flex justify-center items-center min-h-[200px]">
-        <Loader size="lg" />
+      <div className="text-center py-12">
+        <div className="text-gray-600">Please log in to access the dashboard.</div>
+        <Link to="/login" className="text-blue-700 hover:underline mt-4 inline-block">
+          Go to Login
+        </Link>
       </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="text-red-600 text-center py-12">{error}</div>
     );
   }
 
@@ -57,9 +27,9 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
           <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center text-2xl font-bold text-blue-700 mb-3">
-            {user?.name?.[0]?.toUpperCase() || "U"}
+            {(user?.username || user?.email)?.[0]?.toUpperCase() || "U"}
           </div>
-          <div className="font-semibold text-lg text-blue-700">{user?.name}</div>
+          <div className="font-semibold text-lg text-blue-700">{user?.username || user?.email}</div>
           <div className="text-gray-600">{user?.email}</div>
           <Link
             to="/user/profile"
@@ -69,7 +39,7 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-          <div className="font-bold text-2xl text-blue-700 mb-2">{summary?.orders ?? "--"}</div>
+          <div className="font-bold text-2xl text-blue-700 mb-2">0</div>
           <div className="mb-4 text-gray-600">Orders</div>
           <Link
             to="/orders"
@@ -79,10 +49,10 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className="bg-white rounded-lg shadow p-6 flex flex-col items-center">
-          <div className="font-bold text-2xl text-blue-700 mb-2">{summary?.rentals ?? "--"}</div>
+          <div className="font-bold text-2xl text-blue-700 mb-2">0</div>
           <div className="mb-4 text-gray-600">My Rentals</div>
           <Link
-            to="/user/my-rentals"
+            to="/rentals"
             className="bg-blue-50 text-blue-700 px-4 py-2 rounded font-semibold hover:bg-blue-100 transition"
           >
             View Rentals

@@ -5441,3 +5441,2232 @@ Hibernate:
 2025-07-12T16:15:35.026+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
 2025-07-12T16:15:35.031+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
 2025-07-12T16:15:35.033+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:17:50.788+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:17:50.788+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:17:50.788+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:17:50.788+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:17:50.797+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:17:50.798+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:17:50.802+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:17:50.803+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(214845998<open>)] for JPA transaction
+2025-07-12T16:17:50.803+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@3dbeccfc]
+2025-07-12T16:17:50.805+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:17:50.806+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:17:50.806+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(214845998<open>)]
+2025-07-12T16:17:50.807+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(214845998<open>)] after transaction
+2025-07-12T16:17:50.807+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:17:50.809+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:17:50.819+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:17:50.819+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:17:50.819+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:17:50.820+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:17:50.820+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(991688459<open>)] for JPA transaction
+2025-07-12T16:17:50.820+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:17:50.821+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@2963d04]
+2025-07-12T16:17:50.822+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:17:50.826+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:17:50.826+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(991688459<open>)]
+2025-07-12T16:17:50.830+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:17:50.832+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:17:50.834+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:17:50.837+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:17:50.838+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:17:50.840+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:17:50.841+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:17:50.848+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:17:50.850+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(774002962<open>)] for JPA transaction
+2025-07-12T16:17:50.850+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@1df7b69a]
+2025-07-12T16:17:50.853+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:17:50.855+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:17:50.855+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(774002962<open>)]
+2025-07-12T16:17:50.856+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(774002962<open>)] after transaction
+2025-07-12T16:17:50.856+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:17:50.858+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:17:50.871+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:17:50.872+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:17:50.872+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:17:50.873+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:17:50.874+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1216585083<open>)] for JPA transaction
+2025-07-12T16:17:50.874+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:17:50.875+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@50fee82]
+2025-07-12T16:17:50.877+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:17:50.886+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:17:50.886+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1216585083<open>)]
+2025-07-12T16:17:50.888+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:17:50.889+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:17:50.890+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:17:50.893+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:17:50.895+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:32:27.183+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products/6
+2025-07-12T16:32:27.183+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products/6
+2025-07-12T16:32:27.184+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products/6]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:27.184+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products/6]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:27.193+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/products/6
+2025-07-12T16:32:27.194+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products/6]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:27.200+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:27.201+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1812983805<open>)] for JPA transaction
+2025-07-12T16:32:27.202+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@249e3804]
+2025-07-12T16:32:27.205+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:27.232+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:27.232+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1812983805<open>)]
+2025-07-12T16:32:27.233+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1812983805<open>)] after transaction
+2025-07-12T16:32:27.234+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:32:27.235+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:32:27.246+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/products/6
+2025-07-12T16:32:27.247+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/products/6", parameters={}
+2025-07-12T16:32:27.247+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getProduct(Long)
+2025-07-12T16:32:27.247+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:27.251+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(946379141<open>)] for JPA transaction
+2025-07-12T16:32:27.252+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:27.252+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@53f49c80]
+2025-07-12T16:32:27.253+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(946379141<open>)] for JPA transaction
+2025-07-12T16:32:27.253+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:27.257+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        p1_0.id=?
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        p1_0.id=?
+2025-07-12T16:32:27.264+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:27.265+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(946379141<open>)]
+2025-07-12T16:32:27.265+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:32:27.268+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:32:27.268+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}]
+2025-07-12T16:32:27.270+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:27.271+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:32:27.277+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/products/6
+2025-07-12T16:32:27.277+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products/6]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:27.283+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:27.283+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(737446424<open>)] for JPA transaction
+2025-07-12T16:32:27.283+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@39581a95]
+2025-07-12T16:32:27.284+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:27.286+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:27.286+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(737446424<open>)]
+2025-07-12T16:32:27.287+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(737446424<open>)] after transaction
+2025-07-12T16:32:27.287+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:32:27.289+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:32:27.301+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/products/6
+2025-07-12T16:32:27.301+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : GET "/api/products/6", parameters={}
+2025-07-12T16:32:27.302+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getProduct(Long)
+2025-07-12T16:32:27.302+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:27.303+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1205860470<open>)] for JPA transaction
+2025-07-12T16:32:27.303+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findById]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:27.303+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@19b7f269]
+2025-07-12T16:32:27.303+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1205860470<open>)] for JPA transaction
+2025-07-12T16:32:27.304+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:27.388+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        p1_0.id=?
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        p1_0.id=?
+2025-07-12T16:32:27.393+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:27.393+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1205860470<open>)]
+2025-07-12T16:32:27.394+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:32:27.396+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:32:27.396+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}]
+2025-07-12T16:32:27.397+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:27.397+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:32:46.369+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/auth/login
+2025-07-12T16:32:46.369+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/auth/login]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:46.381+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2025-07-12T16:32:46.381+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [POST /api/auth/login]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:46.385+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:46.385+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1954224872<open>)] for JPA transaction
+2025-07-12T16:32:46.386+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@5cc9c66c]
+2025-07-12T16:32:46.387+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:46.389+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:46.389+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1954224872<open>)]
+2025-07-12T16:32:46.389+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1954224872<open>)] after transaction
+2025-07-12T16:32:46.390+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:32:46.392+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:32:46.402+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2025-07-12T16:32:46.402+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.web.servlet.DispatcherServlet        : POST "/api/auth/login", parameters={}
+2025-07-12T16:32:46.402+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.auth.AuthenticationController#login(AuthenticationRequest)
+2025-07-12T16:32:46.402+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:46.405+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [AuthenticationRequest(email=shadowsjin@gmail.com, password=shadowslord)]
+2025-07-12T16:32:46.407+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(2000615140<open>)] for JPA transaction
+2025-07-12T16:32:46.407+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.auth.AuthenticationService.authenticate]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:46.408+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@4bd9fc03]
+2025-07-12T16:32:46.409+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(2000615140<open>)] for JPA transaction
+2025-07-12T16:32:46.409+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:46.413+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:46.542+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-07-12T16:32:46.548+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:46.555+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+2025-07-12T16:32:46.565+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(2000615140<open>)] for JPA transaction
+2025-07-12T16:32:46.565+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:46.570+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(2000615140<open>)] for JPA transaction
+2025-07-12T16:32:46.570+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:46.582+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-07-12T16:32:46.595+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:46.596+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(2000615140<open>)]
+2025-07-12T16:32:46.601+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2025-07-12T16:32:46.608+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:32:46.609+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:32:46.610+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [AuthenticationResponse(token=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6InNoYWRvd3NqaW5AZ21haW (truncated)...]
+2025-07-12T16:32:46.613+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:46.614+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:32:56.930+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/auth/login
+2025-07-12T16:32:56.931+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/auth/login]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:56.937+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2025-07-12T16:32:56.938+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [POST /api/auth/login]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:32:56.945+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:56.946+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(164549778<open>)] for JPA transaction
+2025-07-12T16:32:56.946+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@7a2de637]
+2025-07-12T16:32:56.948+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:56.949+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:56.949+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(164549778<open>)]
+2025-07-12T16:32:56.950+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(164549778<open>)] after transaction
+2025-07-12T16:32:56.950+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:32:56.952+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:32:56.962+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2025-07-12T16:32:56.962+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/api/auth/login", parameters={}
+2025-07-12T16:32:56.962+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.auth.AuthenticationController#login(AuthenticationRequest)
+2025-07-12T16:32:56.962+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:56.963+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [AuthenticationRequest(email=shadowsjin@gmail.com, password=shadowslord)]
+2025-07-12T16:32:56.964+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1752249156<open>)] for JPA transaction
+2025-07-12T16:32:56.964+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.auth.AuthenticationService.authenticate]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:32:56.964+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@9fabb44]
+2025-07-12T16:32:56.964+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1752249156<open>)] for JPA transaction
+2025-07-12T16:32:56.964+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:56.966+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:57.110+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-07-12T16:32:57.112+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:32:57.116+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+2025-07-12T16:32:57.118+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1752249156<open>)] for JPA transaction
+2025-07-12T16:32:57.118+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:57.119+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1752249156<open>)] for JPA transaction
+2025-07-12T16:32:57.119+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:32:57.120+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-07-12T16:32:57.126+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:32:57.129+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1752249156<open>)]
+2025-07-12T16:32:57.130+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2025-07-12T16:32:57.136+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:32:57.137+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:32:57.137+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [AuthenticationResponse(token=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6InNoYWRvd3NqaW5AZ21haW (truncated)...]
+2025-07-12T16:32:57.142+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:32:57.142+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:40:09.158+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/cart
+2025-07-12T16:40:09.166+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:40:09.175+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/cart
+2025-07-12T16:40:09.176+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:40:09.191+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-07-12T16:40:09.191+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:40:09.209+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:40:09.213+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1433853936<open>)] for JPA transaction
+2025-07-12T16:40:09.215+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@2db14064]
+2025-07-12T16:40:09.254+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:40:09.271+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:40:09.271+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1433853936<open>)]
+2025-07-12T16:40:09.273+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1433853936<open>)] after transaction
+2025-07-12T16:40:09.274+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:40:09.278+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:40:09.291+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-07-12T16:40:09.294+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/cart", parameters={}
+2025-07-12T16:40:09.299+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.arushr.rentreturn.exception.GlobalExceptionHandler#handleGeneric(Exception)
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.handleNoMatch(RequestMappingInfoHandlerMapping.java:267)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:441)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:382)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:127)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68)
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:509)
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1284)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1065)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.arushr.rentreturn.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.channel.ChannelProcessingFilter.doFilter(ChannelProcessingFilter.java:135)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-07-12T16:40:09.313+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:40:09.314+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{error=Internal Server Error, message=An unexpected error occurred., timestamp=2025-07-12T16:40:09.3 (truncated)...]
+2025-07-12T16:40:09.318+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-07-12T16:40:09.319+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2025-07-12T16:40:09.323+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-07-12T16:40:09.323+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:40:09.326+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:40:09.326+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(815319423<open>)] for JPA transaction
+2025-07-12T16:40:09.326+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@1faa9d18]
+2025-07-12T16:40:09.341+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:40:09.345+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:40:09.345+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(815319423<open>)]
+2025-07-12T16:40:09.346+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(815319423<open>)] after transaction
+2025-07-12T16:40:09.346+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:40:09.347+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:40:09.352+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-07-12T16:40:09.353+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/cart", parameters={}
+2025-07-12T16:40:09.353+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.arushr.rentreturn.exception.GlobalExceptionHandler#handleGeneric(Exception)
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.handleNoMatch(RequestMappingInfoHandlerMapping.java:267)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:441)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:382)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:127)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68)
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:509)
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1284)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1065)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.arushr.rentreturn.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.channel.ChannelProcessingFilter.doFilter(ChannelProcessingFilter.java:135)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-07-12T16:40:09.356+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:40:09.356+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{error=Internal Server Error, message=An unexpected error occurred., timestamp=2025-07-12T16:40:09.3 (truncated)...]
+2025-07-12T16:40:09.357+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-07-12T16:40:09.357+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2025-07-12T16:40:19.897+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Securing POST /api/auth/login
+2025-07-12T16:40:19.897+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [POST /api/auth/login]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:40:19.898+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-07-12T16:40:19.899+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Secured POST /api/auth/login
+2025-07-12T16:40:19.899+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.web.servlet.DispatcherServlet        : POST "/api/auth/login", parameters={}
+2025-07-12T16:40:19.901+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.auth.AuthenticationController#login(AuthenticationRequest)
+2025-07-12T16:40:19.901+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:40:19.913+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] m.m.a.RequestResponseBodyMethodProcessor : Read "application/json;charset=UTF-8" to [AuthenticationRequest(email=test@example.com, password=password123)]
+2025-07-12T16:40:19.917+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(971629967<open>)] for JPA transaction
+2025-07-12T16:40:19.918+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.auth.AuthenticationService.authenticate]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:40:19.921+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@721df55b]
+2025-07-12T16:40:19.923+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(971629967<open>)] for JPA transaction
+2025-07-12T16:40:19.923+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:40:19.928+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:40:20.110+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-07-12T16:40:20.112+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:40:20.120+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    join
+        users u1_0 
+            on u1_0.id=t1_0.user_id 
+    where
+        u1_0.id=?
+2025-07-12T16:40:20.126+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(971629967<open>)] for JPA transaction
+2025-07-12T16:40:20.127+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:40:20.139+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(971629967<open>)] for JPA transaction
+2025-07-12T16:40:20.140+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Participating in existing transaction
+2025-07-12T16:40:20.157+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        tokens
+        (created_at, created_by, expired, revoked, token, token_type, updated_at, updated_by, user_id, version) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-07-12T16:40:20.174+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:40:20.174+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(971629967<open>)]
+2025-07-12T16:40:20.178+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] org.hibernate.SQL                        : 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+Hibernate: 
+    update
+        tokens 
+    set
+        created_by=?,
+        expired=?,
+        revoked=?,
+        token=?,
+        token_type=?,
+        updated_at=?,
+        updated_by=?,
+        user_id=?,
+        version=? 
+    where
+        id=? 
+        and version=?
+2025-07-12T16:40:20.192+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:40:20.204+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [*/*] and supported [application/json, application/*+json]
+2025-07-12T16:40:20.207+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [AuthenticationResponse(token=eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiVVNFUiIsInN1YiI6InRlc3RAZXhhbXBsZS5jb2 (truncated)...]
+2025-07-12T16:40:20.212+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:40:20.213+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:41:47.211+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/cart
+2025-07-12T16:41:47.213+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:41:47.211+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/cart
+2025-07-12T16:41:47.214+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:41:47.231+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-07-12T16:41:47.231+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:41:47.256+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:41:47.257+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1485618193<open>)] for JPA transaction
+2025-07-12T16:41:47.259+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@59113bdf]
+2025-07-12T16:41:47.263+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:41:47.272+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:41:47.273+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1485618193<open>)]
+2025-07-12T16:41:47.274+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1485618193<open>)] after transaction
+2025-07-12T16:41:47.276+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:41:47.280+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:41:47.304+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-07-12T16:41:47.305+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.web.servlet.DispatcherServlet        : GET "/api/cart", parameters={}
+2025-07-12T16:41:47.307+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.arushr.rentreturn.exception.GlobalExceptionHandler#handleGeneric(Exception)
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.handleNoMatch(RequestMappingInfoHandlerMapping.java:267)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:441)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:382)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:127)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68)
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:509)
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1284)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1065)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.arushr.rentreturn.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.channel.ChannelProcessingFilter.doFilter(ChannelProcessingFilter.java:135)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-07-12T16:41:47.329+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:41:47.329+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{error=Internal Server Error, message=An unexpected error occurred., timestamp=2025-07-12T16:41:47.3 (truncated)...]
+2025-07-12T16:41:47.330+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-07-12T16:41:47.330+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
+2025-07-12T16:41:47.336+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/cart
+2025-07-12T16:41:47.337+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/cart]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:41:47.345+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:41:47.345+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(470004629<open>)] for JPA transaction
+2025-07-12T16:41:47.345+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@35db2fd3]
+2025-07-12T16:41:47.350+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:41:47.357+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:41:47.357+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(470004629<open>)]
+2025-07-12T16:41:47.358+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(470004629<open>)] after transaction
+2025-07-12T16:41:47.359+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:41:47.362+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:41:47.369+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/cart
+2025-07-12T16:41:47.370+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/cart", parameters={}
+2025-07-12T16:41:47.380+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Using @ExceptionHandler com.arushr.rentreturn.exception.GlobalExceptionHandler#handleGeneric(Exception)
+org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.handleNoMatch(RequestMappingInfoHandlerMapping.java:267)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.lookupHandlerMethod(AbstractHandlerMethodMapping.java:441)
+	at org.springframework.web.servlet.handler.AbstractHandlerMethodMapping.getHandlerInternal(AbstractHandlerMethodMapping.java:382)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:127)
+	at org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMapping.getHandlerInternal(RequestMappingInfoHandlerMapping.java:68)
+	at org.springframework.web.servlet.handler.AbstractHandlerMapping.getHandler(AbstractHandlerMapping.java:509)
+	at org.springframework.web.servlet.DispatcherServlet.getHandler(DispatcherServlet.java:1284)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1065)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014)
+	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:903)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:564)
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:195)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:110)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:108)
+	at org.springframework.security.web.FilterChainProxy.lambda$doFilterInternal$3(FilterChainProxy.java:231)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:365)
+	at org.springframework.security.web.access.intercept.AuthorizationFilter.doFilter(AuthorizationFilter.java:101)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:125)
+	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:131)
+	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:85)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:100)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:179)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at com.arushr.rentreturn.security.JwtAuthFilter.doFilterInternal(JwtAuthFilter.java:77)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:107)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:93)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82)
+	at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.access.channel.ChannelProcessingFilter.doFilter(ChannelProcessingFilter.java:135)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:374)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:233)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:191)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:319)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.lambda$createCacheFilter$3(HandlerMappingIntrospector.java:243)
+	at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113)
+	at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74)
+	at org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebMvcSecurityConfiguration.java:240)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:362)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:278)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:164)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:140)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:483)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:116)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:344)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:398)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1740)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1189)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:658)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:63)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2025-07-12T16:41:47.387+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:41:47.387+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [{error=Internal Server Error, message=An unexpected error occurred., timestamp=2025-07-12T16:41:47.3 (truncated)...]
+2025-07-12T16:41:47.389+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.HttpRequestMethodNotSupportedException: Request method 'GET' is not supported]
+2025-07-12T16:41:47.390+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 500 INTERNAL_SERVER_ERROR
