@@ -4559,3 +4559,885 @@ Hibernate:
 2025-07-12T16:13:40.739+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
 2025-07-12T16:13:40.752+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
 2025-07-12T16:13:40.753+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:14:38.092+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:14:38.094+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:38.093+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:14:38.095+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:38.105+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:14:38.105+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:38.134+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:38.135+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1672181640<open>)] for JPA transaction
+2025-07-12T16:14:38.136+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@84fc0ae]
+2025-07-12T16:14:38.150+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:14:38.156+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:38.157+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1672181640<open>)]
+2025-07-12T16:14:38.158+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1672181640<open>)] after transaction
+2025-07-12T16:14:38.159+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:14:38.162+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:14:38.175+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:14:38.175+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:14:38.175+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:14:38.175+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:38.177+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(874035381<open>)] for JPA transaction
+2025-07-12T16:14:38.177+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:38.177+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@4e4d29c2]
+2025-07-12T16:14:38.179+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:14:38.183+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:38.184+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(874035381<open>)]
+2025-07-12T16:14:38.185+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:14:38.187+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:14:38.188+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:14:38.191+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:38.192+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-6] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:14:38.195+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:14:38.195+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:38.200+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:38.200+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(2142524526<open>)] for JPA transaction
+2025-07-12T16:14:38.200+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@611b4db0]
+2025-07-12T16:14:38.203+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:14:38.205+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:38.205+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(2142524526<open>)]
+2025-07-12T16:14:38.206+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(2142524526<open>)] after transaction
+2025-07-12T16:14:38.207+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:14:38.209+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:14:38.218+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:14:38.218+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:14:38.219+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:14:38.219+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:38.220+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(780086892<open>)] for JPA transaction
+2025-07-12T16:14:38.220+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:38.220+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@49dd3812]
+2025-07-12T16:14:38.223+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:14:38.231+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:38.231+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(780086892<open>)]
+2025-07-12T16:14:38.233+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:14:38.233+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:14:38.234+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:14:38.236+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:38.237+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-7] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:14:54.967+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:14:54.967+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-9] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:54.968+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:14:54.968+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-1] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:54.974+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:14:54.974+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:54.978+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:54.979+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(70547284<open>)] for JPA transaction
+2025-07-12T16:14:54.979+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@5cbc3f5]
+2025-07-12T16:14:54.982+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:14:54.985+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:54.985+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(70547284<open>)]
+2025-07-12T16:14:54.986+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(70547284<open>)] after transaction
+2025-07-12T16:14:54.987+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:14:54.989+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:14:54.996+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:14:54.997+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:14:54.997+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:14:54.998+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:54.999+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1254555554<open>)] for JPA transaction
+2025-07-12T16:14:54.999+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:54.999+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@3c65934]
+2025-07-12T16:14:55.001+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:14:55.022+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:55.022+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1254555554<open>)]
+2025-07-12T16:14:55.026+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:14:55.027+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:14:55.028+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:14:55.049+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:55.050+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-5] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:14:55.058+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:14:55.058+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:14:55.069+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:55.070+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1031014521<open>)] for JPA transaction
+2025-07-12T16:14:55.071+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@29040d0d]
+2025-07-12T16:14:55.074+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:14:55.078+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:55.078+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1031014521<open>)]
+2025-07-12T16:14:55.079+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1031014521<open>)] after transaction
+2025-07-12T16:14:55.080+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:14:55.083+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:14:55.101+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:14:55.107+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:14:55.109+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:14:55.110+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:55.111+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1375408282<open>)] for JPA transaction
+2025-07-12T16:14:55.111+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:14:55.112+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@6ea07049]
+2025-07-12T16:14:55.115+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:14:55.142+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:14:55.144+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1375408282<open>)]
+2025-07-12T16:14:55.147+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:14:55.149+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:14:55.153+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:14:55.164+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:14:55.173+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-8] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:15:22.986+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:15:22.987+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-4] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:15:22.992+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:15:22.992+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:15:22.997+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:15:22.997+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(1892910265<open>)] for JPA transaction
+2025-07-12T16:15:22.998+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@404d4089]
+2025-07-12T16:15:22.999+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:15:23.002+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:15:23.002+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1892910265<open>)]
+2025-07-12T16:15:23.002+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(1892910265<open>)] after transaction
+2025-07-12T16:15:23.003+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:15:23.004+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:15:23.009+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:15:23.010+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:15:23.010+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:15:23.011+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:15:23.011+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(1776897593<open>)] for JPA transaction
+2025-07-12T16:15:23.011+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:15:23.011+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@511afa55]
+2025-07-12T16:15:23.012+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:15:23.017+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:15:23.017+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(1776897593<open>)]
+2025-07-12T16:15:23.018+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:15:23.019+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:15:23.020+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:15:23.022+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:15:23.024+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-2] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
+2025-07-12T16:15:34.975+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/products
+2025-07-12T16:15:34.976+05:30 DEBUG 12403 --- [backend] [io-8443-exec-10] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [OPTIONS /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:15:34.983+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/products
+2025-07-12T16:15:34.984+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.s.w.a.c.ChannelProcessingFilter      : Request: filter invocation [GET /api/products]; ConfigAttributes: [REQUIRES_SECURE_CHANNEL]
+2025-07-12T16:15:34.988+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.UserServiceImpl.loadUserByUsername]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:15:34.988+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Opened new EntityManager [SessionImpl(427512588<open>)] for JPA transaction
+2025-07-12T16:15:34.989+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@60d4a35b]
+2025-07-12T16:15:34.992+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] org.hibernate.SQL                        : 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+Hibernate: 
+    select
+        u1_0.id,
+        u1_0.account_non_locked,
+        u1_0.address,
+        u1_0.created_at,
+        u1_0.created_by,
+        u1_0.deleted,
+        u1_0.email,
+        u1_0.email_verified,
+        u1_0.enabled,
+        u1_0.last_login_at,
+        u1_0.password,
+        u1_0.phone,
+        u1_0.profile_image_url,
+        u1_0.reset_password_token,
+        u1_0.role,
+        u1_0.updated_at,
+        u1_0.updated_by,
+        u1_0.username 
+    from
+        users u1_0 
+    where
+        u1_0.email=?
+2025-07-12T16:15:34.994+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:15:34.995+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(427512588<open>)]
+2025-07-12T16:15:34.996+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Closing JPA EntityManager [SessionImpl(427512588<open>)] after transaction
+2025-07-12T16:15:34.996+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] tor$SharedEntityManagerInvocationHandler : Creating new EntityManager for shared EntityManager invocation
+2025-07-12T16:15:34.998+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] org.hibernate.SQL                        : 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+Hibernate: 
+    select
+        t1_0.id,
+        t1_0.created_at,
+        t1_0.created_by,
+        t1_0.expired,
+        t1_0.revoked,
+        t1_0.token,
+        t1_0.token_type,
+        t1_0.updated_at,
+        t1_0.updated_by,
+        t1_0.user_id,
+        t1_0.version 
+    from
+        tokens t1_0 
+    where
+        t1_0.token=?
+2025-07-12T16:15:35.009+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/products
+2025-07-12T16:15:35.009+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.web.servlet.DispatcherServlet        : GET "/api/products", parameters={}
+2025-07-12T16:15:35.010+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.arushr.rentreturn.controller.ProductController#getAllProducts()
+2025-07-12T16:15:35.011+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.j.s.OpenEntityManagerInViewInterceptor : Opening JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:15:35.012+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Found thread-bound EntityManager [SessionImpl(188111076<open>)] for JPA transaction
+2025-07-12T16:15:35.013+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Creating new transaction with name [com.arushr.rentreturn.service.ProductServiceImpl.findAll]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT
+2025-07-12T16:15:35.013+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Exposing JPA transaction as JDBC [org.springframework.orm.jpa.vendor.HibernateJpaDialect$HibernateConnectionHandle@242518ec]
+2025-07-12T16:15:35.017+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] org.hibernate.SQL                        : 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+Hibernate: 
+    select
+        p1_0.id,
+        p1_0.available,
+        p1_0.category,
+        p1_0.created_at,
+        p1_0.created_by,
+        p1_0.deleted,
+        p1_0.description,
+        p1_0.image_url,
+        p1_0.name,
+        p1_0.owner_id,
+        p1_0.price_per_day,
+        p1_0.stock,
+        p1_0.updated_at,
+        p1_0.updated_by 
+    from
+        products p1_0 
+    where
+        not(p1_0.deleted)
+2025-07-12T16:15:35.023+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Initiating transaction commit
+2025-07-12T16:15:35.023+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Committing JPA transaction on EntityManager [SessionImpl(188111076<open>)]
+2025-07-12T16:15:35.024+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.orm.jpa.JpaTransactionManager        : Not closing pre-bound JPA EntityManager after transaction
+2025-07-12T16:15:35.025+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Using 'application/json', given [application/json, text/plain, */*] and supported [application/json, application/*+json]
+2025-07-12T16:15:35.026+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.w.s.m.m.a.HttpEntityMethodProcessor  : Writing [[Product{id=6, name='iPhone 13', pricePerDay=40.00, stock=10, available=true, deleted=false}, Produc (truncated)...]
+2025-07-12T16:15:35.031+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.j.s.OpenEntityManagerInViewInterceptor : Closing JPA EntityManager in OpenEntityManagerInViewInterceptor
+2025-07-12T16:15:35.033+05:30 DEBUG 12403 --- [backend] [nio-8443-exec-3] o.s.web.servlet.DispatcherServlet        : Completed 200 OK
