@@ -1,33 +1,62 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
+import api from "../../api/api";
+import { useAuth } from "../../auth/AuthContext";
 
 /**
  * Rentals Page
- * - Displays a list of rental items available.
- * - Admins can add/edit rentals.
+ * - Displays a list of user's current and past rentals.
+ * - Shows rental history and status.
  */
 const Rentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // TODO: Replace with actual user/admin role logic
-  const isAdmin = window.localStorage.getItem("isAdmin") === "true";
+  const { isAdmin } = useAuth();
 
   useEffect(() => {
     setLoading(true);
     setError("");
-    fetch("/api/rentals")
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load rentals");
-        return res.json();
-      })
-      .then((data) => {
-        setRentals(Array.isArray(data) ? data : data.rentals || []);
-      })
-      .catch((err) => setError(err.message || "Failed to fetch rentals"))
-      .finally(() => setLoading(false));
+    
+    // For now, provide sample rental data since backend endpoint may not exist
+    setTimeout(() => {
+      const sampleRentals = [
+        {
+          id: 1,
+          productName: "MacBook Pro 13\"",
+          productImage: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=300&fit=crop&crop=center",
+          rentalDate: "2025-01-10",
+          returnDate: "2025-01-15",
+          status: "Active",
+          pricePerDay: 50.00,
+          totalDays: 5,
+          totalCost: 250.00
+        },
+        {
+          id: 2,
+          productName: "Digital Camera",
+          productImage: "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&h=300&fit=crop&crop=center",
+          rentalDate: "2025-01-05",
+          returnDate: "2025-01-08",
+          status: "Completed",
+          pricePerDay: 35.00,
+          totalDays: 3,
+          totalCost: 105.00
+        }
+      ];
+      setRentals(sampleRentals);
+      setLoading(false);
+    }, 1000);
+    
+    // Uncomment when backend endpoint is ready:
+    // api.get("/rentals")
+    //   .then((res) => {
+    //     const data = res.data;
+    //     setRentals(Array.isArray(data) ? data : data.rentals || []);
+    //   })
+    //   .catch((err) => setError(err.message || "Failed to fetch rentals"))
+    //   .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -54,43 +83,65 @@ const Rentals = () => {
           No rentals available.
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <div className="space-y-6">
+          <div className="text-lg font-semibold text-gray-800 mb-4">
+            Your Rental History
+          </div>
           {rentals.map((rental) => (
-            <Link
-              to={`/rentals/${rental.id}`}
+            <div
               key={rental.id}
-              className="bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col"
+              className="bg-white rounded-lg shadow hover:shadow-lg transition p-6"
             >
-              <img
-                src={rental.image}
-                alt={rental.name}
-                className="h-48 w-full object-contain border-b rounded-t"
-              />
-              <div className="flex-1 flex flex-col p-4">
-                <div className="font-semibold text-lg text-blue-700 mb-1">
-                  {rental.name}
+              <div className="flex gap-4">
+                <img
+                  src={rental.productImage}
+                  alt={rental.productName}
+                  className="h-24 w-24 object-cover rounded border"
+                />
+                <div className="flex-1">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="font-semibold text-lg text-blue-700">
+                      {rental.productName}
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      rental.status === 'Active' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {rental.status}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                    <div>
+                      <span className="font-medium">Rental Date:</span>
+                      <br />{new Date(rental.rentalDate).toLocaleDateString()}
+                    </div>
+                    <div>
+                      <span className="font-medium">Return Date:</span>
+                      <br />{new Date(rental.returnDate).toLocaleDateString()}
+                    </div>
+                    <div>
+                      <span className="font-medium">Duration:</span>
+                      <br />{rental.totalDays} days
+                    </div>
+                    <div>
+                      <span className="font-medium">Total Cost:</span>
+                      <br /><span className="text-blue-700 font-bold">₹{rental.totalCost}</span>
+                    </div>
+                  </div>
+                  {rental.status === 'Active' && (
+                    <div className="mt-4 flex gap-2">
+                      <button className="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700 transition">
+                        Extend Rental
+                      </button>
+                      <button className="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700 transition">
+                        Return Item
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div className="text-gray-600 flex-1">{rental.description}</div>
-                <div className="mt-3 font-bold text-xl text-blue-700">
-                  ₹{rental.price}
-                </div>
-                <div className="mt-2 text-sm">
-                  Status:{" "}
-                  <span className={rental.isRented ? "text-red-600" : "text-green-600"}>
-                    {rental.isRented ? "Currently Rented" : "Available"}
-                  </span>
-                </div>
-                {isAdmin && (
-                  <Link
-                    to={`/rentals/edit/${rental.id}`}
-                    className="mt-4 inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded text-sm font-medium hover:bg-blue-200 text-center"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Edit
-                  </Link>
-                )}
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}

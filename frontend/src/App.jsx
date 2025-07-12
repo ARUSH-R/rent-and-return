@@ -20,6 +20,7 @@ import Products from "./pages/products/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/cart/Cart";
 import Rentals from "./pages/rentals/Rentals";
+import RentalCreate from "./pages/rentals/RentalCreate";
 import Feedback from "./pages/feedback/Feedbacks";
 
 function App() {
@@ -64,6 +65,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Rentals />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/rental/create"
+            element={
+              <PrivateRoute>
+                <RentalCreate />
               </PrivateRoute>
             }
           />

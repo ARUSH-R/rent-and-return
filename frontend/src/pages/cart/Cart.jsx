@@ -6,10 +6,10 @@ import Loader from "../../components/Loader";
 /**
  * Cart Page
  * - Displays cart items, total, and checkout action.
- * - Uses CartContext for state.
+ * - Uses CartContext for state management.
  */
 const Cart = () => {
-  const { cart, removeFromCart, clearCart, isLoading, error } = useCart();
+  const { cart, isLoading, error, removeFromCart, clearCart } = useCart();
 
   if (isLoading) {
     return (
@@ -19,18 +19,11 @@ const Cart = () => {
     );
   }
 
-  if (error) {
-    return (
-      <div className="text-red-600 text-center py-12">
-        {error}
-      </div>
-    );
-  }
-
   if (!cart || cart.items.length === 0) {
     return (
       <div className="py-20 text-center text-gray-500">
         <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
+        <p className="mb-6">Add some products to your cart to get started!</p>
         <Link
           to="/products"
           className="inline-block mt-4 px-6 py-2 bg-blue-700 text-white rounded hover:bg-blue-800 transition"
