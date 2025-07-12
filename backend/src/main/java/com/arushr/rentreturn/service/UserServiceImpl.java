@@ -141,7 +141,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllByRoleIn(List<String> roles) {
         return userRepository.findAll().stream()
-                .filter(user -> roles.contains(user.getRole()) && !user.isDeleted())
+                .filter(user -> roles.contains(user.getRole().name()) && !user.isDeleted())
                 .toList();
     }
 

@@ -124,7 +124,7 @@ const Sidebar = () => {
         <div className="flex flex-col h-full">
           <div className="h-16 flex items-center px-6 border-b border-gray-100">
             <Link to="/" className="text-2xl font-bold text-blue-700 tracking-tight">
-              Rentify
+              RentReturn
             </Link>
           </div>
           <nav className="flex-1 py-6 px-2 space-y-2">

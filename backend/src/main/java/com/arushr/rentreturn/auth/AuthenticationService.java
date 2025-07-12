@@ -2,6 +2,7 @@ package com.arushr.rentreturn.auth;
 
 import com.arushr.rentreturn.config.JwtService;
 import com.arushr.rentreturn.enums.Role;
+import com.arushr.rentreturn.enums.TokenType;
 import com.arushr.rentreturn.model.Token;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.repository.TokenRepository;
@@ -38,6 +39,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(savedUser);
         Token token = Token.builder()
                 .token(jwtToken)
+                .tokenType(TokenType.BEARER)
                 .user(savedUser)
                 .expired(false)
                 .revoked(false)
@@ -63,6 +65,7 @@ public class AuthenticationService {
         String jwtToken = jwtService.generateToken(user);
         Token token = Token.builder()
                 .token(jwtToken)
+                .tokenType(TokenType.BEARER)
                 .user(user)
                 .expired(false)
                 .revoked(false)

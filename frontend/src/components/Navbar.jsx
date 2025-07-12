@@ -15,7 +15,7 @@ const Navbar = () => {
     <nav className="w-full bg-white border-b border-gray-200 shadow-sm px-4 py-3 flex items-center justify-between z-20 sticky top-0">
       <div className="flex items-center gap-4">
         <Link to="/" className="text-xl font-bold text-blue-700 tracking-tight">
-          Rentify
+          RentReturn
         </Link>
         {isAuthenticated && (
           <div className="hidden md:flex gap-4 ml-8 text-gray-700 font-medium">

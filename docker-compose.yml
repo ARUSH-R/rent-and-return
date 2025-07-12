@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    container_name: rentreturn_db
+    restart: always
+    environment:
+      POSTGRES_USER: arushr
+      POSTGRES_PASSWORD: arushr
+      POSTGRES_DB: rentreturn
+    ports:
+      - "5432:5432"
+    volumes:
+      - rentreturn_data:/var/lib/postgresql/data
+    networks:
+      - rentreturn-network
+
+networks:
+  rentreturn-network:
+    driver: bridge
+
+volumes:
+  rentreturn_data:
+

@@ -14,7 +14,7 @@ const Home = () => {
     <div className="min-h-[70vh] flex flex-col items-center justify-center px-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow p-8 flex flex-col items-center">
         <h1 className="text-4xl font-bold text-blue-700 mb-4 text-center">
-          Welcome to CampusMart!
+          Welcome to RentReturn!
         </h1>
         <p className="text-lg text-gray-600 mb-8 text-center">
           Your one-stop platform for buying, renting, and sharing essentials on campus.<br />
@@ -60,7 +60,7 @@ const Home = () => {
           </div>
         )}
         <div className="w-full mt-8">
-          <h2 className="text-xl font-bold text-blue-700 mb-3">Why CampusMart?</h2>
+          <h2 className="text-xl font-bold text-blue-700 mb-3">Why RentReturn?</h2>
           <ul className="list-disc list-inside text-gray-700 space-y-2">
             <li>Affordable products and rentals for students</li>
             <li>Easy-to-use platform for managing your essentials</li>

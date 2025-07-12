@@ -6,7 +6,7 @@ import Loader from "../components/Loader";
 const Register = () => {
   const { register, loading, error, isAuthenticated } = useAuth();
   const [form, setForm] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -27,7 +27,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-    if (!form.name || !form.email || !form.password || !form.confirmPassword) {
+    if (!form.username || !form.email || !form.password || !form.confirmPassword) {
       setFormError("All fields are required.");
       return;
     }
@@ -52,17 +52,17 @@ const Register = () => {
         <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Create Account</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="name">
-              Name
+            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="username">
+              Username
             </label>
             <input
-              id="name"
-              name="name"
+              id="username"
+              name="username"
               type="text"
-              autoComplete="name"
+              autoComplete="username"
               required
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
-              value={form.name}
+              value={form.username}
               onChange={handleChange}
               disabled={loading}
             />

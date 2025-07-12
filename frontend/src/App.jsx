@@ -1,8 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { CartProvider } from "./context/CartContext";
-import RequireAuth from "./auth/ReuireAuth";
+import RequireAuth from "./auth/RequireAuth";
+import Layout from "./components/Layout";
 
 const PrivateRoute = RequireAuth;
 const AdminRoute = (props) => <RequireAuth {...props} admin={true} />;
@@ -25,7 +26,7 @@ function App() {
   return (
     <AuthProvider>
       <CartProvider>
-        <Router>
+        <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
 
@@ -92,8 +93,8 @@ function App() {
           {/* Fallback */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </Router>
-    </CartProvider>
+        </Layout>
+      </CartProvider>
     </AuthProvider>
   );
 }

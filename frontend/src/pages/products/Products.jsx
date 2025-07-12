@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
+import api from "../../api/api";
 
 /**
  * Products Page
@@ -15,12 +16,9 @@ const Products = () => {
   useEffect(() => {
     setLoading(true);
     setError("");
-    fetch("/api/products")
+    api.get("/products")
       .then((res) => {
-        if (!res.ok) throw new Error("Failed to load products");
-        return res.json();
-      })
-      .then((data) => {
+        const data = res.data;
         setProducts(Array.isArray(data) ? data : data.products || []);
       })
       .catch((err) => setError(err.message || "Failed to fetch products"))
@@ -62,7 +60,7 @@ const Products = () => {
               className="bg-white rounded-lg shadow hover:shadow-lg transition flex flex-col"
             >
               <img
-                src={product.image}
+                src={product.imageUrl}
                 alt={product.name}
                 className="h-48 w-full object-contain border-b rounded-t"
               />
@@ -72,7 +70,7 @@ const Products = () => {
                 </div>
                 <div className="text-gray-600 flex-1">{product.description}</div>
                 <div className="mt-3 font-bold text-xl text-blue-700">
-                  ₹{product.price}
+                  ₹{product.pricePerDay}/day
                 </div>
                 {isAdmin && (
                   <Link
