@@ -46,6 +46,7 @@ com/arushr/rentreturn/service/FeedbackService.class
 com/arushr/rentreturn/auth/AuthenticationService.class
 com/arushr/rentreturn/model/Payment$PaymentBuilder.class
 com/arushr/rentreturn/model/Rental$RentalBuilder.class
+com/arushr/rentreturn/config/WebConfig.class
 com/arushr/rentreturn/repository/PaymentRepository.class
 com/arushr/rentreturn/controller/CartItemController.class
 com/arushr/rentreturn/model/Token$TokenBuilder.class

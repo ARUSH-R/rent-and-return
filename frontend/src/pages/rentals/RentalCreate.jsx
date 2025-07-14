@@ -142,7 +142,7 @@ const RentalCreate = () => {
             <div className="bg-gray-50 rounded-lg p-4 mb-6">
               <div className="flex items-center space-x-4">
                 <img
-                  src={product.image || '/api/placeholder/100/100'}
+                  src={product.image || './assets/no-image.jpg'}
                   alt={product.name}
                   className="w-16 h-16 object-cover rounded"
                 />

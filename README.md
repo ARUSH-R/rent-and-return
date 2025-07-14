@@ -1,16 +1,69 @@
-# Rent and Return
+# Rent and Return - Full Stack Rental Management System
 
 ## Overview
-Rent and Return is a full-stack application that allows users to rent products online. It is built with Spring Boot on the backend and React on the frontend.
+Rent and Return is a comprehensive full-stack rental management application designed for campus communities. It enables users to rent products online, manage rentals, and provides administrators with powerful tools to oversee the entire rental ecosystem.
 
 ## Tech Stack
-- **Backend**: Spring Boot, Java 17, PostgreSQL, Hibernate
-- **Frontend**: React, Vite, Tailwind CSS, Axios
+
+### Backend
+- **Java 17** - Modern Java features
+- **Spring Boot 3.5.0** - Main framework
+- **Spring Security** - Authentication & Authorization
+- **Spring Data JPA** - Database operations
+- **PostgreSQL** - Database
+- **JWT** - Token-based authentication
+- **Maven** - Build tool
+- **JUnit** - Testing framework
+
+### Frontend
+- **React 18** - UI library
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **React Hot Toast** - Toast notifications
+- **Lucide React** - Modern icons
+- **Radix UI** - Accessible components
 
 ## Features
-- User authentication and role management
-- Product listing and management
-- Rental lifecycle management
+
+### Authentication & User Management
+- JWT-based authentication
+- Role-based access control (USER/ADMIN)
+- User registration and login
+- Profile management
+- Secure password handling
+
+### Product Management
+- Product listing with search and filtering
+- Category-based organization
+- Image support for products
+- Inventory management
+- Price per day rental system
+
+### Rental System
+- Complete rental lifecycle management
+- Rental status tracking (PENDING, ACTIVE, RETURNED, CANCELLED)
+- Cart functionality
+- Rental history
+- Due date management
+
+### Admin Dashboard
+- Comprehensive admin panel
+- User management
+- Product management
+- Rental oversight
+- Analytics and reporting
+- Feedback management
+
+### Modern UI/UX
+- Responsive design
+- Modern component library
+- Smooth animations
+- Toast notifications
+- Accessible components
+- Professional styling
 
 ## Setup Instructions
 ### Backend

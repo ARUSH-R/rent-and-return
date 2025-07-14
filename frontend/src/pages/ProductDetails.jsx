@@ -93,7 +93,7 @@ const ProductDetails = () => {
         {/* Product Image */}
         <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
           <img
-            src={product.image || '/api/placeholder/600/600'}
+            src={product.image || './assets/no-image.jpg'}
             alt={product.name}
             className="w-full h-full object-cover"
           />

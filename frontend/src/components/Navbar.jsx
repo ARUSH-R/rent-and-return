@@ -1,6 +1,8 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import Button from "./ui/Button";
+import { User, LogOut, ShoppingCart, Package, Settings } from "lucide-react";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -18,20 +20,24 @@ const Navbar = () => {
           RentReturn
         </Link>
         {isAuthenticated && (
-          <div className="hidden md:flex gap-4 ml-8 text-gray-700 font-medium">
+          <div className="hidden md:flex gap-6 ml-8 text-gray-700 font-medium">
             <Link
               to="/dashboard"
-              className="hover:text-blue-700 transition"
+              className="flex items-center gap-2 hover:text-blue-700 transition"
             >
+              <Settings size={16} />
               Dashboard
             </Link>
-            <Link to="/products" className="hover:text-blue-700 transition">
+            <Link to="/products" className="flex items-center gap-2 hover:text-blue-700 transition">
+              <Package size={16} />
               Products
             </Link>
-            <Link to="/rentals" className="hover:text-blue-700 transition">
+            <Link to="/rentals" className="flex items-center gap-2 hover:text-blue-700 transition">
+              <Package size={16} />
               Rentals
             </Link>
-            <Link to="/cart" className="hover:text-blue-700 transition">
+            <Link to="/cart" className="flex items-center gap-2 hover:text-blue-700 transition">
+              <ShoppingCart size={16} />
               Cart
             </Link>
             <Link to="/feedback" className="hover:text-blue-700 transition">
@@ -48,35 +54,34 @@ const Navbar = () => {
       <div className="flex items-center gap-4">
         {!isAuthenticated ? (
           <>
-            <Link
-              to="/login"
-              className="py-1 px-4 text-blue-700 font-semibold rounded hover:underline"
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              className="py-1 px-4 bg-blue-700 text-white font-semibold rounded hover:bg-blue-800 transition"
-            >
-              Register
-            </Link>
+            <Button variant="ghost" asChild>
+              <Link to="/login">
+                Login
+              </Link>
+            </Button>
+            <Button asChild>
+              <Link to="/register">
+                Register
+              </Link>
+            </Button>
           </>
         ) : (
           <div className="flex items-center gap-4">
-            <span className="hidden md:inline text-gray-700 font-medium">
-              Hi, {user?.username || user?.email}
-              {user?.role ? (
-                <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold uppercase">
-                  {user.role}
-                </span>
-              ) : null}
-            </span>
-            <button
-              onClick={handleLogout}
-              className="py-1 px-4 bg-red-600 text-white rounded font-semibold hover:bg-red-700 transition"
-            >
+            <div className="flex items-center gap-2">
+              <User size={20} className="text-gray-600" />
+              <span className="hidden md:inline text-gray-700 font-medium">
+                Hi, {user?.username || user?.email}
+                {user?.role ? (
+                  <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-semibold uppercase">
+                    {user.role}
+                  </span>
+                ) : null}
+              </span>
+            </div>
+            <Button variant="danger" onClick={handleLogout}>
+              <LogOut size={16} className="mr-2" />
               Logout
-            </button>
+            </Button>
           </div>
         )}
       </div>

@@ -6,6 +6,7 @@
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/auth/RegisterRequest.java
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/JwtService.java
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/SecurityConfig.java
+/home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/WebConfig.java
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/controller/AdminController.java
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/controller/CartItemController.java
 /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/controller/FeedbackController.java

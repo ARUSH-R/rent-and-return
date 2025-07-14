@@ -4,6 +4,7 @@ import { AuthProvider } from "./auth/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import RequireAuth from "./auth/RequireAuth";
 import Layout from "./components/Layout";
+import { Toaster } from "react-hot-toast";
 
 const PrivateRoute = RequireAuth;
 const AdminRoute = (props) => <RequireAuth {...props} admin={true} />;
@@ -19,6 +20,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import Products from "./pages/products/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/cart/Cart";
+import Checkout from "./pages/checkout/Checkout";
 import Rentals from "./pages/rentals/Rentals";
 import RentalCreate from "./pages/rentals/RentalCreate";
 import Feedback from "./pages/feedback/Feedbacks";
@@ -57,6 +59,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Cart />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <PrivateRoute>
+                <Checkout />
               </PrivateRoute>
             }
           />
@@ -103,6 +113,19 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
         </Layout>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#fff',
+              color: '#374151',
+              border: '1px solid #e5e7eb',
+              borderRadius: '8px',
+              fontSize: '14px',
+            },
+          }}
+        />
       </CartProvider>
     </AuthProvider>
   );

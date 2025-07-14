@@ -9,6 +9,8 @@ import com.arushr.rentreturn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -47,6 +49,26 @@ public class CartItemController {
     public ResponseEntity<List<CartItem>> getCartItemsByUser(@PathVariable Long userId) {
         User user = userService.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
+        return ResponseEntity.ok(cartItemService.findByUser(user));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CartItem>> getCurrentUserCart(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            // Fallback to SecurityContextHolder
+            Object principal = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            System.out.println("DEBUG: Principal from SecurityContextHolder: " + principal);
+            if (principal instanceof UserDetails details) {
+                userDetails = details;
+            } else {
+                return ResponseEntity.status(401).build();
+            }
+        } else {
+            System.out.println("DEBUG: Principal from @AuthenticationPrincipal: " + userDetails);
+        }
+        String email = userDetails.getUsername();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
         return ResponseEntity.ok(cartItemService.findByUser(user));
     }
 

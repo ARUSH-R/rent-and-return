@@ -19,7 +19,7 @@ const Cart = () => {
     );
   }
 
-  if (!cart || cart.items.length === 0) {
+  if (!cart || !Array.isArray(cart.items) || cart.items.length === 0) {
     return (
       <div className="py-20 text-center text-gray-500">
         <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
@@ -34,8 +34,8 @@ const Cart = () => {
     );
   }
 
-  const total = cart.items.reduce(
-    (sum, item) => sum + item.price * item.quantity,
+  const total = (cart.items || []).reduce(
+    (sum, item) => sum + (item.price || 0) * (item.quantity || 0),
     0
   );
 
@@ -44,7 +44,7 @@ const Cart = () => {
       <h2 className="text-3xl font-bold mb-6 text-blue-700">Your Cart</h2>
       <div className="bg-white rounded-lg shadow p-6">
         <ul className="divide-y divide-gray-200">
-          {cart.items.map((item) => (
+          {(cart.items || []).map((item) => (
             <li key={item.id} className="py-4 flex items-center gap-4">
               <img
                 src={item.image}
@@ -59,7 +59,7 @@ const Cart = () => {
               </div>
               <div className="text-right min-w-[90px]">
                 <div className="font-bold text-blue-700">
-                  ₹{item.price * item.quantity}
+                  ₹{(item.price || 0) * (item.quantity || 0)}
                 </div>
                 <button
                   onClick={() => removeFromCart(item.id)}

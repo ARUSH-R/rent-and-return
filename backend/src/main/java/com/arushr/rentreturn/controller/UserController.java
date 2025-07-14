@@ -113,4 +113,14 @@ public class UserController {
     public ResponseEntity<Long> countByEnabled(@RequestParam boolean enabled) {
         return ResponseEntity.ok(userService.countByEnabled(enabled));
     }
+
+    @PostMapping("/admin/enable-all")
+    public ResponseEntity<String> enableAllUsers() {
+        userService.findAll().forEach(user -> {
+            user.setEnabled(true);
+            user.setDeleted(false);
+            userService.register(user); // save updated user
+        });
+        return ResponseEntity.ok("All users enabled and undeleted.");
+    }
 }

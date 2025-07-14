@@ -1,0 +1,57 @@
+# WARP PROMPT
+
+Improve my existing `rentreturn` project (currently built with Vite + React + Tailwind CSS frontend and Spring Boot + PostgreSQL backend) into a visually polished, Amazon-like rental platform. The app is almost complete and functional, so do NOT change or break the existing business logic, folder structure, or component layout.
+
+Your goal is to **enhance the design, user interface, and user experience only**, while preserving all working features.
+
+🛠️ Stack:
+- Frontend: Vite, React, Tailwind CSS
+- Backend: Spring Boot, PostgreSQL
+- App type: Full-stack rental service like Amazon but for renting items
+
+✅ Core Requirements:
+1. **Do not alter backend code.** Focus only on improving frontend UI/UX and presentation.
+2. **Do not break any current functionality or routing logic.** All component and context state management should remain untouched.
+3. **Ensure responsive design** (mobile-first, tablet, desktop).
+4. Keep **Tailwind CSS as the styling framework**.
+5. Reuse existing React component structure — just style and layout improvements only.
+6. Maintain **role-based dashboard structure** (User/Admin).
+7. Keep all current routes and logic as-is — just enhance the **visual design** and **user flow**.
+
+🎯 Specific Visual Goals (Amazon-Inspired):
+- Add a polished, Amazon-like home page layout:
+  - Hero section with a banner and featured rentals
+  - Category grid with icons or cards
+  - Horizontal scrollers for trending/latest rentals
+  - Search bar with icon
+- Update product listing and product details pages to match Amazon-style cards:
+  - Product image, title, short description, price, rating, "Rent Now" button
+- Add elegant hover effects, box shadows, spacing, padding, and rounded corners to all cards
+- Use rich font scaling (titles, subtitles, body)
+- Style modals, toasts, buttons, form inputs, and loaders to look clean and modern
+- Use Tailwind's `@apply` where needed to extract reusable styles into components
+- Integrate some soft animation on hover/interactions using Tailwind's transition classes
+- Update navigation bar:
+  - Add branding, responsive search bar, cart icon, profile dropdown (as needed)
+  - Sticky on scroll for desktop
+
+🔒 Backend/API Constraints:
+- Do not modify API endpoints
+- Do not change backend payload structure
+- Do not touch authentication or role-based access logic
+
+📁 Folder Structure (example):
+- `/frontend/frontend` — Vite React frontend (target for this UI overhaul)
+- `/backend/backend` — Spring Boot backend (do not modify)
+
+🚨 DO NOT:
+- Change any backend files or break current frontend logic
+- Introduce new libraries or frameworks without checking compatibility
+- Alter file names or component hierarchy
+
+💡 OUTPUT:
+- Overwrite or create only frontend files under `/frontend/frontend`
+- Fully working UI/UX after changes — test all user flows
+- Final design must be clean, responsive, Amazon-like
+
+# END OF PROMPT

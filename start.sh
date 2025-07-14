@@ -33,7 +33,7 @@ npm run dev &
 FRONTEND_PID=$!
 
 echo -e "${GREEN}✅ Application started successfully!${NC}"
-echo -e "${GREEN}🔗 Backend: https://localhost:8443${NC}"
+echo -e "${GREEN}🔗 Backend: http://localhost:8080${NC}"
 echo -e "${GREEN}🔗 Frontend: http://localhost:5173${NC}"
 echo -e "${YELLOW}📋 To stop the application, run: kill $BACKEND_PID $FRONTEND_PID${NC}"
 

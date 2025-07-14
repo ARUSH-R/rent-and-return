@@ -119,40 +119,40 @@ const Feedbacks = () => {
       {/* Feedback List */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-xl font-bold mb-6 text-blue-700">Recent Feedbacks</h3>
-      {loading ? (
-        <div className="flex justify-center py-12">
-          <Loader size="lg" />
-        </div>
-      ) : error ? (
-        <div className="text-red-600 py-8 text-center">{error}</div>
-      ) : feedbacks.length === 0 ? (
-        <div className="text-gray-500 py-12 text-center">
-          No feedbacks have been submitted yet.
-        </div>
-      ) : (
-        <ul className="divide-y divide-gray-200">
-          {feedbacks.map((fb, idx) => (
-            <li key={fb.id || idx} className="py-5">
-              <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-700">
-                  {fb.user?.name?.[0]?.toUpperCase() || "U"}
-                </div>
-                <div>
-                  <div className="font-semibold text-blue-700">
-                    {fb.user?.name || fb.user?.email || "Anonymous"}
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <Loader size="lg" />
+          </div>
+        ) : error ? (
+          <div className="text-red-600 py-8 text-center">{error}</div>
+        ) : feedbacks.length === 0 ? (
+          <div className="text-gray-500 py-12 text-center">
+            No feedbacks have been submitted yet.
+          </div>
+        ) : (
+          <ul className="divide-y divide-gray-200">
+            {feedbacks.map((fb, idx) => (
+              <li key={fb.id || idx} className="py-5">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-700">
+                    {fb.user?.name?.[0]?.toUpperCase() || "U"}
                   </div>
-                  <div className="text-gray-600 text-sm mb-1">
-                    {fb.createdAt
-                      ? new Date(fb.createdAt).toLocaleString()
-                      : ""}
+                  <div>
+                    <div className="font-semibold text-blue-700">
+                      {fb.user?.name || fb.user?.email || "Anonymous"}
+                    </div>
+                    <div className="text-gray-600 text-sm mb-1">
+                      {fb.createdAt
+                        ? new Date(fb.createdAt).toLocaleString()
+                        : ""}
+                    </div>
+                    <div className="text-gray-800">{fb.feedback || fb.text}</div>
                   </div>
-                  <div className="text-gray-800">{fb.feedback || fb.text}</div>
                 </div>
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

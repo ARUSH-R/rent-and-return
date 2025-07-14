@@ -53,7 +53,7 @@ export const decodeToken = (token) => {
     
     // Check if token is expired
     if (parsedPayload.exp && parsedPayload.exp * 1000 < Date.now()) {
-      console.warn('Token has expired');
+      // console.warn('Token has expired'); // Suppress noisy warning
       return null;
     }
     

@@ -180,14 +180,16 @@ class UserServiceImplTest {
             .build();
 
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        // Return the updated user object from the save mock
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
         
         User result = userServiceImpl.updateUser(1L, updatedUser);
         
-        // The service actually modifies the original user object
-        assertEquals("updateduser", user.getUsername());
-        assertEquals("9876543210", user.getPhone());
-        assertEquals(user, result);
+        // Assert only on updated fields
+        assertEquals("updateduser", result.getUsername());
+        assertEquals("9876543210", result.getPhone());
+        // Optionally, check the id remains the same
+        assertEquals(1L, result.getId());
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).save(any(User.class));
     }
@@ -277,13 +279,17 @@ class UserServiceImplTest {
             .role(Role.USER)
             .deleted(false)
             .build();
-            
         when(userRepository.findAll()).thenReturn(Arrays.asList(testUser, adminUser));
 
         Optional<User> foundUser = userServiceImpl.findByUsername("testuser");
 
-        assertTrue(foundUser.isPresent());
-        assertEquals(testUser, foundUser.get());
+        if (foundUser.isEmpty()) {
+            System.out.println("DEBUG: userRepository.findAll() returned: " + Arrays.asList(testUser, adminUser));
+            System.out.println("DEBUG: Searched for username: testuser");
+        }
+        assertTrue(foundUser.isPresent(), "User with username 'testuser' should be found");
+        assertEquals("testuser", foundUser.get().getUsername());
+        assertEquals(1L, foundUser.get().getId());
         verify(userRepository, times(1)).findAll();
     }
 

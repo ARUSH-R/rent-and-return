@@ -32,34 +32,26 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/favicon.ico", "/error").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
-                        .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/v1/admin/stats/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/**", "/", "/favicon.ico", "/static/**", "/assets/**").permitAll()
                         .anyRequest().authenticated()
-
-
-
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .requiresChannel(channel -> channel.anyRequest().requiresSecure())
-                .headers(headers -> headers
-                        .contentSecurityPolicy(csp -> csp
-                                .policyDirectives("default-src 'self'"))
-                        .xssProtection(withDefaults -> {})
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                        .httpStrictTransportSecurity(hsts -> hsts
-                                .includeSubDomains(true)
-                                .maxAgeInSeconds(31536000))
-                        .contentTypeOptions(withDefaults -> {})
-                )
+                // .requiresChannel(channel -> channel.anyRequest().requiresSecure()) // Commented out for development
+                // .headers(headers -> headers
+                //         .contentSecurityPolicy(csp -> csp
+                //                 .policyDirectives("default-src 'self'"))
+                //         .xssProtection(withDefaults -> {})
+                //         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                //         .httpStrictTransportSecurity(hsts -> hsts
+                //                 .includeSubDomains(true)
+                //                 .maxAgeInSeconds(31536000))
+                //         .contentTypeOptions(withDefaults -> {})
+                // )
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.setAllowedOrigins(List.of("https://localhost:8443", "http://localhost:5173"));
+                    config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5173"));
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
