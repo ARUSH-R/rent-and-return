@@ -16,6 +16,36 @@ services:
     networks:
       - rentreturn-network
 
+  backend:
+    build: ./backend
+    container_name: rentreturn_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rentreturn
+      SPRING_DATASOURCE_USERNAME: arushr
+      SPRING_DATASOURCE_PASSWORD: arushr
+      JWT_SECRET: 4ada66507739000da7f9f2b0e5e96cde2ed9de6697b8d6dc36ea5b8bf7306597
+      JWT_EXPIRATION: 86400000
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    networks:
+      - rentreturn-network
+
+  frontend:
+    build: ./frontend
+    container_name: rentreturn_frontend
+    restart: always
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080/api
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+    networks:
+      - rentreturn-network
+
 networks:
   rentreturn-network:
     driver: bridge

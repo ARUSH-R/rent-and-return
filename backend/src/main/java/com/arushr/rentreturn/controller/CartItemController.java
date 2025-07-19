@@ -25,17 +25,26 @@ public class CartItemController {
 
     @PostMapping
     public ResponseEntity<CartItem> addToCart(
-            @RequestParam Long userId,
-            @RequestParam Long productId,
-            @RequestParam int quantity
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody CartItemRequest request
     ) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found: " + userId));
-        Product product = productService.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
-
-        CartItem cartItem = cartItemService.addItem(user, product, quantity);
+        String email = userDetails.getUsername();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
+        Product product = productService.findById(request.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found: " + request.getProductId()));
+        CartItem cartItem = cartItemService.addItem(user, product, request.getQuantity());
         return ResponseEntity.ok(cartItem);
+    }
+
+    // DTO for request body
+    public static class CartItemRequest {
+        private Long productId;
+        private int quantity;
+        public Long getProductId() { return productId; }
+        public void setProductId(Long productId) { this.productId = productId; }
+        public int getQuantity() { return quantity; }
+        public void setQuantity(int quantity) { this.quantity = quantity; }
     }
 
     @GetMapping("/{id}")
@@ -53,7 +62,7 @@ public class CartItemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CartItem>> getCurrentUserCart(@AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> getCurrentUserCart(@AuthenticationPrincipal UserDetails userDetails) {
         if (userDetails == null) {
             // Fallback to SecurityContextHolder
             Object principal = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -69,7 +78,8 @@ public class CartItemController {
         String email = userDetails.getUsername();
         User user = userService.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found: " + email));
-        return ResponseEntity.ok(cartItemService.findByUser(user));
+        List<CartItem> items = cartItemService.findByUser(user);
+        return ResponseEntity.ok(java.util.Collections.singletonMap("items", items));
     }
 
     @PutMapping("/{id}/quantity")

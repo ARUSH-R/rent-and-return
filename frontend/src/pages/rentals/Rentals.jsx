@@ -13,51 +13,24 @@ const Rentals = () => {
   const [rentals, setRentals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const { isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   useEffect(() => {
     setLoading(true);
     setError("");
-    
-    // For now, provide sample rental data since backend endpoint may not exist
-    setTimeout(() => {
-      const sampleRentals = [
-        {
-          id: 1,
-          productName: "MacBook Pro 13\"",
-          productImage: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=300&fit=crop&crop=center",
-          rentalDate: "2025-01-10",
-          returnDate: "2025-01-15",
-          status: "Active",
-          pricePerDay: 50.00,
-          totalDays: 5,
-          totalCost: 250.00
-        },
-        {
-          id: 2,
-          productName: "Digital Camera",
-          productImage: "https://images.unsplash.com/photo-1606983340126-99ab4feaa64a?w=400&h=300&fit=crop&crop=center",
-          rentalDate: "2025-01-05",
-          returnDate: "2025-01-08",
-          status: "Completed",
-          pricePerDay: 35.00,
-          totalDays: 3,
-          totalCost: 105.00
-        }
-      ];
-      setRentals(sampleRentals);
+    if (!user?.id) {
+      setError("You must be logged in to view rentals.");
       setLoading(false);
-    }, 1000);
-    
-    // Uncomment when backend endpoint is ready:
-    // api.get("/rentals")
-    //   .then((res) => {
-    //     const data = res.data;
-    //     setRentals(Array.isArray(data) ? data : data.rentals || []);
-    //   })
-    //   .catch((err) => setError(err.message || "Failed to fetch rentals"))
-    //   .finally(() => setLoading(false));
-  }, []);
+      return;
+    }
+    api.get(`/rentals/user/${user.id}`)
+      .then((res) => {
+        const data = res.data;
+        setRentals(Array.isArray(data) ? data : data.rentals || []);
+      })
+      .catch((err) => setError(err.message || "Failed to fetch rentals"))
+      .finally(() => setLoading(false));
+  }, [user]);
 
   return (
     <div className="max-w-6xl mx-auto p-6">

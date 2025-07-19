@@ -1,4 +1,4 @@
-package com.rentreturn.backend.dto.product;
+package com.arushr.rentreturn.dto.product;
 
 public class ProductResponseDTO {
 }

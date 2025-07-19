@@ -34,7 +34,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/", "/favicon.ico", "/static/**", "/assets/**").permitAll()
+                        .requestMatchers(
+                            "/api/auth/**",
+                            "/api/products",
+                            "/api/products/**",
+                            "/api/feedback",
+                            "/api/feedback/**",
+                            "/api/v1/payments/webhook",
+                            "/",
+                            "/favicon.ico",
+                            "/static/**",
+                            "/assets/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

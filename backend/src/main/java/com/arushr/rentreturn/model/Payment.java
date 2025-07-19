@@ -48,6 +48,18 @@ public class Payment implements Serializable {
     @Version
     private Long version;
 
+    // Stripe payment intent ID (nullable for non-Stripe payments)
+    @Column(name = "stripe_payment_intent_id", length = 100)
+    private String stripePaymentIntentId;
+
+    // Stripe payment status (nullable for non-Stripe payments)
+    @Column(name = "stripe_status", length = 50)
+    private String stripeStatus;
+
+    // Stripe receipt URL (nullable for non-Stripe payments)
+    @Column(name = "stripe_receipt_url", length = 255)
+    private String stripeReceiptUrl;
+
     /**
      * Marks the payment as successful.
      */

@@ -53,15 +53,15 @@ public class AuthenticationService {
 
     @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        String identifier = request.getIdentifier();
+        User user = userRepository.findByEmail(identifier)
+                .or(() -> userRepository.findByUsername(identifier))
+                .or(() -> userRepository.findByPhone(identifier))
+                .orElseThrow(() -> new RuntimeException("User not found with identifier: " + identifier));
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+                new UsernamePasswordAuthenticationToken(user.getEmail(), request.getPassword())
         );
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow();
-
         revokeAllUserTokens(user);
-
         String jwtToken = jwtService.generateToken(user);
         Token token = Token.builder()
                 .token(jwtToken)
@@ -71,7 +71,6 @@ public class AuthenticationService {
                 .revoked(false)
                 .build();
         tokenRepository.save(token);
-
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

@@ -3,6 +3,7 @@ package com.arushr.rentreturn.service;
 import com.arushr.rentreturn.model.Payment;
 import com.arushr.rentreturn.model.Rental;
 import com.arushr.rentreturn.repository.PaymentRepository;
+import com.arushr.rentreturn.service.EmailService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final EmailService emailService;
 
     @Override
     public Payment createPayment(Rental rental, String method, Double amount) {
@@ -57,10 +59,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public double getTotalPaymentsAmount() {
-        return paymentRepository.findAll().stream()
-                .filter(Payment::isSuccessful)
-                .mapToDouble(Payment::getAmount)
-                .sum();
+        Double sum = paymentRepository.sumSuccessfulPayments();
+        return sum != null ? sum : 0.0;
     }
 
     @Override
@@ -78,6 +78,41 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentRepository.findById(id)
                 .map(Payment::isPending)
                 .orElse(false);
+    }
+
+    @Override
+    public Payment save(Payment payment) {
+        return paymentRepository.save(payment);
+    }
+
+    @Override
+    public void markStripePaymentSuccessful(String stripePaymentIntentId, String stripeStatus, String receiptUrl) {
+        Payment payment = paymentRepository.findByStripePaymentIntentId(stripePaymentIntentId)
+                .orElseThrow(() -> new RuntimeException("Payment not found for Stripe intent: " + stripePaymentIntentId));
+        payment.setSuccessful(true);
+        payment.setStripeStatus(stripeStatus);
+        payment.setStripeReceiptUrl(receiptUrl);
+        paymentRepository.save(payment);
+        // Send payment receipt email
+        if (payment.getRental() != null && payment.getRental().getUser() != null && payment.getRental().getUser().getEmail() != null) {
+            String subject = "Payment Successful - Rent & Return";
+            String text = String.format("Dear %s,\n\nYour payment for rental ID %d was successful.\nAmount: %s\nReceipt: %s\n\nThank you for using Rent & Return!",
+                payment.getRental().getUser().getUsername(),
+                payment.getRental().getId(),
+                payment.getAmount(),
+                receiptUrl != null ? receiptUrl : "N/A"
+            );
+            emailService.sendSimpleMessage(payment.getRental().getUser().getEmail(), subject, text);
+        }
+    }
+
+    @Override
+    public void markStripePaymentFailed(String stripePaymentIntentId, String stripeStatus) {
+        Payment payment = paymentRepository.findByStripePaymentIntentId(stripePaymentIntentId)
+                .orElseThrow(() -> new RuntimeException("Payment not found for Stripe intent: " + stripePaymentIntentId));
+        payment.setSuccessful(false);
+        payment.setStripeStatus(stripeStatus);
+        paymentRepository.save(payment);
     }
 
     // --- Stubs for not implemented methods ---

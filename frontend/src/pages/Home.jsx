@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRightIcon, StarIcon, ShoppingCartIcon, HeartIcon, TruckIcon, ShieldCheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 import api from '../api/api';
 import { useAuth } from '../auth/AuthContext';
 import toast from 'react-hot-toast';
+import WishlistService from '../services/WishlistService';
+import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
+import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
 
 const Home = () => {
   // Move heroSlides declaration to the top
@@ -35,10 +38,40 @@ const Home = () => {
   const [cartLoading, setCartLoading] = useState({});
   const [currentSlide, setCurrentSlide] = useState(0);
   const { isAuthenticated } = useAuth();
+  const [categories, setCategories] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
+
+  // Category image mapping
+  const categoryImageMap = {
+    'Electronics': '/assets/products/electronics/electronics-1.jpg',
+    'Sports & Fitness': '/assets/products/sports-fitness/sports-fitness-1.jpg',
+    'Books & Stationery': '/assets/products/books-stationery/books-stationery-1.jpg',
+    'Home Appliances': '/assets/products/home-appliances/home-appliances-1.jpg',
+    'Furniture': '/assets/products/furniture/furniture-1.jpg',
+    'Vehicles': '/assets/products/vehicles/vehicles-1.jpg',
+    'Tools & Equipment': '/assets/products/tools-equipment/tools-equipment-1.jpg',
+    'Services': '/assets/products/services/services-1.jpg',
+  };
 
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    // Dynamically generate categories from products
+    const uniqueCategories = Array.from(
+      new Set(products.map(p => p.category && p.category.trim()).filter(Boolean))
+    );
+    const cats = uniqueCategories.map(cat => ({
+      name: cat,
+      image: categoryImageMap[cat] || '/assets/no-image.jpg',
+      count: products.filter(p => p.category === cat).length
+    }));
+    setCategories(cats);
+    console.log('Categories:', cats);
+    console.log('Products:', products);
+  }, [products]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,6 +79,36 @@ const Home = () => {
     }, 5000);
     return () => clearInterval(timer);
   }, [heroSlides.length]);
+
+  useEffect(() => {
+    // Fetch wishlist
+    const fetchWishlist = async () => {
+      setWishlistLoading(true);
+      try {
+        const data = await WishlistService.getWishlist();
+        setWishlist(data.map(item => item.productId));
+      } catch (e) {
+        setWishlist([]);
+      } finally {
+        setWishlistLoading(false);
+      }
+    };
+    fetchWishlist();
+  }, []);
+
+  const toggleWishlist = async (productId) => {
+    setWishlistLoading(true);
+    try {
+      if (wishlist.includes(productId)) {
+        await WishlistService.removeFromWishlist(productId);
+        setWishlist(wishlist.filter(id => id !== productId));
+      } else {
+        await WishlistService.addToWishlist(productId);
+        setWishlist([...wishlist, productId]);
+      }
+    } catch (e) {}
+    setWishlistLoading(false);
+  };
 
   const fetchProducts = async () => {
     try {
@@ -68,13 +131,12 @@ const Home = () => {
       toast.error('Please login to add items to cart');
       return;
     }
-
     setCartLoading(prev => ({ ...prev, [productId]: true }));
     try {
       await api.post('/cart', { productId, quantity: 1 });
       toast.success('Item added to cart!');
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error('Error adding to cart:', error, 'Product ID:', productId);
       toast.error('Failed to add item to cart');
     } finally {
       setCartLoading(prev => ({ ...prev, [productId]: false }));
@@ -99,24 +161,6 @@ const Home = () => {
     }
   ];
 
-  const categories = [
-    {
-      name: "Electronics",
-      image: "/assets/electronics.jpg",
-      count: products.filter(p => p.category === 'Electronics').length
-    },
-    {
-      name: "Sports",
-      image: "/assets/sports.jpg",
-      count: products.filter(p => p.category === 'Sports').length
-    },
-    {
-      name: "Books",
-      image: "/assets/books.jpg",
-      count: products.filter(p => p.category === 'Books').length
-    }
-  ];
-
   const ProductCard = ({ product }) => (
     <motion.div
       whileHover={{ y: -5 }}
@@ -124,18 +168,21 @@ const Home = () => {
     >
       <div className="relative">
         <img
-          src={product.imageUrl || 'https://via.placeholder.com/300x200'}
+          src={product.imageUrl || 'https://placehold.co/300x200'}
           alt={product.name}
           className="w-full h-48 object-cover"
           onError={(e) => {
-            e.target.src = 'https://via.placeholder.com/300x200';
+            e.target.src = 'https://placehold.co/300x200';
           }}
         />
-        <div className="absolute top-3 right-3">
-          <button className="p-2 bg-white rounded-full shadow-md hover:bg-gray-50 transition-colors">
-            <HeartIcon className="h-5 w-5 text-gray-600" />
-          </button>
-        </div>
+        <button
+          className={`absolute top-3 right-3 z-10 p-2 rounded-full shadow-md bg-white hover:bg-pink-100 transition-all ${wishlist.includes(product.id) ? 'text-pink-600' : 'text-gray-400'}`}
+          onClick={e => { e.stopPropagation(); toggleWishlist(product.id); }}
+          disabled={wishlistLoading}
+          title={wishlist.includes(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+        >
+          {wishlist.includes(product.id) ? <SolidHeartIcon className="h-5 w-5" /> : <OutlineHeartIcon className="h-5 w-5" />}
+        </button>
         <div className="absolute bottom-3 left-3 bg-green-600 text-white px-2 py-1 rounded-md text-sm font-medium">
           Available
         </div>
@@ -212,7 +259,7 @@ const Home = () => {
                 alt={slide.title}
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  e.target.src = 'https://via.placeholder.com/1200x500/cccccc/666666?text=Image+Not+Found';
+                  e.target.src = 'https://placehold.co/1200x500/cccccc/666666?text=Image+Not+Found';
                 }}
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
@@ -232,14 +279,12 @@ const Home = () => {
                   >
                     {slide.description}
                   </motion.p>
-                  <motion.button
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="bg-orange-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-colors"
+                  <Link
+                    to="/products"
+                    className="inline-block bg-orange-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-colors"
                   >
                     Shop Now
-                  </motion.button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -282,39 +327,30 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Categories */}
-      <div className="bg-gray-50 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
-            <p className="text-gray-600">Discover our wide range of rental categories</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {categories.map((category, index) => (
-              <motion.div
-                key={category.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="relative group cursor-pointer"
-              >
-                <div className="aspect-w-16 aspect-h-10 rounded-xl overflow-hidden">
-                  <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-60 object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-2xl font-bold mb-2">{category.name}</h3>
-                    <p className="text-sm opacity-90">{category.count} items available</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+      {/* Shop by Category Section */}
+      <section className="max-w-6xl mx-auto px-4 py-12">
+        <h2 className="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          {categories.map(category => (
+            <Link
+              key={category.name}
+              to={`/products?category=${encodeURIComponent(category.name)}`}
+              className="block bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+            >
+              <img
+                src={category.image}
+                alt={category.name}
+                className="w-full h-40 object-cover"
+                onError={e => { e.target.src = '/assets/no-image.jpg'; }}
+              />
+              <div className="p-4">
+                <h3 className="font-semibold text-lg mb-2 truncate">{category.name}</h3>
+                <p className="text-gray-600">{category.count} products available</p>
+              </div>
+            </Link>
+          ))}
         </div>
-      </div>
+      </section>
 
       {/* Featured Products */}
       <div className="bg-white py-16">

@@ -13,6 +13,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -30,23 +32,31 @@ public class RentalController {
 
     @PostMapping
     public ResponseEntity<Rental> createRental(
-            @RequestParam Long userId,
-            @RequestParam Long productId,
-            @RequestParam int durationInDays
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestBody RentalRequest request
     ) {
-        User user = userService.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
-        Product product = productService.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + productId));
-
+        String email = userDetails.getUsername();
+        User user = userService.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found: " + email));
+        Product product = productService.findById(request.getProductId())
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + request.getProductId()));
         Rental rental = rentalService.create(Rental.builder()
                 .user(user)
                 .product(product)
                 .rentalStart(LocalDateTime.now())
-                .rentalEnd(LocalDateTime.now().plusDays(durationInDays))
+                .rentalEnd(LocalDateTime.now().plusDays(request.getDurationInDays()))
                 .build());
-
         return ResponseEntity.status(HttpStatus.CREATED).body(rental);
+    }
+
+    // DTO for request body
+    public static class RentalRequest {
+        private Long productId;
+        private int durationInDays;
+        public Long getProductId() { return productId; }
+        public void setProductId(Long productId) { this.productId = productId; }
+        public int getDurationInDays() { return durationInDays; }
+        public void setDurationInDays(int durationInDays) { this.durationInDays = durationInDays; }
     }
 
     @GetMapping("/{id}")

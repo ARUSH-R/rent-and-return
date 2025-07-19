@@ -27,6 +27,12 @@ public interface PaymentService {
 
     boolean isPaymentPending(Long id);
 
+    Payment save(Payment payment);
+
+    void markStripePaymentSuccessful(String stripePaymentIntentId, String stripeStatus, String receiptUrl);
+
+    void markStripePaymentFailed(String stripePaymentIntentId, String stripeStatus);
+
     // --- Added for controller completeness ---
     List<Payment> findByUserId(Long userId);
 

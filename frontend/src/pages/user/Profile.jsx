@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
+import WishlistService from '../../services/WishlistService';
+import { Link } from 'react-router-dom';
 
 /**
  * Profile Page
@@ -10,6 +12,8 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [wishlist, setWishlist] = useState([]);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -23,11 +27,25 @@ const Profile = () => {
       .then((data) => setProfile(data))
       .catch((err) => setError(err.message || "Failed to fetch profile"))
       .finally(() => setLoading(false));
+
+    // Fetch wishlist
+    const fetchWishlist = async () => {
+      setWishlistLoading(true);
+      try {
+        const data = await WishlistService.getWishlist();
+        setWishlist(data);
+      } catch (e) {
+        setWishlist([]);
+      } finally {
+        setWishlistLoading(false);
+      }
+    };
+    fetchWishlist();
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-blue-700">My Profile</h2>
+    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-xl font-semibold mb-4">My Profile</h2>
       {loading ? (
         <div className="flex justify-center py-12">
           <Loader size="lg" />
@@ -57,6 +75,29 @@ const Profile = () => {
           {/* <button className="mt-4 bg-blue-700 text-white px-6 py-2 rounded font-semibold hover:bg-blue-800 transition">
             Edit Profile
           </button> */}
+          <div className="mt-6 flex gap-4">
+            <Link to="/profile/addresses" className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">Manage Addresses</Link>
+          </div>
+          <div className="mt-8">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-semibold">Wishlist</h3>
+              <Link to="/wishlist" className="text-blue-600 hover:underline text-sm">View All</Link>
+            </div>
+            {wishlistLoading ? (
+              <div>Loading wishlist...</div>
+            ) : wishlist.length === 0 ? (
+              <div className="text-gray-500">Your wishlist is empty.</div>
+            ) : (
+              <ul className="divide-y divide-gray-200">
+                {wishlist.slice(0, 3).map(item => (
+                  <li key={item.id} className="py-2 flex items-center gap-3">
+                    <img src={item.productImageUrl || '/assets/no-image.jpg'} alt="" className="w-10 h-10 object-cover rounded" />
+                    <span>{item.productName}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       )}
     </div>

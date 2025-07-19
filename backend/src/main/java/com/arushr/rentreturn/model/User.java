@@ -100,7 +100,10 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public String getUsername() {
-        return email; // using email as username
+        return username; // return the actual username field
+    }
+    public String getEmail() {
+        return email;
     }
 
     @Override
@@ -121,6 +124,14 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    // Add these methods for clarity in tests and business logic
+    public String getActualUsername() {
+        return this.username;
+    }
+    public String getActualEmail() {
+        return this.email;
     }
 
     @PrePersist

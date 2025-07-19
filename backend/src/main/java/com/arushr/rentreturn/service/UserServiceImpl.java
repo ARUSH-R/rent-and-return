@@ -98,9 +98,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return userRepository.findAll().stream()
-                .filter(u -> username.equals(u.getUsername()) && !u.isDeleted())
-                .findFirst();
+        return userRepository.findByUsername(username).filter(user -> !user.isDeleted());
     }
 
     @Override

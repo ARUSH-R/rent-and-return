@@ -1,6 +1,7 @@
 import requests
 import random
 import string
+import os
 
 API_URL = "http://localhost:8080/api/products"
 CATEGORIES = [
@@ -13,8 +14,17 @@ CATEGORIES = [
     "Tools & Equipment",
     "Services"
 ]
+CATEGORY_FOLDER_MAP = {
+    "Electronics": "electronics",
+    "Vehicles": "vehicles",
+    "Books & Stationery": "books-stationery",
+    "Sports & Fitness": "sports-fitness",
+    "Home Appliances": "home-appliances",
+    "Furniture": "furniture",
+    "Tools & Equipment": "tools-equipment",
+    "Services": "services",
+}
 NUM_PRODUCTS_PER_CATEGORY = 30
-NUM_IMAGES = 200
 
 # Example product names for each category
 PRODUCT_NAMES = {
@@ -27,6 +37,8 @@ PRODUCT_NAMES = {
     "Tools & Equipment": ["Drill Machine", "Hammer", "Screwdriver Set", "Ladder", "Saw", "Wrench Set", "Measuring Tape", "Toolbox", "Chainsaw", "Angle Grinder", "Sander", "Paint Sprayer", "Tile Cutter", "Wheelbarrow", "Pipe Wrench", "Socket Set", "Pliers", "Chisel Set", "Level", "Stud Finder"],
     "Services": ["Event Planning", "Cleaning Service", "Moving Help", "Tutoring", "Photography", "Catering", "DJ Service", "Gardening", "Babysitting", "Pet Sitting", "Laundry Service", "Car Wash", "Home Repair", "Personal Training", "Makeup Artist", "Interior Design", "Language Lessons", "Music Lessons", "Tech Support", "Bike Repair"]
 }
+
+ASSETS_BASE = "frontend/public/assets/products/"
 
 def random_description(category, name):
     return f"Rent a high-quality {name} for your needs in the {category.lower()} category. Well-maintained, reliable, and available at an affordable daily rate!"
@@ -41,17 +53,26 @@ def random_user():
     # Simulate a user/admin for createdBy/updatedBy
     return random.choice(["admin", "system", "demo_user", "testuser"])
 
+def get_category_images(category_folder):
+    folder_path = os.path.join(ASSETS_BASE, category_folder)
+    return [f for f in os.listdir(folder_path) if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
+
 def main():
-    image_counter = 1
     total_created = 0
     for category in CATEGORIES:
         names = PRODUCT_NAMES[category]
+        category_folder = CATEGORY_FOLDER_MAP[category]
+        images = get_category_images(category_folder)
+        if not images:
+            print(f"No images found for category {category} in {category_folder}! Skipping...")
+            continue
         for i in range(NUM_PRODUCTS_PER_CATEGORY):
             name = random.choice(names) + f" {random.randint(1, 1000)}"
             description = random_description(category, name)
             price = random_price()
             stock = random_stock()
-            image_url = f"/assets/products/{image_counter}.jpg"
+            image_file = random.choice(images)
+            image_url = f"/assets/products/{category_folder}/{image_file}"
             created_by = random_user()
             updated_by = created_by
             product = {
@@ -69,15 +90,12 @@ def main():
             try:
                 resp = requests.post(API_URL, json=product)
                 if resp.status_code == 200 or resp.status_code == 201:
-                    print(f"Created: {name} in {category}")
+                    print(f"Created: {name} in {category} with image {image_file}")
                     total_created += 1
                 else:
                     print(f"Failed to create {name}: {resp.status_code} {resp.text}")
             except Exception as e:
                 print(f"Error creating {name}: {e}")
-            image_counter += 1
-            if image_counter > NUM_IMAGES:
-                image_counter = 1
     print(f"Total products created: {total_created}")
 
 if __name__ == "__main__":

@@ -24,6 +24,8 @@ import Checkout from "./pages/checkout/Checkout";
 import Rentals from "./pages/rentals/Rentals";
 import RentalCreate from "./pages/rentals/RentalCreate";
 import Feedback from "./pages/feedback/Feedbacks";
+import Wishlist from "./pages/Wishlist";
+import AddressBook from "./pages/user/AddressBook";
 
 function App() {
   return (
@@ -94,10 +96,14 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/profile/addresses" element={<PrivateRoute><AddressBook /></PrivateRoute>} />
 
           {/* Products */}
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetails />} />
+
+          {/* Wishlist */}
+          <Route path="/wishlist" element={<PrivateRoute><Wishlist /></PrivateRoute>} />
 
           {/* Admin routes */}
           <Route

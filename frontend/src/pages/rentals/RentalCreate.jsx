@@ -75,49 +75,36 @@ const RentalCreate = () => {
       if (startDate < today) {
         throw new Error('Start date cannot be in the past');
       }
-      
       if (endDate <= startDate) {
         throw new Error('End date must be after start date');
       }
-
       if (!formData.contactPhone || !formData.deliveryAddress) {
         throw new Error('Please fill in all required fields');
       }
 
-      // Create rental object
-      const rentalData = {
-        productId: product.id,
-        productName: product.name,
-        quantity: quantity,
-        startDate: formData.startDate,
-        endDate: formData.endDate,
-        notes: formData.notes,
-        contactPhone: formData.contactPhone,
-        deliveryAddress: formData.deliveryAddress,
-        totalCost: calculateTotalCost(),
-        status: 'pending',
-        userId: user?.id,
-        userName: user?.username
-      };
+      // Calculate duration in days
+      const durationInDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+      if (durationInDays <= 0) throw new Error('Rental duration must be at least 1 day');
 
-      // For now, simulate API call and store in localStorage
-      const existingRentals = JSON.parse(localStorage.getItem('userRentals') || '[]');
-      const newRental = {
-        ...rentalData,
-        id: Date.now(),
-        createdAt: new Date().toISOString(),
-        status: 'pending'
-      };
-      
-      existingRentals.push(newRental);
-      localStorage.setItem('userRentals', JSON.stringify(existingRentals));
-
-      // Show success message
+      // Make API call to create rental
+      const response = await fetch('/api/rentals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({
+          productId: product.id,
+          durationInDays
+        })
+      });
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to create rental');
+      }
+      // Success
       alert('Rental request submitted successfully! You can view it in your rentals page.');
-      
-      // Navigate to rentals page
       navigate('/rentals');
-      
     } catch (error) {
       setError(error.message);
     } finally {

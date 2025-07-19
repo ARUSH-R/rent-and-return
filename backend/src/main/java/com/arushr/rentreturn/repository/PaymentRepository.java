@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.List;
+import org.springframework.data.jpa.repository.Query;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
@@ -30,6 +31,11 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findAllByRentalId(Long rentalId);
 
     long countBySuccessful(boolean successful);
+
+    @Query("SELECT SUM(p.amount) FROM Payment p WHERE p.successful = true")
+    Double sumSuccessfulPayments();
+
+    Optional<Payment> findByStripePaymentIntentId(String stripePaymentIntentId);
 
     // Add as needed for new service methods
 }

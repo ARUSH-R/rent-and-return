@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { getToken, removeToken, setToken, decodeToken } from "../utils/tokenUtils";
 import AuthService from "../services/AuthService";
-const { login: apiLogin, register: apiRegister } = AuthService;
+const { login: apiLogin, register: apiRegister, getCurrentUser } = AuthService;
 
 const AuthContext = createContext();
 
@@ -15,20 +15,50 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Keeps user state in sync with token changes
+  // Validate token and fetch user info on mount
   useEffect(() => {
     const token = getToken();
-    setUser(token ? decodeToken(token) : null);
+    if (!token) {
+      setUser(null);
+      return;
+    }
+    const decoded = decodeToken(token);
+    if (!decoded) {
+      // Token is invalid or expired
+      removeToken();
+      setUser(null);
+      return;
+    }
+    // Optionally fetch user info from backend to verify token
+    getCurrentUser()
+      .then((data) => {
+        setUser({ ...decoded, ...data });
+        console.log("[Auth] User loaded:", { ...decoded, ...data });
+      })
+      .catch((err) => {
+        console.error("[Auth] Failed to fetch user info:", err);
+        removeToken();
+        setUser(null);
+      });
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (identifier, password) => {
     setLoading(true);
     setError("");
     try {
-      const data = await apiLogin({ email, password });
+      const data = await apiLogin({ identifier, password });
       setToken(data.token);
-      setUser(decodeToken(data.token));
+      const decoded = decodeToken(data.token);
+      // Fetch user info after login
+      let userInfo = {};
+      try {
+        userInfo = await getCurrentUser();
+      } catch (e) {
+        console.error("[Auth] Failed to fetch user info after login:", e);
+      }
+      setUser({ ...decoded, ...userInfo });
       setLoading(false);
+      console.log("[Auth] Login successful. User:", { ...decoded, ...userInfo });
       return true;
     } catch (err) {
       setError(
@@ -37,6 +67,7 @@ export const AuthProvider = ({ children }) => {
         "Login failed"
       );
       setLoading(false);
+      console.error("[Auth] Login failed:", err);
       return false;
     }
   };

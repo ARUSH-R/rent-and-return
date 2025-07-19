@@ -1,4 +1,4 @@
-package com.rentreturn.backend.dto.user;
+package com.arushr.rentreturn.dto.user;
 
 public class UserResponseDTO {
 }

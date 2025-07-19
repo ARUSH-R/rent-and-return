@@ -6,9 +6,19 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../auth/AuthContext';
 import { toast } from 'react-hot-toast';
 import Loader from '../../components/Loader';
+import api from '../../api/api';
+import AddressBook from '../user/AddressBook';
 
 // Initialize Stripe (replace with your publishable key)
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_YOUR_PUBLISHABLE_KEY');
+
+const paymentMethods = [
+  { label: 'Card', value: 'Card' },
+  { label: 'UPI', value: 'UPI' },
+  { label: 'Netbanking', value: 'Netbanking' },
+  { label: 'Wallet', value: 'Wallet' },
+  { label: 'Cash on Delivery (COD)', value: 'COD' },
+];
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -32,44 +42,61 @@ const CheckoutForm = () => {
       country: 'IN'
     }
   });
+  const [paymentMethod, setPaymentMethod] = useState('Card');
+  const [upiId, setUpiId] = useState('');
+  const [walletProvider, setWalletProvider] = useState('');
+  const [netbankingBank, setNetbankingBank] = useState('');
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [addressLoading, setAddressLoading] = useState(true);
 
   const total = cart?.items?.reduce((sum, item) => sum + item.price * item.quantity, 0) || 0;
 
   useEffect(() => {
-    // Create PaymentIntent on the server
-    const createPaymentIntent = async () => {
+    // Fetch addresses for selection
+    const fetchAddresses = async () => {
+      setAddressLoading(true);
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/payments/create-intent`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            amount: total * 100, // Convert to cents
-            currency: 'inr',
-            items: cart.items
-          })
+        const res = await api.get('/v1/addresses');
+        setAddresses(res.data);
+        // Auto-select default address if present
+        const defaultAddr = res.data.find(a => a.isDefault);
+        setSelectedAddressId(defaultAddr ? defaultAddr.id : res.data[0]?.id);
+      } catch (e) {
+        setAddresses([]);
+      } finally {
+        setAddressLoading(false);
+      }
+    };
+    fetchAddresses();
+  }, []);
+
+  useEffect(() => {
+    // Create Rental, then PaymentIntent
+    const createRentalAndPaymentIntent = async () => {
+      try {
+        // 1. Create rental with selected address
+        const rentalRes = await api.post('/rentals', {
+          productId: cart.items[0]?.id, // TODO: Support multiple products/rentals if needed
+          durationInDays: 1, // TODO: Make this dynamic
+          addressId: selectedAddressId
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to create payment intent');
-        }
-
-        const { clientSecret } = await response.json();
-        setClientSecret(clientSecret);
+        const rentalId = rentalRes.data.id;
+        // 2. Create Stripe PaymentIntent
+        const paymentRes = await api.post(`/v1/payments/stripe/create-intent?rentalId=${rentalId}`, {
+          email: billingDetails.email
+        });
+        setClientSecret(paymentRes.data.clientSecret);
       } catch (error) {
-        console.error('Error creating payment intent:', error);
+        console.error('Error creating rental/payment intent:', error);
         toast.error('Failed to initialize payment. Please try again.');
-        // For demo purposes, create a mock client secret
         setClientSecret('pi_mock_client_secret_for_demo');
       }
     };
-
-    if (cart?.items?.length > 0) {
-      createPaymentIntent();
+    if (cart?.items?.length > 0 && selectedAddressId) {
+      createRentalAndPaymentIntent();
     }
-  }, [cart, total]);
+  }, [cart, total, billingDetails.email, selectedAddressId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -92,12 +119,44 @@ const CheckoutForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsProcessing(true);
 
-    if (!stripe || !elements) {
+    // Simulate payment for non-card methods
+    if (paymentMethod !== 'Card') {
+      // Here you would call your backend to create a payment with the selected method
+      try {
+        // Example: POST /api/payments with method, amount, etc.
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/payments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            rentalId: 1, // TODO: Replace with actual rentalId after rental creation
+            method: paymentMethod,
+            amount: total,
+            upiId: paymentMethod === 'UPI' ? upiId : undefined,
+            walletProvider: paymentMethod === 'Wallet' ? walletProvider : undefined,
+            netbankingBank: paymentMethod === 'Netbanking' ? netbankingBank : undefined,
+          })
+        });
+        if (!response.ok) throw new Error('Payment failed');
+        await clearCart();
+        toast.success('Payment successful! Thank you for your order.');
+        navigate('/checkout/success');
+      } catch (error) {
+        toast.error('Payment failed. Please try again.');
+      } finally {
+        setIsProcessing(false);
+      }
       return;
     }
 
-    setIsProcessing(true);
+    if (!stripe || !elements) {
+      setIsProcessing(false);
+      return;
+    }
 
     const cardElement = elements.getElement(CardElement);
 
@@ -174,6 +233,28 @@ const CheckoutForm = () => {
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-3xl font-bold mb-8 text-center">Checkout</h1>
+      {/* Address Selection Floating Tab */}
+      <div className="mb-8 bg-white rounded-lg shadow-md p-6 sticky top-2 z-20">
+        <h2 className="text-xl font-semibold mb-4">Select Delivery Address</h2>
+        {addressLoading ? <Loader size="md" /> : (
+          addresses.length === 0 ? (
+            <div className="text-gray-500">No addresses found. <a href="/user/addresses" className="text-blue-700 underline">Add Address</a></div>
+          ) : (
+            <div className="flex flex-col gap-3">
+              {addresses.map(addr => (
+                <label key={addr.id} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${selectedAddressId===addr.id?'border-blue-600 bg-blue-50 shadow':'border-gray-200 hover:border-blue-400'}`}>
+                  <input type="radio" name="address" value={addr.id} checked={selectedAddressId===addr.id} onChange={()=>setSelectedAddressId(addr.id)} className="accent-blue-600" />
+                  <div className="flex-1">
+                    <div className="font-semibold text-blue-700">{addr.name} {addr.isDefault && <span className="ml-2 px-2 py-1 bg-green-100 text-green-700 rounded text-xs">Default</span>}</div>
+                    <div className="text-gray-700 text-sm">{addr.addressLine1}, {addr.addressLine2}, {addr.city}, {addr.state}, {addr.postalCode}, {addr.country}</div>
+                    <div className="text-gray-500 text-xs">Phone: {addr.phone}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          )
+        )}
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Order Summary */}
@@ -208,6 +289,25 @@ const CheckoutForm = () => {
           <h2 className="text-xl font-semibold mb-4">Payment Details</h2>
           
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Payment Method Selection */}
+            <div>
+              <label className="block text-sm font-medium mb-1">Payment Method</label>
+              <div className="flex flex-wrap gap-4">
+                {paymentMethods.map((method) => (
+                  <label key={method.value} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={method.value}
+                      checked={paymentMethod === method.value}
+                      onChange={() => setPaymentMethod(method.value)}
+                      className="accent-blue-600"
+                    />
+                    {method.label}
+                  </label>
+                ))}
+              </div>
+            </div>
             {/* Billing Details */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -305,18 +405,66 @@ const CheckoutForm = () => {
               </div>
             </div>
 
-            {/* Card Element */}
-            <div>
-              <label className="block text-sm font-medium mb-1">Card Details</label>
-              <div className="border rounded-lg p-3 bg-gray-50">
-                <CardElement options={cardElementOptions} />
+            {/* Conditional Payment Fields */}
+            {paymentMethod === 'Card' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Card Details</label>
+                <div className="border rounded-lg p-3 bg-gray-50">
+                  <CardElement options={cardElementOptions} />
+                </div>
               </div>
-            </div>
-
+            )}
+            {paymentMethod === 'UPI' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">UPI ID</label>
+                <input
+                  type="text"
+                  name="upiId"
+                  value={upiId}
+                  onChange={e => setUpiId(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="example@upi"
+                  required
+                />
+              </div>
+            )}
+            {paymentMethod === 'Wallet' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Wallet Provider</label>
+                <input
+                  type="text"
+                  name="walletProvider"
+                  value={walletProvider}
+                  onChange={e => setWalletProvider(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Paytm, PhonePe, etc."
+                  required
+                />
+              </div>
+            )}
+            {paymentMethod === 'Netbanking' && (
+              <div>
+                <label className="block text-sm font-medium mb-1">Bank Name</label>
+                <input
+                  type="text"
+                  name="netbankingBank"
+                  value={netbankingBank}
+                  onChange={e => setNetbankingBank(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="HDFC, SBI, ICICI, etc."
+                  required
+                />
+              </div>
+            )}
+            {paymentMethod === 'COD' && (
+              <div className="text-yellow-700 bg-yellow-100 p-3 rounded">
+                <span>Cash on Delivery selected. Please pay the amount to the delivery agent.</span>
+              </div>
+            )}
             {/* Submit Button */}
             <button
               type="submit"
-              disabled={!stripe || isProcessing}
+              disabled={isProcessing || (paymentMethod === 'Card' && (!stripe || !elements))}
               className={`w-full py-3 px-4 rounded-lg font-semibold transition-colors ${
                 isProcessing
                   ? 'bg-gray-400 cursor-not-allowed'

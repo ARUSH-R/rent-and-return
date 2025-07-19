@@ -19,10 +19,10 @@ import java.util.function.Function;
 @Slf4j
 public class JwtService {
 
-    @Value("${jwt.secret}")
+    @Value("${JWT_SECRET:${jwt.secret}}")
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value("${JWT_EXPIRATION:${jwt.expiration}}")
     private long jwtExpiration; // in ms
 
     private Key key;
@@ -30,7 +30,7 @@ public class JwtService {
     @PostConstruct
     public void init() {
         if (secret.length() < 32) {
-            throw new IllegalArgumentException("4ada66507739000da7f9f2b0e5e96cde2ed9de6697b8d6dc36ea5b8bf7306597");
+            throw new IllegalArgumentException("JWT secret must be at least 32 characters long.");
         }
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
     }

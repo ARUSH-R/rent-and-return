@@ -48,4 +48,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     Long countByRentalStatus(RentalStatus status);
 
+    List<Rental> findByStatusAndDeletedFalse(RentalStatus status);
+
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 import Button from "./ui/Button";
-import { User, LogOut, ShoppingCart, Package, Settings } from "lucide-react";
+import { User, LogOut, ShoppingCart, Package, Settings, Heart } from "lucide-react";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -39,6 +39,10 @@ const Navbar = () => {
             <Link to="/cart" className="flex items-center gap-2 hover:text-blue-700 transition">
               <ShoppingCart size={16} />
               Cart
+            </Link>
+            <Link to="/wishlist" className="flex items-center gap-2 hover:text-pink-600 transition">
+              <Heart size={16} />
+              Wishlist
             </Link>
             <Link to="/feedback" className="hover:text-blue-700 transition">
               Feedback

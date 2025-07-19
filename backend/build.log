@@ -1,0 +1,96 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.arushr:rentreturn >------------------------
+[INFO] Building rentreturn 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.1:clean (default-clean) @ rentreturn ---
+[INFO] Deleting /home/arushr/Documents/PROJECTS/rent-and-return/backend/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ rentreturn ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ rentreturn ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 59 source files with javac [debug parameters release 17] to target/classes
+[WARNING] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/model/Rental.java:[45,26] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/model/Token.java:[41,23] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/model/Token.java:[44,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[WARNING] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/model/Token.java:[47,21] @Builder will ignore the initializing expression entirely. If you want the initializing expression to serve as default, add @Builder.Default. If it is not supposed to be settable during building, make the field final.
+[INFO] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/SecurityConfig.java: /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/SecurityConfig.java uses or overrides a deprecated API.
+[INFO] /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/main/java/com/arushr/rentreturn/config/SecurityConfig.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ rentreturn ---
+[INFO] skip non existing resourceDirectory /home/arushr/Documents/PROJECTS/rent-and-return/backend/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ rentreturn ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug parameters release 17] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.3:test (default-test) @ rentreturn ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.arushr.rentreturn.service.RentalServiceImplTest
+[INFO] Tests run: 25, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.595 s -- in com.arushr.rentreturn.service.RentalServiceImplTest
+[INFO] Running com.arushr.rentreturn.service.ProductServiceImplTest
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.581 s -- in com.arushr.rentreturn.service.ProductServiceImplTest
+[INFO] Running com.arushr.rentreturn.service.UserServiceImplTest
+DEBUG: userRepository.findAll() returned: [User{id=1, username='testuser', email='test@example.com', role='USER', phone='null', address='null', profileImageUrl='null', emailVerified=false, deleted=false, createdBy='null', updatedBy='null', createdAt=null, updatedAt=null, lastLoginAt=null}, User{id=2, username='adminuser', email='admin@example.com', role='ADMIN', phone='null', address='null', profileImageUrl='null', emailVerified=true, deleted=false, createdBy='null', updatedBy='null', createdAt=null, updatedAt=null, lastLoginAt=null}]
+DEBUG: Searched for username: testuser
+[ERROR] Tests run: 29, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 1.593 s <<< FAILURE! -- in com.arushr.rentreturn.service.UserServiceImplTest
+[ERROR] com.arushr.rentreturn.service.UserServiceImplTest.testUpdateUser -- Time elapsed: 0.064 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: expected: <updateduser> but was: <test@example.com>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertEquals.failNotEqual(AssertEquals.java:197)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:182)
+	at org.junit.jupiter.api.AssertEquals.assertEquals(AssertEquals.java:177)
+	at org.junit.jupiter.api.Assertions.assertEquals(Assertions.java:1145)
+	at com.arushr.rentreturn.service.UserServiceImplTest.testUpdateUser(UserServiceImplTest.java:189)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[ERROR] com.arushr.rentreturn.service.UserServiceImplTest.testFindByUsername -- Time elapsed: 0.074 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: User with username 'testuser' should be found ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:63)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at com.arushr.rentreturn.service.UserServiceImplTest.testFindByUsername(UserServiceImplTest.java:290)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   UserServiceImplTest.testFindByUsername:290 User with username 'testuser' should be found ==> expected: <true> but was: <false>
+[ERROR]   UserServiceImplTest.testUpdateUser:189 expected: <updateduser> but was: <test@example.com>
+[INFO] 
+[ERROR] Tests run: 73, Failures: 2, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  30.428 s
+[INFO] Finished at: 2025-07-16T17:34:00+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.3:test (default-test) on project rentreturn: There are test failures.
+[ERROR] 
+[ERROR] See /home/arushr/Documents/PROJECTS/rent-and-return/backend/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

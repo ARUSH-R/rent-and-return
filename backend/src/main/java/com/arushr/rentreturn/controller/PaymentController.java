@@ -4,18 +4,29 @@ import com.arushr.rentreturn.model.Payment;
 import com.arushr.rentreturn.model.Rental;
 import com.arushr.rentreturn.service.PaymentService;
 import com.arushr.rentreturn.service.RentalService;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
+import com.arushr.rentreturn.service.StripeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/api/v1/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
     private final PaymentService paymentService;
     private final RentalService rentalService;
+    private final StripeService stripeService;
+
+    @Value("${stripe.webhook.secret:}")
+    private String stripeWebhookSecret;
 
     @PostMapping
     public ResponseEntity<Payment> createPayment(
@@ -112,5 +123,75 @@ public class PaymentController {
     ) {
         // Not implemented in service
         throw new UnsupportedOperationException("Not implemented");
+    }
+
+    /**
+     * Create a Stripe payment intent for a rental.
+     * @param rentalId Rental ID
+     * @param email Customer email (optional, for Stripe receipt)
+     * @return clientSecret for Stripe.js
+     */
+    @PostMapping("/stripe/create-intent")
+    public ResponseEntity<?> createStripePaymentIntent(@RequestParam Long rentalId, @RequestParam(required = false) String email) {
+        Rental rental = rentalService.findById(rentalId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Rental not found"));
+        long amountCents = rental.getTotalAmount().multiply(java.math.BigDecimal.valueOf(100)).longValue();
+        try {
+            java.util.Map<String, String> metadata = new java.util.HashMap<>();
+            metadata.put("rentalId", rentalId.toString());
+            PaymentIntent intent = stripeService.createPaymentIntent(amountCents, "inr", email, metadata);
+            // Optionally, create a Payment entity here with status pending and intent ID
+            Payment payment = paymentService.createPayment(rental, "STRIPE", rental.getTotalAmount().doubleValue());
+            payment.setStripePaymentIntentId(intent.getId());
+            payment.setStripeStatus(intent.getStatus());
+            paymentService.save(payment);
+            return ResponseEntity.ok(java.util.Map.of(
+                    "clientSecret", intent.getClientSecret(),
+                    "paymentId", payment.getId()
+            ));
+        } catch (StripeException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Stripe error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Stripe webhook endpoint to handle payment events.
+     */
+    @PostMapping(value = "/webhook", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
+        if (stripeWebhookSecret == null || stripeWebhookSecret.isBlank()) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).body("Webhook secret not configured");
+        }
+        try {
+            com.stripe.model.Event event = stripeService.constructEventFromPayload(payload, sigHeader, stripeWebhookSecret);
+            if ("payment_intent.succeeded".equals(event.getType())) {
+                PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
+                if (intent != null) {
+                    // Fetch the associated Charge to get the receipt URL
+                    String receiptUrl = null;
+                    try {
+                        com.stripe.param.ChargeListParams params = com.stripe.param.ChargeListParams.builder()
+                                .setPaymentIntent(intent.getId())
+                                .build();
+                        com.stripe.model.ChargeCollection charges = com.stripe.model.Charge.list(params);
+                        if (!charges.getData().isEmpty()) {
+                            receiptUrl = charges.getData().get(0).getReceiptUrl();
+                        }
+                    } catch (Exception e) {
+                        // Log and continue without receipt URL
+                        receiptUrl = null;
+                    }
+                    paymentService.markStripePaymentSuccessful(intent.getId(), intent.getStatus(), receiptUrl);
+                }
+            } else if ("payment_intent.payment_failed".equals(event.getType())) {
+                PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer().getObject().orElse(null);
+                if (intent != null) {
+                    paymentService.markStripePaymentFailed(intent.getId(), intent.getStatus());
+                }
+            }
+            return ResponseEntity.ok("Webhook received");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Webhook error: " + e.getMessage());
+        }
     }
 }

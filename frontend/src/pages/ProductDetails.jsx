@@ -4,6 +4,9 @@ import ProductService from '../services/ProductService';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../auth/AuthContext';
 import Loader from '../components/Loader';
+import WishlistService from '../services/WishlistService';
+import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
+import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -16,11 +19,26 @@ const ProductDetails = () => {
   const [error, setError] = useState('');
   const [addingToCart, setAddingToCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [wishlist, setWishlist] = useState([]);
+  const [wishlistLoading, setWishlistLoading] = useState(false);
 
   useEffect(() => {
     if (id) {
       loadProduct();
     }
+    // Fetch wishlist
+    const fetchWishlist = async () => {
+      setWishlistLoading(true);
+      try {
+        const data = await WishlistService.getWishlist();
+        setWishlist(data.map(item => item.productId));
+      } catch (e) {
+        setWishlist([]);
+      } finally {
+        setWishlistLoading(false);
+      }
+    };
+    fetchWishlist();
   }, [id]);
 
   const loadProduct = async () => {
@@ -63,6 +81,20 @@ const ProductDetails = () => {
     navigate('/rental/create', { state: { product, quantity } });
   };
 
+  const toggleWishlist = async (productId) => {
+    setWishlistLoading(true);
+    try {
+      if (wishlist.includes(productId)) {
+        await WishlistService.removeFromWishlist(productId);
+        setWishlist(wishlist.filter(id => id !== productId));
+      } else {
+        await WishlistService.addToWishlist(productId);
+        setWishlist([...wishlist, productId]);
+      }
+    } catch (e) {}
+    setWishlistLoading(false);
+  };
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-[400px]">
@@ -91,12 +123,23 @@ const ProductDetails = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Product Image */}
-        <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-          <img
-            src={product.image || './assets/no-image.jpg'}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
+        <div className="flex flex-col md:flex-row gap-8">
+          <div className="flex-shrink-0">
+            <img
+              src={product?.image || './assets/no-image.jpg'}
+              alt={product?.name}
+              className="w-80 h-80 object-cover rounded-lg shadow"
+              onError={e => { e.target.src = './assets/no-image.jpg'; }}
+            />
+            <button
+              className={`mt-4 p-2 rounded-full shadow-md bg-white hover:bg-pink-100 transition-all ${wishlist.includes(product?.id) ? 'text-pink-600' : 'text-gray-400'}`}
+              onClick={() => toggleWishlist(product?.id)}
+              disabled={wishlistLoading}
+              title={wishlist.includes(product?.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+            >
+              {wishlist.includes(product?.id) ? <SolidHeartIcon className="h-6 w-6" /> : <OutlineHeartIcon className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Product Info */}
