@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import { useCart } from '../../context/CartContext';
-import { useAuth } from '../../auth/AuthContext';
+import { useCart } from '../../context/CartContextUtils';
+import { useAuth } from '../../auth/AuthContextUtils';
 import { toast } from 'react-hot-toast';
 import Loader from '../../components/Loader';
 import api from '../../api/api';
-import AddressBook from '../user/AddressBook';
 
 // Initialize Stripe (replace with your publishable key)
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_YOUR_PUBLISHABLE_KEY');
@@ -88,7 +87,6 @@ const CheckoutForm = () => {
         });
         setClientSecret(paymentRes.data.clientSecret);
       } catch (error) {
-        console.error('Error creating rental/payment intent:', error);
         toast.error('Failed to initialize payment. Please try again.');
         setClientSecret('pi_mock_client_secret_for_demo');
       }
@@ -182,7 +180,6 @@ const CheckoutForm = () => {
       });
 
       if (error) {
-        console.error('Payment error:', error);
         toast.error(error.message || 'Payment failed. Please try again.');
       } else if (paymentIntent.status === 'succeeded') {
         // Payment successful
@@ -191,7 +188,6 @@ const CheckoutForm = () => {
         navigate('/checkout/success');
       }
     } catch (error) {
-      console.error('Unexpected error:', error);
       toast.error('An unexpected error occurred. Please try again.');
     } finally {
       setIsProcessing(false);

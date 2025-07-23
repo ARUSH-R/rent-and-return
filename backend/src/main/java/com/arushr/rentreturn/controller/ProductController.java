@@ -5,8 +5,11 @@ import com.arushr.rentreturn.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
+import com.arushr.rentreturn.dto.product.ProductDTO;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/products")
@@ -17,8 +20,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.create(product));
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Product> createProduct(@Valid @RequestBody ProductDTO productDTO) {
+        return ResponseEntity.ok(productService.create(productDTO));
     }
 
     @GetMapping("/{id}")
@@ -34,14 +38,16 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Long id,
-            @RequestBody Product updatedProduct
+            @Valid @RequestBody ProductDTO productDTO
     ) {
-        return ResponseEntity.ok(productService.updateProduct(id, updatedProduct));
+        return ResponseEntity.ok(productService.updateProduct(id, productDTO));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.softDeleteProduct(id);
         return ResponseEntity.noContent().build();
@@ -70,6 +76,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}/availability")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Product> updateAvailability(
             @PathVariable Long id,
             @RequestParam boolean available

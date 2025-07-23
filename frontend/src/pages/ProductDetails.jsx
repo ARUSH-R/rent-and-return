@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProductService from '../services/ProductService';
-import { useCart } from '../context/CartContext';
-import { useAuth } from '../auth/AuthContext';
+import { useCart } from '../context/CartContextUtils';
+import { useAuth } from '../auth/AuthContextUtils';
 import Loader from '../components/Loader';
 import WishlistService from '../services/WishlistService';
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
+import toast from 'react-hot-toast';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -22,12 +23,29 @@ const ProductDetails = () => {
   const [wishlist, setWishlist] = useState([]);
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
-  useEffect(() => {
-    if (id) {
-      loadProduct();
+  const loadProduct = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const productData = await ProductService.getById(id);
+      setProduct(productData);
+    } catch (error) {
+      setError('Failed to load product details');
+    } finally {
+      setIsLoading(false);
     }
-    // Fetch wishlist
+  }, [id]);
+
+  useEffect(() => {
+    loadProduct();
+  }, [loadProduct]);
+
+  // Fetch wishlist only if user is authenticated
+  useEffect(() => {
     const fetchWishlist = async () => {
+      if (!isAuthenticated) {
+        setWishlist([]);
+        return;
+      }
       setWishlistLoading(true);
       try {
         const data = await WishlistService.getWishlist();
@@ -39,23 +57,11 @@ const ProductDetails = () => {
       }
     };
     fetchWishlist();
-  }, [id]);
-
-  const loadProduct = async () => {
-    setIsLoading(true);
-    try {
-      const productData = await ProductService.getById(id);
-      setProduct(productData);
-    } catch (error) {
-      setError('Failed to load product details');
-      console.error('Product load error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  }, [isAuthenticated]);
 
   const handleAddToCart = async () => {
     if (!isAuthenticated) {
+      toast.error('Please login to add products to your cart');
       navigate('/login');
       return;
     }
@@ -63,10 +69,9 @@ const ProductDetails = () => {
     setAddingToCart(true);
     try {
       await addToCart(product.id, quantity);
-      alert('Product added to cart successfully!');
+      toast.success('Product added to cart successfully!');
     } catch (error) {
-      alert('Failed to add product to cart');
-      console.error('Add to cart error:', error);
+      toast.error('Failed to add product to cart');
     } finally {
       setAddingToCart(false);
     }
@@ -74,6 +79,7 @@ const ProductDetails = () => {
 
   const handleRentNow = () => {
     if (!isAuthenticated) {
+      toast.error('Please login to rent this product');
       navigate('/login');
       return;
     }
@@ -82,17 +88,27 @@ const ProductDetails = () => {
   };
 
   const toggleWishlist = async (productId) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to manage your wishlist');
+      navigate('/login');
+      return;
+    }
     setWishlistLoading(true);
     try {
       if (wishlist.includes(productId)) {
         await WishlistService.removeFromWishlist(productId);
         setWishlist(wishlist.filter(id => id !== productId));
+        toast.success('Removed from wishlist');
       } else {
         await WishlistService.addToWishlist(productId);
         setWishlist([...wishlist, productId]);
+        toast.success('Added to wishlist');
       }
-    } catch (e) {}
-    setWishlistLoading(false);
+    } catch (e) {
+      toast.error('Failed to update wishlist');
+    } finally {
+      setWishlistLoading(false);
+    }
   };
 
   if (isLoading) {

@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import Button from "../../components/ui/Button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "../../components/ui/Card";
-import { motion } from "framer-motion";
 import api from "../../api/api";
 import ProductSidebar from '../../components/Sidebar';
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
+import { useAuth } from "../../auth/AuthContextUtils";
+import toast from 'react-hot-toast';
 
 /**
  * Products Page
@@ -15,6 +16,7 @@ import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
  * - Allows navigation to product details and (if admin) to add/edit products
  */
 const Products = () => {
+  const { isAuthenticated } = useAuth();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +27,6 @@ const Products = () => {
   const [sortOption, setSortOption] = useState("");
   const [wishlist, setWishlist] = useState([]);
   const [wishlistLoading, setWishlistLoading] = useState(false);
-  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -42,8 +43,12 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    // Fetch wishlist on mount
+    // Fetch wishlist only if user is authenticated
     const fetchWishlist = async () => {
+      if (!isAuthenticated) {
+        setWishlist([]);
+        return;
+      }
       setWishlistLoading(true);
       try {
         const res = await api.get('/v1/wishlist');
@@ -55,7 +60,7 @@ const Products = () => {
       }
     };
     fetchWishlist();
-  }, []);
+  }, [isAuthenticated]);
 
   // Filter products based on category and search term
   useEffect(() => {
@@ -95,35 +100,33 @@ const Products = () => {
   }, [products, selectedCategory, searchTerm, priceRange, sortOption]);
 
   const toggleWishlist = async (productId) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to manage your wishlist');
+      return;
+    }
     setWishlistLoading(true);
     try {
       if (wishlist.includes(productId)) {
         await api.delete(`/v1/wishlist/${productId}`);
         setWishlist(wishlist.filter(id => id !== productId));
+        toast.success('Removed from wishlist');
       } else {
         await api.post('/v1/wishlist', { productId });
         setWishlist([...wishlist, productId]);
+        toast.success('Added to wishlist');
       }
-    } catch (e) {}
-    setWishlistLoading(false);
+    } catch (e) {
+      toast.error('Failed to update wishlist');
+    } finally {
+      setWishlistLoading(false);
+    }
   };
 
   // Get unique categories
   const categories = ["All", ...new Set(products.map(product => product.category || 'Uncategorized').filter(Boolean))];
 
-  const handleCategoryChange = (category) => {
-    setSelectedCategory(category);
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
   // TODO: Replace with actual user/admin role logic
   const isAdmin = window.localStorage.getItem("isAdmin") === "true";
-
-  // Number of available product images
-  const NUM_PRODUCT_IMAGES = 200;
 
   return (
     <div className="flex flex-row items-stretch min-h-screen bg-gray-50">
@@ -195,8 +198,7 @@ const Products = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-                {filteredProducts.map((product, index) => {
-                  const imageIndex = (index % NUM_PRODUCT_IMAGES) + 1;
+                {filteredProducts.map((product) => {
                   return (
                     <Card className="cursor-pointer hover:shadow-lg transition-shadow group relative" key={product.id}>
                       {/* Heart button outside the Link */}

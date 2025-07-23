@@ -157,23 +157,44 @@ Or use the provided Python script: `bulk_create_products.py`.
 <!-- If deployed, add your live demo link here -->
 [Live Demo](#)
 
-## Deployment Instructions
+## Production Deployment Guide
 
-### Using Docker Compose (Recommended)
+### Backend (Spring Boot) — Railway
+- **Dockerfile** is ready for Railway deployment.
+- **Required Environment Variables:**
+  - `SPRING_DATASOURCE_URL` (e.g. from Supabase)
+  - `SPRING_DATASOURCE_USERNAME`
+  - `SPRING_DATASOURCE_PASSWORD`
+  - `JWT_SECRET` (min 32 chars, keep secret!)
+  - `JWT_EXPIRATION` (e.g. 86400000 for 1 day)
+  - `STRIPE_SECRET_KEY` (for payments)
+  - `ALLOWED_ORIGINS` (comma-separated, e.g. `https://your-frontend.vercel.app`)
+  - `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM` (for email)
+- **Healthcheck:** `/actuator/health` (enable actuator in prod if not already)
+- **Port:** Railway expects the app to listen on `8080`.
 
-1. Ensure Docker and Docker Compose are installed.
-2. Copy `.env.example` to `.env` in both `backend` and `frontend` directories and fill in secrets as needed.
-3. From the project root, run:
-   ```sh
-   docker-compose up --build
-   ```
-4. The backend will be available at `http://localhost:8080`, frontend at `http://localhost:5173`.
+### Database — Supabase (PostgreSQL)
+- Create a new project in Supabase.
+- Get the connection string and credentials.
+- Set them as `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD` in Railway.
+- Run Flyway migrations automatically on app start.
 
-### Manual Deployment
+### Frontend (React) — Vercel
+- Deploy the `frontend/` directory to Vercel.
+- **Required Environment Variables:**
+  - `VITE_API_BASE_URL` (e.g. `https://your-backend-production-url.railway.app/api`)
+  - `VITE_STRIPE_PUBLISHABLE_KEY` (for Stripe payments)
+- Set CORS in backend to allow your Vercel domain.
 
-- **Backend:** Deploy to any Java-supporting cloud (Render, Railway, Heroku, AWS). Set environment variables as per `.env.example`.
-- **Frontend:** Deploy static build (from `npm run build`) to Vercel, Netlify, or any static host. Set `VITE_API_BASE_URL` as needed.
-- **Database:** Use managed PostgreSQL (Supabase, AWS RDS, etc.).
+### Best Practices
+- Never commit secrets to the repo.
+- Use strong, unique JWT and Stripe secrets.
+- Set `SPRING_PROFILES_ACTIVE=prod` in Railway for production security headers.
+- Monitor logs and health endpoints.
+
+---
+
+For more details, see the comments in `application.properties` and the Dockerfile.
 
 ## Environment Variables
 

@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/v1/payments")
@@ -48,11 +49,13 @@ public class PaymentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Payment>> getAllPayments() {
         return ResponseEntity.ok(paymentService.findAll());
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Payment> updateStatus(
             @PathVariable Long id,
             @RequestParam boolean successful
@@ -69,17 +72,20 @@ public class PaymentController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePayment(@PathVariable Long id) {
         paymentService.deletePayment(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/summary/total")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Double> getTotalPayments() {
         return ResponseEntity.ok(paymentService.getTotalPaymentsAmount());
     }
 
     @GetMapping("/summary/count-successful")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Long> countSuccessful() {
         return ResponseEntity.ok(paymentService.countSuccessfulPayments());
     }

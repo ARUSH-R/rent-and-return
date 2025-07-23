@@ -11,6 +11,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,17 +20,23 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
+@EnableMethodSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
     private final UserService userService;
 
+    @Value("${ALLOWED_ORIGINS:http://localhost:8080,http://localhost:5173}")
+    private String allowedOrigins;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        boolean isProd = System.getenv("SPRING_PROFILES_ACTIVE") != null && System.getenv("SPRING_PROFILES_ACTIVE").equals("prod");
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -38,8 +45,12 @@ public class SecurityConfig {
                             "/api/auth/**",
                             "/api/products",
                             "/api/products/**",
+                            "/api/v1/products",
+                            "/api/v1/products/**",
                             "/api/feedback",
                             "/api/feedback/**",
+                            "/api/v1/feedback",
+                            "/api/v1/feedback/**",
                             "/api/v1/payments/webhook",
                             "/",
                             "/favicon.ico",
@@ -49,25 +60,26 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                // .requiresChannel(channel -> channel.anyRequest().requiresSecure()) // Commented out for development
-                // .headers(headers -> headers
-                //         .contentSecurityPolicy(csp -> csp
-                //                 .policyDirectives("default-src 'self'"))
-                //         .xssProtection(withDefaults -> {})
-                //         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                //         .httpStrictTransportSecurity(hsts -> hsts
-                //                 .includeSubDomains(true)
-                //                 .maxAgeInSeconds(31536000))
-                //         .contentTypeOptions(withDefaults -> {})
-                // )
                 .cors(cors -> cors.configurationSource(request -> {
                     var config = new org.springframework.web.cors.CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:5173"));
+                    for (String origin : allowedOrigins.split(",")) {
+                        config.addAllowedOrigin(origin.trim());
+                    }
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
                     return config;
                 }))
+                .headers(headers -> {
+                    if (isProd) {
+                        headers
+                            .contentSecurityPolicy(csp -> csp.policyDirectives("default-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"))
+                            .xssProtection(withDefaults -> {})
+                            .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                            .httpStrictTransportSecurity(hsts -> hsts.includeSubDomains(true).maxAgeInSeconds(31536000))
+                            .contentTypeOptions(withDefaults -> {});
+                    }
+                })
                 .build();
     }
 

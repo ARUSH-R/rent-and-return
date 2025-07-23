@@ -7,12 +7,14 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
+    "vercel-build": "vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint . --ext js,jsx --fix"
+    "lint:fix": "eslint . --ext js,jsx --fix",
+    "postinstall": "npm run build"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
@@ -50,8 +52,8 @@
     "@testing-library/jest-dom": "^6.1.4",
     "@testing-library/react": "^14.1.2",
     "@testing-library/user-event": "^14.5.1",
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "@vitejs/plugin-react": "^4.5.2",
     "@vitest/coverage-v8": "^1.0.4",
     "@vitest/ui": "^1.0.4",

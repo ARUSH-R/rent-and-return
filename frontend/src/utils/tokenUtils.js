@@ -35,7 +35,6 @@ export const decodeToken = (token) => {
     // JWT tokens have three parts separated by dots: header.payload.signature
     const parts = token.split('.');
     if (parts.length !== 3) {
-      console.error('Invalid JWT token format');
       return null;
     }
     
@@ -53,7 +52,6 @@ export const decodeToken = (token) => {
     
     // Check if token is expired
     if (parsedPayload.exp && parsedPayload.exp * 1000 < Date.now()) {
-      // console.warn('Token has expired'); // Suppress noisy warning
       return null;
     }
     
@@ -67,7 +65,6 @@ export const decodeToken = (token) => {
       iat: parsedPayload.iat
     };
   } catch (error) {
-    console.error('Error decoding token:', error);
     return null;
   }
 };

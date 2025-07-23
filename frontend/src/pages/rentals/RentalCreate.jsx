@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../auth/AuthContext';
 import Layout from '../../components/Layout';
 import Loader from '../../components/Loader';
 
 const RentalCreate = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
   
   // Get product and quantity from navigation state
   const { product, quantity = 1 } = location.state || {};

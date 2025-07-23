@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
 import WishlistService from '../../services/WishlistService';
 import { Link } from 'react-router-dom';

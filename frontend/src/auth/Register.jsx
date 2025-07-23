@@ -1,15 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "./AuthContextUtils";
 import Loader from "../components/Loader";
 
 const Register = () => {
   const { register, loading, error, isAuthenticated } = useAuth();
   const [form, setForm] = useState({
-    username: "",
+    name: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    password: ""
   });
   const [formError, setFormError] = useState("");
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError("");
-    if (!form.username || !form.email || !form.password || !form.confirmPassword) {
+    if (!form.username || !form.email || !form.password) {
       setFormError("All fields are required.");
       return;
     }
@@ -35,12 +34,7 @@ const Register = () => {
       setFormError("Password must be at least 6 characters.");
       return;
     }
-    if (form.password !== form.confirmPassword) {
-      setFormError("Passwords do not match.");
-      return;
-    }
-    const { confirmPassword, ...submitForm } = form;
-    const success = await register(submitForm);
+    const success = await register(form);
     if (success) {
       navigate("/dashboard");
     }
@@ -95,22 +89,6 @@ const Register = () => {
               required
               className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
               value={form.password}
-              onChange={handleChange}
-              disabled={loading}
-            />
-          </div>
-          <div>
-            <label className="block text-sm mb-1 font-medium text-gray-700" htmlFor="confirmPassword">
-              Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              required
-              className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-400"
-              value={form.confirmPassword}
               onChange={handleChange}
               disabled={loading}
             />

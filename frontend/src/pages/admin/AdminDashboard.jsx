@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import AdminService from '../../services/AdminService';
 import Loader from '../../components/Loader';
@@ -26,7 +26,6 @@ const AdminDashboard = () => {
       setRecentRentals(rentalsData);
     } catch (error) {
       setError('Failed to load dashboard data');
-      console.error('Dashboard error:', error);
     } finally {
       setIsLoading(false);
     }

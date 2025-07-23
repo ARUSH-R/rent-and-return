@@ -1,15 +1,6 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
+import { CartContext } from './CartContextUtils';
 import CartService from '../services/CartService';
-
-const CartContext = createContext();
-
-export const useCart = () => {
-  const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
-  }
-  return context;
-};
 
 // Cart reducer
 const cartReducer = (state, action) => {
@@ -72,7 +63,7 @@ export const CartProvider = ({ children }) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart.items || []));
     } catch (error) {
-      console.error('Failed to sync cart to localStorage:', error);
+      // console.error('Failed to sync cart to localStorage:', error);
     }
   };
 

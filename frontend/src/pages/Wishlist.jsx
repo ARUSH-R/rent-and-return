@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import WishlistService from "../services/WishlistService";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/Card";
 import { Heart as SolidHeart } from "lucide-react";

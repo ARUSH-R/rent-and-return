@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContextUtils";
 
 /**
  * Feedbacks Page
@@ -11,11 +10,11 @@ import { useAuth } from "../../auth/AuthContext";
 const Feedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [feedback, setFeedback] = useState("");
   const [rating, setRating] = useState(5);
   const [submitting, setSubmitting] = useState(false);
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     // Load sample feedback data

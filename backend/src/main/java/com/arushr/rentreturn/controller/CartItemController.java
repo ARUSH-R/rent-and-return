@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class CartItemController {
     @PostMapping
     public ResponseEntity<CartItem> addToCart(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody CartItemRequest request
+            @Valid @RequestBody CartItemRequest request
     ) {
         String email = userDetails.getUsername();
         User user = userService.findByEmail(email)
@@ -98,6 +100,7 @@ public class CartItemController {
     }
 
     @DeleteMapping("/user/{userId}/clear")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> clearCartForUser(@PathVariable Long userId) {
         User user = userService.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));

@@ -10,5 +10,9 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENV JAVA_OPTS=""
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"] 
+# Recommended JAVA_OPTS for Railway (adjust as needed)
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Dfile.encoding=UTF-8"
+# Healthcheck for Railway
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
+# For Railway/Supabase: Set env vars SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD, JWT_SECRET, STRIPE_SECRET_KEY, ALLOWED_ORIGINS, etc. 

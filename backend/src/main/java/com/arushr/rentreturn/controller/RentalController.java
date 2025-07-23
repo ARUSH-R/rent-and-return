@@ -16,6 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+import jakarta.validation.Valid;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,7 +35,7 @@ public class RentalController {
     @PostMapping
     public ResponseEntity<Rental> createRental(
             @AuthenticationPrincipal UserDetails userDetails,
-            @RequestBody RentalRequest request
+            @Valid @RequestBody RentalRequest request
     ) {
         String email = userDetails.getUsername();
         User user = userService.findByEmail(email)
@@ -67,6 +69,7 @@ public class RentalController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Rental>> getAllRentals() {
         return ResponseEntity.ok(rentalService.findAll());
     }
@@ -82,12 +85,14 @@ public class RentalController {
     }
 
     @PutMapping("/{id}/return")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Rental> returnRental(@PathVariable Long id) {
         Rental rental = rentalService.markReturned(id);
         return ResponseEntity.ok(rental);
     }
 
     @PutMapping("/{id}/extend")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Rental> extendRental(
             @PathVariable Long id,
             @RequestParam int extraDays
@@ -97,12 +102,14 @@ public class RentalController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRental(@PathVariable Long id) {
         rentalService.cancelRental(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/status")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Rental>> getByStatus(@RequestParam String status) {
         try {
             RentalStatus rentalStatus = RentalStatus.valueOf(status.toUpperCase());
@@ -113,6 +120,7 @@ public class RentalController {
     }
 
     @GetMapping("/date-range")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Rental>> getByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
@@ -121,11 +129,13 @@ public class RentalController {
     }
 
     @GetMapping("/active")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Rental>> getActiveRentals() {
         return ResponseEntity.ok(rentalService.findActive());
     }
 
     @GetMapping("/overdue")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Rental>> getOverdueRentals() {
         return ResponseEntity.ok(rentalService.findOverdueRentals(LocalDateTime.now()));
     }

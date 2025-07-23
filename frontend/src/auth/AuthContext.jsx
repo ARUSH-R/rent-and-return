@@ -1,11 +1,8 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { AuthContext } from "./AuthContextUtils";
 import { getToken, removeToken, setToken, decodeToken } from "../utils/tokenUtils";
 import AuthService from "../services/AuthService";
 const { login: apiLogin, register: apiRegister, getCurrentUser } = AuthService;
-
-const AuthContext = createContext();
-
-export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
@@ -33,10 +30,8 @@ export const AuthProvider = ({ children }) => {
     getCurrentUser()
       .then((data) => {
         setUser({ ...decoded, ...data });
-        console.log("[Auth] User loaded:", { ...decoded, ...data });
       })
-      .catch((err) => {
-        console.error("[Auth] Failed to fetch user info:", err);
+      .catch(() => {
         removeToken();
         setUser(null);
       });
@@ -54,11 +49,10 @@ export const AuthProvider = ({ children }) => {
       try {
         userInfo = await getCurrentUser();
       } catch (e) {
-        console.error("[Auth] Failed to fetch user info after login:", e);
+        // intentionally left blank
       }
       setUser({ ...decoded, ...userInfo });
       setLoading(false);
-      console.log("[Auth] Login successful. User:", { ...decoded, ...userInfo });
       return true;
     } catch (err) {
       setError(
@@ -67,7 +61,6 @@ export const AuthProvider = ({ children }) => {
         "Login failed"
       );
       setLoading(false);
-      console.error("[Auth] Login failed:", err);
       return false;
     }
   };

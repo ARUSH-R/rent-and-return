@@ -1,28 +1,28 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import App from '../App'
 
-// Mock the auth context
-vi.mock('../auth/AuthContext', () => ({
-  AuthProvider: ({ children }) => children,
+// Mock the auth context (from AuthContextUtils)
+vi.mock('../auth/AuthContextUtils', () => ({
   useAuth: () => ({
     user: null,
     login: vi.fn(),
     logout: vi.fn(),
     isAuthenticated: false,
   }),
+  AuthContext: { Provider: ({ children }) => children },
 }))
 
-// Mock the cart context
-vi.mock('../context/CartContext', () => ({
-  CartProvider: ({ children }) => children,
+// Mock the cart context (from CartContextUtils)
+vi.mock('../context/CartContextUtils', () => ({
   useCart: () => ({
-    items: [],
-    addItem: vi.fn(),
-    removeItem: vi.fn(),
+    cart: { items: [] },
+    addToCart: vi.fn(),
+    removeFromCart: vi.fn(),
     clearCart: vi.fn(),
   }),
+  CartContext: { Provider: ({ children }) => children },
 }))
 
 const AppWrapper = ({ children }) => (

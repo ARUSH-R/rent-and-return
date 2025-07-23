@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ChevronRightIcon, StarIcon, ShoppingCartIcon, HeartIcon, TruckIcon, ShieldCheckIcon, ClockIcon } from '@heroicons/react/24/outline';
+import { ChevronRightIcon, ShoppingCartIcon, TruckIcon, ShieldCheckIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 import api from '../api/api';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth } from '../auth/AuthContextUtils';
 import toast from 'react-hot-toast';
 import WishlistService from '../services/WishlistService';
 import { HeartIcon as SolidHeartIcon } from '@heroicons/react/24/solid';
 import { HeartIcon as OutlineHeartIcon } from '@heroicons/react/24/outline';
 
 const Home = () => {
+  const navigate = useNavigate();
   // Move heroSlides declaration to the top
   const heroSlides = [
     {
@@ -42,23 +43,21 @@ const Home = () => {
   const [wishlist, setWishlist] = useState([]);
   const [wishlistLoading, setWishlistLoading] = useState(false);
 
-  // Category image mapping
-  const categoryImageMap = {
-    'Electronics': '/assets/products/electronics/electronics-1.jpg',
-    'Sports & Fitness': '/assets/products/sports-fitness/sports-fitness-1.jpg',
-    'Books & Stationery': '/assets/products/books-stationery/books-stationery-1.jpg',
-    'Home Appliances': '/assets/products/home-appliances/home-appliances-1.jpg',
-    'Furniture': '/assets/products/furniture/furniture-1.jpg',
-    'Vehicles': '/assets/products/vehicles/vehicles-1.jpg',
-    'Tools & Equipment': '/assets/products/tools-equipment/tools-equipment-1.jpg',
-    'Services': '/assets/products/services/services-1.jpg',
-  };
-
   useEffect(() => {
     fetchProducts();
   }, []);
 
   useEffect(() => {
+    const categoryImageMap = {
+      'Electronics': '/assets/products/electronics/electronics-1.jpg',
+      'Sports & Fitness': '/assets/products/sports-fitness/sports-fitness-1.jpg',
+      'Books & Stationery': '/assets/products/books-stationery/books-stationery-1.jpg',
+      'Home Appliances': '/assets/products/home-appliances/home-appliances-1.jpg',
+      'Furniture': '/assets/products/furniture/furniture-1.jpg',
+      'Vehicles': '/assets/products/vehicles/vehicles-1.jpg',
+      'Tools & Equipment': '/assets/products/tools-equipment/tools-equipment-1.jpg',
+      'Services': '/assets/products/services/services-1.jpg',
+    };
     // Dynamically generate categories from products
     const uniqueCategories = Array.from(
       new Set(products.map(p => p.category && p.category.trim()).filter(Boolean))
@@ -69,8 +68,6 @@ const Home = () => {
       count: products.filter(p => p.category === cat).length
     }));
     setCategories(cats);
-    console.log('Categories:', cats);
-    console.log('Products:', products);
   }, [products]);
 
   useEffect(() => {
@@ -81,8 +78,12 @@ const Home = () => {
   }, [heroSlides.length]);
 
   useEffect(() => {
-    // Fetch wishlist
+    // Fetch wishlist only if user is authenticated
     const fetchWishlist = async () => {
+      if (!isAuthenticated) {
+        setWishlist([]);
+        return;
+      }
       setWishlistLoading(true);
       try {
         const data = await WishlistService.getWishlist();
@@ -94,32 +95,38 @@ const Home = () => {
       }
     };
     fetchWishlist();
-  }, []);
+  }, [isAuthenticated]); // Add isAuthenticated as dependency
 
   const toggleWishlist = async (productId) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to manage your wishlist');
+      return;
+    }
     setWishlistLoading(true);
     try {
       if (wishlist.includes(productId)) {
         await WishlistService.removeFromWishlist(productId);
         setWishlist(wishlist.filter(id => id !== productId));
+        toast.success('Removed from wishlist');
       } else {
         await WishlistService.addToWishlist(productId);
         setWishlist([...wishlist, productId]);
+        toast.success('Added to wishlist');
       }
-    } catch (e) {}
-    setWishlistLoading(false);
+    } catch (e) {
+      toast.error('Failed to update wishlist');
+    } finally {
+      setWishlistLoading(false);
+    }
   };
 
   const fetchProducts = async () => {
     try {
-      console.log('Fetching products...');
       const response = await api.get('/products');
-      console.log('Products response:', response.data);
       const allProducts = response.data;
       setProducts(allProducts);
       setFeaturedProducts(allProducts.slice(0, 6));
     } catch (error) {
-      console.error('Error fetching products:', error);
       toast.error('Failed to load products');
     } finally {
       setLoading(false);
@@ -129,6 +136,7 @@ const Home = () => {
   const addToCart = async (productId) => {
     if (!isAuthenticated) {
       toast.error('Please login to add items to cart');
+      navigate('/login');
       return;
     }
     setCartLoading(prev => ({ ...prev, [productId]: true }));
@@ -136,7 +144,6 @@ const Home = () => {
       await api.post('/cart', { productId, quantity: 1 });
       toast.success('Item added to cart!');
     } catch (error) {
-      console.error('Error adding to cart:', error, 'Product ID:', productId);
       toast.error('Failed to add item to cart');
     } finally {
       setCartLoading(prev => ({ ...prev, [productId]: false }));
@@ -228,8 +235,6 @@ const Home = () => {
     );
   }
 
-  console.log('Rendering Home component with:', { products, featuredProducts, loading });
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Test Carousel - Simple version */}
@@ -279,12 +284,29 @@ const Home = () => {
                   >
                     {slide.description}
                   </motion.p>
-                  <Link
-                    to="/products"
-                    className="inline-block bg-orange-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-colors"
-                  >
-                    Shop Now
-                  </Link>
+                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link
+                      to="/products"
+                      className="inline-block bg-orange-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-colors"
+                    >
+                      Browse Products
+                    </Link>
+                    {!isAuthenticated ? (
+                      <Link
+                        to="/register"
+                        className="inline-block bg-white text-orange-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+                      >
+                        Get Started
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/dashboard"
+                        className="inline-block bg-white text-orange-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
+                      >
+                        My Dashboard
+                      </Link>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

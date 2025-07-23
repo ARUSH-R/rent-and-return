@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../components/Loader";
 import api from "../../api/api";
-import { useAuth } from "../../auth/AuthContext";
+import { useAuth } from "../../auth/AuthContextUtils";
 
 /**
  * Rentals Page

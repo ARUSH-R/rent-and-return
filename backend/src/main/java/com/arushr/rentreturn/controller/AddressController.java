@@ -5,6 +5,7 @@ import com.arushr.rentreturn.dto.user.AddressResponseDTO;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.service.AddressService;
 import com.arushr.rentreturn.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressResponseDTO> createAddress(@AuthenticationPrincipal UserDetails userDetails,
-                                                           @RequestBody AddressDTO dto) {
+                                                           @Valid @RequestBody AddressDTO dto) {
         User user = getCurrentUser(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(addressService.createAddress(user, dto));
     }
@@ -36,7 +37,7 @@ public class AddressController {
     @PutMapping("/{id}")
     public ResponseEntity<AddressResponseDTO> updateAddress(@AuthenticationPrincipal UserDetails userDetails,
                                                            @PathVariable Long id,
-                                                           @RequestBody AddressDTO dto) {
+                                                           @Valid @RequestBody AddressDTO dto) {
         User user = getCurrentUser(userDetails);
         return ResponseEntity.ok(addressService.updateAddress(user, id, dto));
     }

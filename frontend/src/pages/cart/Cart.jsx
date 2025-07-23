@@ -1,6 +1,5 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../context/CartContextUtils";
 import Loader from "../../components/Loader";
 
 /**
@@ -9,7 +8,7 @@ import Loader from "../../components/Loader";
  * - Uses CartContext for state management.
  */
 const Cart = () => {
-  const { cart, isLoading, error, removeFromCart, clearCart } = useCart();
+  const { cart, isLoading, removeFromCart, clearCart } = useCart();
 
   if (isLoading) {
     return (

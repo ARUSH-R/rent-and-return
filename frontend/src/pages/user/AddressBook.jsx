@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../../api/api';
 import Loader from '../../components/Loader';
 import AddressForm from './AddressForm';
@@ -6,7 +6,6 @@ import AddressForm from './AddressForm';
 const AddressBook = () => {
   const [addresses, setAddresses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
   const [editAddress, setEditAddress] = useState(null);
   const [activeTab, setActiveTab] = useState('list');
 
@@ -28,7 +27,6 @@ const AddressBook = () => {
 
   const handleEdit = (address) => {
     setEditAddress(address);
-    setShowForm(true);
     setActiveTab('form');
   };
 
@@ -44,7 +42,6 @@ const AddressBook = () => {
   };
 
   const handleFormClose = () => {
-    setShowForm(false);
     setEditAddress(null);
     setActiveTab('list');
     fetchAddresses();
@@ -55,11 +52,11 @@ const AddressBook = () => {
       <div className="flex gap-4 mb-6 sticky top-0 z-10 bg-white rounded-t-lg shadow-sm">
         <button
           className={`flex-1 py-2 rounded-t-lg font-semibold transition-all ${activeTab==='list'?'bg-blue-600 text-white shadow':'bg-gray-100 text-blue-700 hover:bg-blue-50'}`}
-          onClick={()=>{setActiveTab('list'); setShowForm(false);}}
+          onClick={()=>{setActiveTab('list');}}
         >My Addresses</button>
         <button
           className={`flex-1 py-2 rounded-t-lg font-semibold transition-all ${activeTab==='form'?'bg-blue-600 text-white shadow':'bg-gray-100 text-blue-700 hover:bg-blue-50'}`}
-          onClick={()=>{setActiveTab('form'); setShowForm(true); setEditAddress(null);}}
+          onClick={()=>{setActiveTab('form'); setEditAddress(null);}}
         >Add Address</button>
       </div>
       {activeTab==='form' && (

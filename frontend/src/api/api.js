@@ -14,8 +14,6 @@ api.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    // Debug: log outgoing request
-    console.log('[API] Request:', config.method?.toUpperCase(), config.url, config);
     return config;
   },
   (error) => Promise.reject(error)
@@ -24,13 +22,9 @@ api.interceptors.request.use(
 // Optional: Global error handler
 api.interceptors.response.use(
   (response) => {
-    // Debug: log response
-    console.log('[API] Response:', response.config.url, response);
     return response;
   },
   (error) => {
-    // Debug: log error
-    console.error('[API] Error:', error.config?.url, error);
     // Handle 401 globally: auto-logout and redirect to login
     if (error.response && error.response.status === 401) {
       removeToken();

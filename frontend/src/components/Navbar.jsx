@@ -1,8 +1,7 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/AuthContext";
+import { useAuth } from "../auth/AuthContextUtils";
 import Button from "./ui/Button";
-import { User, LogOut, ShoppingCart, Package, Settings, Heart } from "lucide-react";
+import { User, LogOut, ShoppingCart, Package, Settings, Heart, Home } from "lucide-react";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -19,8 +18,34 @@ const Navbar = () => {
         <Link to="/" className="text-xl font-bold text-blue-700 tracking-tight">
           RentReturn
         </Link>
+        
+        {/* Public Navigation - Always visible */}
+        <div className="hidden md:flex gap-6 ml-8 text-gray-700 font-medium">
+          <Link
+            to="/"
+            className="flex items-center gap-2 hover:text-blue-700 transition"
+          >
+            <Home size={16} />
+            Home
+          </Link>
+          <Link 
+            to="/products" 
+            className="flex items-center gap-2 hover:text-blue-700 transition"
+          >
+            <Package size={16} />
+            Products
+          </Link>
+          <Link 
+            to="/feedback" 
+            className="hover:text-blue-700 transition"
+          >
+            Feedback
+          </Link>
+        </div>
+
+        {/* Protected Navigation - Only for authenticated users */}
         {isAuthenticated && (
-          <div className="hidden md:flex gap-6 ml-8 text-gray-700 font-medium">
+          <div className="hidden md:flex gap-6 ml-4 text-gray-700 font-medium border-l border-gray-200 pl-6">
             <Link
               to="/dashboard"
               className="flex items-center gap-2 hover:text-blue-700 transition"
@@ -28,33 +53,39 @@ const Navbar = () => {
               <Settings size={16} />
               Dashboard
             </Link>
-            <Link to="/products" className="flex items-center gap-2 hover:text-blue-700 transition">
+            <Link 
+              to="/rentals" 
+              className="flex items-center gap-2 hover:text-blue-700 transition"
+            >
               <Package size={16} />
-              Products
+              My Rentals
             </Link>
-            <Link to="/rentals" className="flex items-center gap-2 hover:text-blue-700 transition">
-              <Package size={16} />
-              Rentals
-            </Link>
-            <Link to="/cart" className="flex items-center gap-2 hover:text-blue-700 transition">
+            <Link 
+              to="/cart" 
+              className="flex items-center gap-2 hover:text-blue-700 transition"
+            >
               <ShoppingCart size={16} />
               Cart
             </Link>
-            <Link to="/wishlist" className="flex items-center gap-2 hover:text-pink-600 transition">
+            <Link 
+              to="/wishlist" 
+              className="flex items-center gap-2 hover:text-pink-600 transition"
+            >
               <Heart size={16} />
               Wishlist
             </Link>
-            <Link to="/feedback" className="hover:text-blue-700 transition">
-              Feedback
-            </Link>
             {user?.role?.toLowerCase() === "admin" && (
-              <Link to="/admin" className="hover:text-blue-700 transition">
-                Admin
+              <Link 
+                to="/admin" 
+                className="hover:text-blue-700 transition font-semibold"
+              >
+                Admin Panel
               </Link>
             )}
           </div>
         )}
       </div>
+
       <div className="flex items-center gap-4">
         {!isAuthenticated ? (
           <>

@@ -5,6 +5,7 @@ import com.arushr.rentreturn.dto.user.WishlistItemResponseDTO;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.service.UserService;
 import com.arushr.rentreturn.service.WishlistService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,7 @@ public class WishlistController {
 
     @PostMapping
     public ResponseEntity<WishlistItemResponseDTO> addToWishlist(@AuthenticationPrincipal UserDetails userDetails,
-                                                                @RequestBody WishlistItemDTO dto) {
+                                                                @Valid @RequestBody WishlistItemDTO dto) {
         User user = getCurrentUser(userDetails);
         return ResponseEntity.status(HttpStatus.CREATED).body(wishlistService.addToWishlist(user, dto));
     }
