@@ -1,5 +1,6 @@
 package com.arushr.rentreturn.service;
 
+import com.arushr.rentreturn.exception.EmailException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,8 @@ public class EmailServiceImpl implements EmailService {
             helper.setSubject(subject);
             helper.setText(htmlBody, true);
             mailSender.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException("Failed to send email", e);
+        } catch (Exception e) {
+            throw new EmailException("Failed to send email", e);
         }
     }
 } 

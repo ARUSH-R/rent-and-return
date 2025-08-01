@@ -50,4 +50,6 @@ public interface RentalRepository extends JpaRepository<Rental, Long> {
 
     List<Rental> findByStatusAndDeletedFalse(RentalStatus status);
 
+    long countByUserIdAndStatusAndDeletedFalse(Long userId, com.arushr.rentreturn.enums.RentalStatus status);
+    boolean existsByUserIdAndProductIdAndStatusAndDeletedFalse(Long userId, Long productId, com.arushr.rentreturn.enums.RentalStatus status);
 }

@@ -4,15 +4,15 @@ import api from "../api/api";
  * AuthService provides methods for authentication-related API calls.
  */
 const AuthService = {
-  // Log in the user with credentials (e.g., { email, password })
-  login: async (credentials) => {
-    const response = await api.post("/auth/login", credentials);
+  // Log in the user with credentials (identifier, password)
+  login: async (identifier, password) => {
+    const response = await api.post("/auth/login", { identifier, password });
     return response.data;
   },
 
-  // Register a new user (e.g., { name, email, password })
-  register: async (userData) => {
-    const response = await api.post("/auth/register", userData);
+  // Register a new user (username, email, password)
+  register: async ({ username, email, password }) => {
+    const response = await api.post("/auth/register", { username, email, password });
     return response.data;
   },
 
@@ -28,7 +28,6 @@ const AuthService = {
     return response.data;
   }
 };
-
 
 // Function to initialize auth system - checks for existing token
 export function setupAuthToken() {

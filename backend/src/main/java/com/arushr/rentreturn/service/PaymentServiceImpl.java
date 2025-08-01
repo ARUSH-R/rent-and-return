@@ -115,30 +115,30 @@ public class PaymentServiceImpl implements PaymentService {
         paymentRepository.save(payment);
     }
 
-    // --- Stubs for not implemented methods ---
+    // --- Implemented methods ---
 
     @Override
     public List<Payment> findByUserId(Long userId) {
-        throw new UnsupportedOperationException("Not implemented");
+        return paymentRepository.findByRentalUserId(userId);
     }
 
     @Override
     public List<Payment> findByMethod(String method) {
-        throw new UnsupportedOperationException("Not implemented");
+        return paymentRepository.findByMethod(method);
     }
 
     @Override
     public List<Payment> findByDateRange(java.time.LocalDateTime start, java.time.LocalDateTime end) {
-        throw new UnsupportedOperationException("Not implemented");
+        return paymentRepository.findByCreatedAtBetween(start, end);
     }
 
     @Override
     public List<Payment> findBySuccessful(boolean successful) {
-        throw new UnsupportedOperationException("Not implemented");
+        return paymentRepository.findBySuccessful(successful);
     }
 
     @Override
     public List<Payment> findByAmountBetween(Double min, Double max) {
-        throw new UnsupportedOperationException("Not implemented");
+        return paymentRepository.findByAmountBetween(min, max);
     }
 }

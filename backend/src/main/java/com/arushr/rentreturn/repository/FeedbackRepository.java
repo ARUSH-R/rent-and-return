@@ -12,4 +12,5 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findByProduct(Product product);
     List<Feedback> findByUser(User user);
+    boolean existsByUserAndProduct(com.arushr.rentreturn.model.User user, com.arushr.rentreturn.model.Product product);
 }

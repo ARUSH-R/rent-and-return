@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    environment:
+      POSTGRES_USER: arushr
+      POSTGRES_PASSWORD: arushr
+      POSTGRES_DB: rentreturn
+
+  backend:
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rentreturn
+      SPRING_DATASOURCE_USERNAME: arushr
+      SPRING_DATASOURCE_PASSWORD: arushr
+      JWT_SECRET: your_very_long_and_secure_jwt_secret_here_minimum_32_characters_for_testing_only
+      JWT_EXPIRATION: 86400000
+      STRIPE_SECRET_KEY: sk_test_your_stripe_secret_key_here
+      ALLOWED_ORIGINS: http://localhost:5173
+      MAIL_HOST: smtp.gmail.com
+      MAIL_PORT: 587
+      MAIL_USERNAME: test@example.com
+      MAIL_PASSWORD: test_password
+      MAIL_FROM: no-reply@rentreturn.com
+
+  frontend:
+    environment:
+      VITE_API_BASE_URL: http://localhost:8080/api
+      VITE_STRIPE_PUBLISHABLE_KEY: pk_test_your_stripe_publishable_key_here 

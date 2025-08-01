@@ -9,6 +9,7 @@ import com.arushr.rentreturn.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class FeedbackController {
     private final ProductService productService;
 
     @PostMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Feedback> createFeedback(
             @RequestParam Long userId,
             @RequestParam Long productId,
@@ -37,6 +39,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Feedback> getFeedback(@PathVariable Long id) {
         return feedbackService.findById(id)
                 .map(ResponseEntity::ok)
@@ -44,11 +47,13 @@ public class FeedbackController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<Feedback>> getAllFeedbacks() {
         return ResponseEntity.ok(feedbackService.findAll());
     }
 
     @GetMapping("/product/{productId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<Feedback>> getFeedbacksByProduct(@PathVariable Long productId) {
         Product product = productService.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found: " + productId));
@@ -56,6 +61,7 @@ public class FeedbackController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<List<Feedback>> getFeedbacksByUser(@PathVariable Long userId) {
         User user = userService.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
@@ -63,6 +69,7 @@ public class FeedbackController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Feedback> updateFeedback(
             @PathVariable Long id,
             @RequestParam int rating,
@@ -73,23 +80,27 @@ public class FeedbackController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Void> deleteFeedback(@PathVariable Long id) {
         feedbackService.deleteFeedback(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/positive")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Boolean> isPositive(@PathVariable Long id) {
         return ResponseEntity.ok(feedbackService.isPositive(id));
     }
 
     @PutMapping("/{id}/anonymize")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Feedback> anonymize(@PathVariable Long id) {
         Feedback feedback = feedbackService.anonymize(id);
         return ResponseEntity.ok(feedback);
     }
 
     @PutMapping("/{id}/anonymize-completely")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<Feedback> anonymizeCompletely(@PathVariable Long id) {
         Feedback feedback = feedbackService.anonymizeCompletely(id);
         return ResponseEntity.ok(feedback);

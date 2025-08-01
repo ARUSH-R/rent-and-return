@@ -2,6 +2,7 @@ package com.arushr.rentreturn.service;
 
 import com.arushr.rentreturn.dto.user.WishlistItemDTO;
 import com.arushr.rentreturn.dto.user.WishlistItemResponseDTO;
+import com.arushr.rentreturn.exception.BusinessRuleException;
 import com.arushr.rentreturn.model.Product;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.model.WishlistItem;
@@ -35,7 +36,7 @@ public class WishlistServiceImpl implements WishlistService {
         Product product = productService.findById(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         wishlistItemRepository.findByUserAndProduct(user, product)
-                .ifPresent(item -> { throw new RuntimeException("Product already in wishlist"); });
+                .ifPresent(item -> { throw new BusinessRuleException("Product already in wishlist"); });
         WishlistItem item = WishlistItem.builder()
                 .user(user)
                 .product(product)

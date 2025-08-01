@@ -1,18 +1,44 @@
-# ---- Build Stage ----
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Multi-stage build for Spring Boot application
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+
+# Set working directory
 WORKDIR /app
+
+# Copy pom.xml and download dependencies
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy source code
 COPY src ./src
+
+# Build the application
 RUN mvn clean package -DskipTests
 
-# ---- Run Stage ----
+# Runtime stage
 FROM eclipse-temurin:17-jre-alpine
+
+# Create app user
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+
+# Set working directory
 WORKDIR /app
+
+# Copy the built jar from build stage
 COPY --from=build /app/target/*.jar app.jar
+
+# Change ownership to app user
+RUN chown -R appuser:appgroup /app
+
+# Switch to app user
+USER appuser
+
+# Expose port
 EXPOSE 8080
-# Recommended JAVA_OPTS for Railway (adjust as needed)
-ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Dfile.encoding=UTF-8"
-# Healthcheck for Railway
-HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
-ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
-# For Railway/Supabase: Set env vars SPRING_DATASOURCE_URL, SPRING_DATASOURCE_USERNAME, SPRING_DATASOURCE_PASSWORD, JWT_SECRET, STRIPE_SECRET_KEY, ALLOWED_ORIGINS, etc. 
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+
+# Run the application
+ENTRYPOINT ["java", "-jar", "app.jar"] 

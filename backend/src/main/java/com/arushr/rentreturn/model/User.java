@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Index;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,7 +22,13 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", indexes = {
+    @Index(name = "idx_users_email", columnList = "email"),
+    @Index(name = "idx_users_username", columnList = "username"),
+    @Index(name = "idx_users_role", columnList = "role"),
+    @Index(name = "idx_users_enabled", columnList = "enabled"),
+    @Index(name = "idx_users_deleted", columnList = "deleted")
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -69,6 +76,9 @@ public class User implements UserDetails, Serializable {
 
     @Builder.Default
     private boolean deleted = false;
+
+    @Builder.Default
+    private boolean blocked = false;
 
     private String createdBy;
     private String updatedBy;
@@ -124,6 +134,13 @@ public class User implements UserDetails, Serializable {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+    public void setBlocked(boolean blocked) {
+        this.blocked = blocked;
     }
 
     // Add these methods for clarity in tests and business logic
@@ -183,6 +200,7 @@ public class User implements UserDetails, Serializable {
                 ", profileImageUrl='" + profileImageUrl + '\'' +
                 ", emailVerified=" + emailVerified +
                 ", deleted=" + deleted +
+                ", blocked=" + blocked +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", createdAt=" + createdAt +

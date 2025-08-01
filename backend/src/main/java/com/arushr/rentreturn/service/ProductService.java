@@ -1,6 +1,7 @@
 package com.arushr.rentreturn.service;
 
 import com.arushr.rentreturn.model.Product;
+import com.arushr.rentreturn.dto.product.ProductDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import java.util.Optional;
 public interface ProductService {
 
     Product create(Product product);
+    Product create(ProductDTO productDTO);
 
     Optional<Product> findById(Long id);
 
@@ -16,6 +18,7 @@ public interface ProductService {
     List<Product> findAvailable();
 
     Product updateProduct(Long id, Product updatedProduct);
+    Product updateProduct(Long id, ProductDTO productDTO);
 
     void softDeleteProduct(Long id);
 

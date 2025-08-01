@@ -2,6 +2,7 @@ package com.arushr.rentreturn.service;
 
 import com.arushr.rentreturn.model.Product;
 import com.arushr.rentreturn.repository.ProductRepository;
+import com.arushr.rentreturn.dto.product.ProductDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product create(ProductDTO productDTO) {
+        Product product = Product.builder()
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .pricePerDay(productDTO.getPricePerDay())
+                .stock(productDTO.getStock())
+                .category(productDTO.getCategory())
+                .imageUrl(productDTO.getImageUrl())
+                .available(productDTO.isAvailable())
+                .createdBy(productDTO.getCreatedBy())
+                .updatedBy(productDTO.getUpdatedBy())
+                .deleted(false)
+                .build();
+        return create(product);
+    }
+
+    @Override
     public Product updateProduct(Long id, Product updatedProduct) {
         return productRepository.findById(id)
                 .map(product -> {
@@ -53,6 +71,23 @@ public class ProductServiceImpl implements ProductService {
                     return productRepository.save(product);
                 })
                 .orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    @Override
+    public Product updateProduct(Long id, ProductDTO productDTO) {
+        Product updatedProduct = Product.builder()
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .pricePerDay(productDTO.getPricePerDay())
+                .stock(productDTO.getStock())
+                .category(productDTO.getCategory())
+                .imageUrl(productDTO.getImageUrl())
+                .available(productDTO.isAvailable())
+                .createdBy(productDTO.getCreatedBy())
+                .updatedBy(productDTO.getUpdatedBy())
+                .deleted(false)
+                .build();
+        return updateProduct(id, updatedProduct);
     }
 
     @Override

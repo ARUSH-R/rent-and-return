@@ -14,7 +14,6 @@ Rent and Return is a comprehensive full-stack rental management application desi
 - **JWT** - Token-based authentication
 - **Maven** - Build tool
 - **JUnit** - Testing framework
-- **Flyway** - Database migrations
 - **Stripe** - Payment gateway integration
 - **JavaMailSender** - Email notifications
 
@@ -97,8 +96,7 @@ See the codebase for full API details and request/response formats.
 1. Install JDK 17 and Maven.
 2. Configure PostgreSQL and update the application properties or `.env` file.
 3. Navigate to the `backend` directory.
-4. Run database migrations (Flyway runs automatically on startup).
-5. Run the application:
+4. Run the application:
    ```sh
    mvn spring-boot:run
    ```

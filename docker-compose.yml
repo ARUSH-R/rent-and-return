@@ -6,9 +6,9 @@ services:
     container_name: rentreturn_db
     restart: always
     environment:
-      POSTGRES_USER: arushr
-      POSTGRES_PASSWORD: arushr
-      POSTGRES_DB: rentreturn
+      POSTGRES_USER: ${POSTGRES_USER:-arushr}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-arushr}
+      POSTGRES_DB: ${POSTGRES_DB:-rentreturn}
     ports:
       - "5433:5432"
     volumes:
@@ -21,11 +21,18 @@ services:
     container_name: rentreturn_backend
     restart: always
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/rentreturn
-      SPRING_DATASOURCE_USERNAME: arushr
-      SPRING_DATASOURCE_PASSWORD: arushr
-      JWT_SECRET: 4ada66507739000da7f9f2b0e5e96cde2ed9de6697b8d6dc36ea5b8bf7306597
-      JWT_EXPIRATION: 86400000
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-rentreturn}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-arushr}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-arushr}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@rentreturn.com}
     depends_on:
       - db
     ports:
@@ -38,7 +45,8 @@ services:
     container_name: rentreturn_frontend
     restart: always
     environment:
-      VITE_API_BASE_URL: http://localhost:8080/api
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8080/api}
+      VITE_STRIPE_PUBLISHABLE_KEY: ${VITE_STRIPE_PUBLISHABLE_KEY}
     depends_on:
       - backend
     ports:

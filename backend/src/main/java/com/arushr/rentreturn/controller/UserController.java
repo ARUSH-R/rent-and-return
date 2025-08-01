@@ -54,6 +54,20 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/block")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> blockUser(@PathVariable Long id) {
+        userService.blockUser(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{id}/unblock")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> unblockUser(@PathVariable Long id) {
+        userService.unblockUser(id);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/email")
     public ResponseEntity<User> findByEmail(@RequestParam String email) {
         return userService.findByEmail(email)

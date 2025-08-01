@@ -1,5 +1,6 @@
 package com.arushr.rentreturn.service;
 
+import com.arushr.rentreturn.exception.BusinessRuleException;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -146,6 +147,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public long countByEnabled(boolean enabled) {
         return userRepository.findAllByEnabled(enabled).stream().count();
+    }
+
+    public void blockUser(Long id) {
+        userRepository.findById(id).ifPresentOrElse(user -> {
+            user.setBlocked(true);
+            userRepository.save(user);
+        }, () -> { throw new BusinessRuleException("User not found"); });
+    }
+
+    public void unblockUser(Long id) {
+        userRepository.findById(id).ifPresentOrElse(user -> {
+            user.setBlocked(false);
+            userRepository.save(user);
+        }, () -> { throw new BusinessRuleException("User not found"); });
     }
 
 

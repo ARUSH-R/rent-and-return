@@ -3,6 +3,7 @@ package com.arushr.rentreturn.auth;
 import com.arushr.rentreturn.config.JwtService;
 import com.arushr.rentreturn.enums.Role;
 import com.arushr.rentreturn.enums.TokenType;
+import com.arushr.rentreturn.exception.BusinessRuleException;
 import com.arushr.rentreturn.model.Token;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.repository.TokenRepository;
@@ -58,6 +59,9 @@ public class AuthenticationService {
                 .or(() -> userRepository.findByUsername(identifier))
                 .or(() -> userRepository.findByPhone(identifier))
                 .orElseThrow(() -> new RuntimeException("User not found with identifier: " + identifier));
+        if (user.isBlocked()) {
+            throw new BusinessRuleException("Your account has been blocked. Please contact support.");
+        }
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getEmail(), request.getPassword())
         );

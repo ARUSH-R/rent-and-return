@@ -49,6 +49,9 @@ public interface UserService extends UserDetailsService {
 
     long countByEnabled(boolean enabled);
 
+    void blockUser(Long id);
+    void unblockUser(Long id);
+
 
     UserDetails loadUserByUsername(String username);
 

@@ -1,5 +1,6 @@
 package com.arushr.rentreturn.config;
 
+import com.arushr.rentreturn.exception.UnauthorizedException;
 import com.arushr.rentreturn.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -70,7 +71,7 @@ public class JwtService {
                     .getBody();
         } catch (JwtException e) {
             log.warn("Invalid JWT: {}", e.getMessage());
-            throw new RuntimeException("Invalid or expired JWT token", e);
+            throw new UnauthorizedException("Invalid or expired JWT token", e);
         }
     }
 

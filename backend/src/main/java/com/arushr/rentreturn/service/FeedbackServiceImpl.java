@@ -4,6 +4,9 @@ import com.arushr.rentreturn.model.Feedback;
 import com.arushr.rentreturn.model.Product;
 import com.arushr.rentreturn.model.User;
 import com.arushr.rentreturn.repository.FeedbackRepository;
+import com.arushr.rentreturn.exception.BusinessRuleException;
+import com.arushr.rentreturn.repository.RentalRepository;
+import com.arushr.rentreturn.enums.RentalStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,22 @@ import java.util.Optional;
 public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
+    private final RentalRepository rentalRepository;
 
     @Override
     public Feedback addFeedback(User user, Product product, int rating, String comment) {
+        // Only allow feedback if user has returned the product
+        boolean hasReturned = rentalRepository.existsByUserIdAndProductIdAndStatusAndDeletedFalse(
+            user.getId(), product.getId(), RentalStatus.RETURNED
+        );
+        if (!hasReturned) {
+            throw new BusinessRuleException("You can only leave feedback after returning the product.");
+        }
+        // Prevent duplicate feedback for the same product by the same user
+        boolean alreadyRated = feedbackRepository.existsByUserAndProduct(user, product);
+        if (alreadyRated) {
+            throw new BusinessRuleException("You have already rated this product.");
+        }
         Feedback feedback = Feedback.builder()
                 .user(user)
                 .product(product)

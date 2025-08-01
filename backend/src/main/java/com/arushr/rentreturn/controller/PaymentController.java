@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -97,14 +98,12 @@ public class PaymentController {
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<Payment>> getByUser(@PathVariable Long userId) {
-        // Not implemented in service
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(paymentService.findByUserId(userId));
     }
 
     @GetMapping("/method/{method}")
     public ResponseEntity<List<Payment>> getByMethod(@PathVariable String method) {
-        // Not implemented in service
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(paymentService.findByMethod(method));
     }
 
     @GetMapping("/date-range")
@@ -112,14 +111,14 @@ public class PaymentController {
             @RequestParam String start,
             @RequestParam String end
     ) {
-        // Not implemented in service
-        throw new UnsupportedOperationException("Not implemented");
+        LocalDateTime startDate = LocalDateTime.parse(start);
+        LocalDateTime endDate = LocalDateTime.parse(end);
+        return ResponseEntity.ok(paymentService.findByDateRange(startDate, endDate));
     }
 
     @GetMapping("/status")
     public ResponseEntity<List<Payment>> getByStatus(@RequestParam boolean successful) {
-        // Not implemented in service
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(paymentService.findBySuccessful(successful));
     }
 
     @GetMapping("/amount-range")
@@ -127,8 +126,7 @@ public class PaymentController {
             @RequestParam Double min,
             @RequestParam Double max
     ) {
-        // Not implemented in service
-        throw new UnsupportedOperationException("Not implemented");
+        return ResponseEntity.ok(paymentService.findByAmountBetween(min, max));
     }
 
     /**

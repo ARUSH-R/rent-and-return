@@ -40,11 +40,6 @@ public class Rental implements Serializable {
     @Column(nullable = false)
     private LocalDateTime rentalStart;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RentalStatus rentalStatus = RentalStatus.ACTIVE;
-
-
     @NotNull
     @Column(nullable = false)
     private LocalDateTime rentalEnd;
